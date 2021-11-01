@@ -1,0 +1,30 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "..\\wordpress-plugin"
+		},
+		{
+			"path": "..\\..\\themes\\twentytwentyone"
+		},
+		{
+			"path": "..\\..\\..\\..\\..\\..\\tapfuelweb\\app\\public\\wp-content\\themes\\agrilife-today"
+		},
+		{
+			"path": "..\\..\\..\\..\\..\\..\\tapfuelweb\\app\\public\\wp-content\\themes\\genesis"
+		},
+		{
+			"path": "..\\..\\..\\..\\..\\..\\tapfuelweb\\app\\public\\wp-content\\themes\\skt-consulting"
+		},
+		{
+			"path": "..\\..\\.."
+		}
+	],
+	"settings": {
+		"editor.wordWrap": "on",
+		"editor.detectIndentation": false,
+		"editor.insertSpaces": false
+	}
+}

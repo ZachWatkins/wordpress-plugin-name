@@ -1,0 +1,12 @@
+{
+    "phpcs.standard": "WordPress",
+    "phpcs.enable": true,
+    "phpcs.executablePath": "./vendor/bin/phpcs",
+    "phpcs.showWarnings": true,
+    "phpcs.composerJsonPath": "composer.json",
+    "diffEditor.ignoreTrimWhitespace": false,
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+	"php.validate.enable": true,
+	"php.validate.run": "onSave"
+}
