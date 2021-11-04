@@ -2,9 +2,10 @@
 /**
  * WordPress Plugin Name
  *
- * @package WordPress_Plugin_Name
- * @author  Zachary Watkins <watkinza@gmail.com>
- * @license http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
+ * @package   WordPress_Plugin_Name
+ * @copyright Zachary Watkins 2021
+ * @author    Zachary Watkins <watkinza@gmail.com>
+ * @license   http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
  *
  * @wordpress-plugin-name
  * Plugin Name:       WordPress Plugin Name
@@ -40,17 +41,15 @@ if ( ! defined( 'ABSPATH' ) ) {
  * or words specific to your plugin to associate them with your plugin in the global
  * constant space. Other plugins and themes can use them after the 'after_setup_theme'
  * action hook.
+ * @see https://developer.wordpress.org/reference/functions/plugin_dir_url/
+ * @see https://www.php.net/manual/en/function.dirname.php
  */
 define( 'WP_PLUGIN_INTRO_DIR_URL', plugin_dir_url( __FILE__ ) . '/' );
 define( 'WP_PLUGIN_INTRO_DIR_FILE', __FILE__ );
-define( 'WP_PLUGIN_INTRO_DIR_PATH', plugin_dir_path( __FILE__ ) . DIRECTORY_SEPARATOR );
-define( 'WP_PLUGIN_INTRO_SRC_PATH', WP_PLUGIN_INTRO_DIR_PATH . 'src' . DIRECTORY_SEPARATOR );
-define( 'WP_PLUGIN_INTRO_VIEW_PATH', WP_PLUGIN_INTRO_DIR_PATH . 'views' . DIRECTORY_SEPARATOR );
-define( 'WP_PLUGIN_INTRO_TEMPLATE_PATH', WP_PLUGIN_INTRO_DIR_PATH . 'templates' . DIRECTORY_SEPARATOR );
-define( 'WP_PLUGIN_INTRO_PREFIX', 'wpi' ); // Used for action and filter hook names unique to this plugin.
+define( 'WP_PLUGIN_INTRO_DIR_PATH', __DIR__ . DIRECTORY_SEPARATOR );
 
 /**
  * The core plugin class that is used to initialize the plugin.
  */
-require WP_PLUGIN_INTRO_SRC_PATH . 'class-wordpress-plugin-name.php';
-new WordPress_Plugin_Name();
+require __DIR__ . DIRECTORY_SEPARATOR . 'src/class-wordpress-plugin-name.php';
+new WordPress_Plugin_Name(	);

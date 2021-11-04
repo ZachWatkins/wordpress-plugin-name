@@ -4,6 +4,7 @@ Template Name: Example
 Description: Example page template using Advanced Custom Fields and jQuery.
  * @package    WordPress_Plugin_Name
  * @subpackage page.php
+ * @copyright  Zachary Watkins 2021
  * @since      0.1.0
  */
 

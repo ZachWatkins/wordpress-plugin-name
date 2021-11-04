@@ -8,5 +8,8 @@
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
 	"php.validate.enable": true,
-	"php.validate.run": "onSave"
+	"php.validate.run": "onSave",
+	"[markdown]": {
+		"files.trimTrailingWhitespace": false
+	}
 }

@@ -4,6 +4,7 @@
  *
  * @package    WordPress_Plugin_Name
  * @subpackage Core
+ * @copyright  Zachary Watkins 2021
  * @author     Zachary Watkins <watkinza@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
  * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/src/class-wordpress-plugin-name.php
@@ -28,8 +29,9 @@ class WordPress_Plugin_Name {
 	public function __construct() {
 
 		// Load the assets.
-		require_once WP_PLUGIN_INTRO_SRC_PATH . 'class-assets.php';
+		require_once WP_PLUGIN_INTRO_DIR_PATH . 'src/class-assets.php';
 		new WordPress_Plugin_Name\Assets();
+		// $class_dir = trailingslashit( dirname( plugin_basename( __FILE__ ) ) ) . '/class';
 
 		// Load activation-related hooks.
 		$requirements = array(
@@ -45,12 +47,12 @@ class WordPress_Plugin_Name {
 				),
 			),
 		);
-		require_once WP_PLUGIN_INTRO_SRC_PATH . 'class-activation.php';
-		new WordPress_Plugin_Name\Activation( $requirements );
+		require_once WP_PLUGIN_INTRO_DIR_PATH . 'src/class-plugin-activation.php';
+		new WordPress_Plugin_Name\Plugin_Activation( $requirements );
 
 		// Load page template files.
+		require_once WP_PLUGIN_INTRO_DIR_PATH . 'src/class-page-template.php';
 		$templates = array( 'path' => 'templates/example.php' );
-		require_once WP_PLUGIN_INTRO_SRC_PATH . 'class-page-template.php';
 		new WordPress_Plugin_Name\Page_Template( $templates );
 
 	}

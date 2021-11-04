@@ -4,6 +4,7 @@
  *
  * @package    WordPress_Plugin_Name
  * @subpackage Utility
+ * @copyright  Zachary Watkins 2021
  * @author     Zachary Watkins <watkinza@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
  * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/src/class-page-template.php
@@ -19,6 +20,25 @@ namespace WordPress_Plugin_Name;
  * @since 0.1.0
  */
 class Page_Template {
+
+	/**
+	 * Base directory
+	 *
+	 * @var basedir
+	 */
+	private $basedir = WP_PLUGIN_INTRO_DIR_PATH;
+
+	/**
+	 * Reserved names.
+	 *
+	 * These page template names are reserved by WordPress themes.
+	 *
+	 * @var reserved_filems
+	 */
+	private $reserved_filenames = array(
+		'page.php',
+		'page-%s.php',
+	);
 
 	/**
 	 * Default page template headers.
@@ -257,7 +277,7 @@ class Page_Template {
 
 		} else {
 
-			$full_path = WP_PLUGIN_INTRO_DIR_PATH . $template_meta['path'];
+			$full_path = $this->basedir . $template_meta['path'];
 			$file      = wp_basename( $template_meta['path'] );
 
 			if ( ! file_exists( $full_path ) ) {
@@ -319,7 +339,7 @@ class Page_Template {
 
 		foreach ( $this->template_meta as $template_meta ) {
 			$file      = basename( $template_meta['path'] );
-			$file_data = get_file_data( WP_PLUGIN_INTRO_DIR_PATH . $template_meta['path'], $this->default_headers );
+			$file_data = get_file_data( $this->basedir . $template_meta['path'], $this->default_headers );
 			if ( is_array( $file_data ) ) {
 				$this->template_headers[ $file ] = $file_data;
 			}
@@ -483,23 +503,21 @@ class Page_Template {
 			return $template;
 		}
 
-		// Return default template if we don't have a custom one defined.
+		// Stop the function if it's running for a template not defined for this plugin.
 		$template_meta = get_post_meta(
 			$post->ID,
 			'_wp_page_template',
 			true
 		);
-		if ( ! isset( $this->template_schema[ $template_meta ] ) ) {
+		if ( ! isset( $this->template_paths[ $template_meta ] ) ) {
 			return $template;
 		}
 
-		$file = $this->basedir . '/' . $template_meta;
+		$template = $this->basedir . $template_meta;
 
 		// Just to be safe, we check if the file exist first.
-		if ( file_exists( $file ) ) {
-			return $file;
-		} else {
-			echo esc_url( $file );
+		if ( file_exists( $template ) ) {
+			return $template;
 		}
 
 		// Return template.
