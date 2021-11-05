@@ -37,33 +37,6 @@ Before you get started you should download and install some things:
 
 This plugin was created by Zachary Watkins <watkinza@gmail.com> with the hope that it could be someone's first step into WordPress development.
 
-## Principles of Software Development
-
-These principles can be looked up for better explanation and are provided here as a suggestion for self-guided learning.
-1. Separation of Concerns
-2. Don't Repeat Yourself
-3. Single Responsibility Principle
-4. Avoid clever code (i.e. prefer simple, intuitive logic over complicated code)
-5. Premature optimization is the root of all evil
-
-### Separation of Concerns
-
-This is a key principle of software development and involves separating code in a logical way for the purpose of reducing the burden required to maintain it. How or why to separate code is subjective and while there are best practices and standards it is ultimately up to the maintainers. The number of files may seem intimidating until you remember this is done with the goal of adding simplicity, not taking away from it.
-
-"[Separation of Concerns], even if not perfectly possible, is yet the only available technique for effective ordering of one's thoughts, that I know of." -- Edsger W. Dijkstra
-
-### Don't Repeat Yourself
-
-If you plan to re-use code you have created, try to package it so that you can call upon it as a reference instead of needing to copy and paste the code again in a different file. This will help with the maintainability of that code and wherever it will be used.
-
-### Single Responsibility Principle
-
-"It is a software engineering principle that states that a class should have only one reason to change. In other words, it must have only one responsibility.
-
-"Here, we are talking about cohesion. All elements in given class structures or modules should have a functional affinity to one another. By clearly defining your class’s responsibility, you increase its cohesiveness."
-
-- Jerome Rault, "10 Crucial Software Development Principles to Live By", <https://www.laneways.agency/software-development-principles/>
-
 ## Code Standards, Guidelines, and Conventions
 
 There are many ways to learn programming and rigid documentation requirements can seem daunting for beginners. If you are a beginner, I am excited that you are here and I hope you learn something from what you find here. While not a requirement to write functional code, the additional steps required to learn and implement best practices for documentation is worthwhile for both personal and professional projects.
