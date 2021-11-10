@@ -1,11 +1,13 @@
 # Guiding Principles of Software Development
 
+"Great things are not done by impulse, but by a series of small things brought together." - Letter to Theo (October 1882) *Vincent Van Gogh*
+
 These principles can be searched for a far better explanation than what is provided here, but even so my thoughts and noteworthy sources are provided here as a suggestion for self-guided learning.
 
 1. Don't Repeat Yourself
 2. Separation of Concerns
 3. Single Responsibility Principle
-4. Avoid clever code; prefer simple, intuitive logic
+4. Avoid clever code (prefer simple, intuitive logic)
 5. Avoid early optimization
 
 ## Don't Repeat Yourself

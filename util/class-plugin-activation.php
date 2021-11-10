@@ -4,7 +4,7 @@
  *
  * Links to PHP core documentation are included but this file will not be easy to grasp for beginners.
  *
- * @package    WordPress_Plugin_Name
+ * @package    Thoughtful
  * @subpackage Core
  * @copyright  Zachary Watkins 2021
  * @author     Zachary Watkins <watkinza@gmail.com>
@@ -13,7 +13,7 @@
  * @since      0.1.0
  */
 
-namespace WordPress_Plugin_Name;
+namespace Thoughtful\Util;
 
 /**
  * The class that handles plugin activation and deactivation.
@@ -22,6 +22,14 @@ namespace WordPress_Plugin_Name;
  * @since 0.1.0
  */
 class Plugin_Activation {
+
+	/**
+	 * Plugin activation file.
+	 *
+	 * @var string $file The root plugin file directory path. Cannot be defined using functions or
+	 *                   variables, so it is incomplete until construction.
+	 */
+	private static $file = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR;
 
 	/**
 	 * Plugin requirements.
@@ -73,59 +81,44 @@ class Plugin_Activation {
 	 */
 	public function __construct( $requirements = false ) {
 
+		// Finish declaring class variables.
+		$plugin_dir       = trailingslashit( dirname( __FILE__, 2 ) );
+		$plugin_file_name = wp_basename( $plugin_dir ) . '.php';
+		$plugin_file_path = $plugin_dir . $plugin_file_name;
+		self::$file      .= plugin_basename( $plugin_file_path );
+
 		// Store plugin data.
 		if ( ! function_exists( 'get_plugin_data' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
-		$this->plugin_headers = get_plugin_data( WP_PLUGIN_INTRO_DIR_FILE );
+		$this->plugin_headers = get_plugin_data( $this->file );
 		$this->requirements   = $requirements;
 		if ( is_array( $requirements ) && array_key_exists( 'plugins', $requirements ) ) {
 			$this->plugin_queries = $requirements['plugins'];
 		}
 
-		/**
-		 * Add core plugin activation error handler for PHP version support.
-		 * On WP_Error during plugin activation, wp_die() is called. This triggers the filter 'wp_die_handler'.
-		 * The default function for this filter is '_default_wp_die_handler';
-		 * @see https://developer.wordpress.org/reference/functions/_default_wp_die_handler/
-		 * We need to add "$parsed_args['back_link']" to this handler's received parameters.
-		 * Provides a link back to the Plugin page from the white screen error page.
-		 * Requires WordPress 5.6.0.
-		 */
-		if ( version_compare( floatval( $GLOBALS['wp_version'] ), '5.6.0', '>=' ) ) {
-			add_action( 'wp_error_added', array( $this, 'wp_error_added' ), 11, 4 );
-		}
-
 		// Register activation hook.
-		register_activation_hook( WP_PLUGIN_INTRO_DIR_FILE, array( $this, 'activate_plugin' ) );
+		register_activation_hook( $this->file, array( $this, 'activate_plugin' ) );
 
 	}
 
 	/**
-	 * Display link back to Plugins page upon default WordPress activation error.
-	 * Requires WordPress 5.6.0.
+	 * Call an Alert class method if available.
 	 *
-	 * @see   https://developer.wordpress.org/reference/functions/_default_wp_die_handler/
-	 * @see   https://www.php.net/manual/en/reference.pcre.pattern.syntax.php
-	 * @see   https://www.php.net/manual/en/function.preg-match.php
-	 * @see   https://developer.wordpress.org/reference/classes/wp_error/
-	 * @see   https://developer.wordpress.org/reference/functions/wp_die/
 	 * @since 0.1.0
 	 *
-	 * @param string|int $code     Error code.
-	 * @param string     $message  Error message.
-	 *
-	 * @return void
+	 * @param  WP_Error $wp_error The WP_Error object.
+	 * @return bool|void
 	 */
-	public function wp_error_added( $code, $message ){
+	private function alert( $wp_error ) {
 
-		// The \b meta-character is a word boundary.
-		$pattern = '/\b' . $this->plugin_headers['Name'] . '\b/';
-		preg_match( $pattern, $message, $matches );
-		if ( 'plugin_php_incompatible' === $code && ! empty( $matches ) ) {
-			// Do stuff.
+		if ( class_exists( '\Thoughtful\Util\Alert' ) && method_exists( '\Thoughtful\Util\Alert', 'display' ) ) {
+			\Thoughtful\Util\Alert::display( $wp_error );
+		} else {
+			wp_die( $wp_error );
 		}
+
 	}
 
 	/**
@@ -142,7 +135,7 @@ class Plugin_Activation {
 		// Handle result.
 		if ( true === $result ) {
 			return;
-		} elseif ( is_string( $result ) ) {
+		} elseif ( is_wp_error( $result ) ) {
 			$this->deactivate_plugin( $result );
 		}
 
@@ -155,42 +148,18 @@ class Plugin_Activation {
 	 * @see    https://developer.wordpress.org/reference/functions/plugin_basename/
 	 * @see    https://developer.wordpress.org/reference/hooks/wp_die/
 	 * @since  0.1.0
-	 * @param  string $message The custom activation error message. Default empty string.
+	 *
+	 * @param  WP_Error $wp_error The WP_Error object.
+	 *
 	 * @return void
 	 */
-	public function deactivate_plugin( $message = '' ) {
+	public function deactivate_plugin( $wp_error ) {
 
 		// Deactivate the plugin.
-		deactivate_plugins( plugin_basename( WP_PLUGIN_INTRO_DIR_FILE ) );
+		deactivate_plugins( plugin_basename( $this->file ) );
 
-		// Set error message.
-		$this->failure_message = $message;
-
-		// Add a custom message to the end of the error message in the view file below.
-		add_filter( 'wpn_failed_activation_message_after', array( $this, 'failed_activation_message_after' ) );
-
-		// Demonstrate that variables are available to the failed-activation.php file from this function.
-		include WP_PLUGIN_INTRO_DIR_PATH . '/views/failed-activation.php';
-
-		// Prevent any remaining processes from executing and load the page.
-		wp_die();
-
-	}
-
-	/**
-	 * Add a message after the failed plugin activation message.
-	 *
-	 * @since  0.1.0
-	 * @param  string $message The message after the failed plugin activation message.
-	 * @return string
-	 */
-	public function failed_activation_message_after( $message ) {
-
-		if ( $this->failure_message ) {
-			$message = $this->failure_message;
-		}
-
-		return $message;
+		// Alert the user to the issue.
+		$this->alert( $wp_error );
 
 	}
 
@@ -322,6 +291,6 @@ class Plugin_Activation {
 			$inactive_plugins_phrase
 		);
 
-		return $result;
+		return new \WP_Error( 'thoughtful_util_plugin_activation_error', $result );
 	}
 }

@@ -41,6 +41,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * or words specific to your plugin to associate them with your plugin in the global
  * constant space. Other plugins and themes can use them after the 'after_setup_theme'
  * action hook.
+ *
  * @see https://developer.wordpress.org/reference/functions/plugin_dir_url/
  * @see https://www.php.net/manual/en/function.dirname.php
  */
@@ -49,7 +50,8 @@ define( 'WP_PLUGIN_INTRO_DIR_FILE', __FILE__ );
 define( 'WP_PLUGIN_INTRO_DIR_PATH', __DIR__ . DIRECTORY_SEPARATOR );
 
 /**
- * The core plugin class that is used to initialize the plugin.
+ * The core plugin class is used to initialize the plugin.
  */
-require __DIR__ . DIRECTORY_SEPARATOR . 'src/class-wordpress-plugin-name.php';
-new WordPress_Plugin_Name(	);
+require __DIR__ . '/vendor/autoload.php';
+require WP_PLUGIN_INTRO_DIR_PATH . 'src/class-wordpress-plugin-name.php';
+new WordPress_Plugin_Name();

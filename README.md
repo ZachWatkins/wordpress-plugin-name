@@ -1,6 +1,6 @@
 # WordPress Plugin Boilerplate
 
-An introduction to WordPress plugin development.
+"Great things are not done by impulse, but by a series of small things brought together." - Letter to Theo (October 1882) *Vincent Van Gogh*
 
 ## Features
 
@@ -8,9 +8,9 @@ An introduction to WordPress plugin development.
 2. Well documented code using [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/) and links to official PHP and WordPress documentation websites that can help beginners learn the code more quickly.
 3. Visual Studio Code and Composer modules for PHP and WordPress Coding Standards and core documentation preconfigured for an improved in-editor learning experience.
 4. Essential WordPress features that beginners are likely to want to learn:
-   a. A plugin activation class that ensures Advanced Custom Fields lite or pro is activated before allowing this plugin to activate.  
-   b. A page template registration class that throws exceptions if misconfigured during development.  
-   c. A page template file that loads and extends a site's `page.php` template and adds content with action hooks for maximum theme compatibility.  
+   a. A plugin activation class that ensures Advanced Custom Fields lite or pro is activated before allowing this plugin to activate.
+   b. A page template registration class that throws exceptions if misconfigured during development.
+   c. A page template file that loads and extends a site's `page.php` template and adds content with action hooks for maximum theme compatibility.
    d. A demo template with Advanced Custom Fields, CSS, jQuery, and a JS file.
 
 ## Installation
@@ -63,3 +63,4 @@ Links to resources:
 * NPM package schema - <https://docs.npmjs.com/cli/v7/configuring-npm/package-json>
 * Composer package schema - <https://getcomposer.org/doc/04-schema.md>
 * The Software Package Data Exchange:reg: - <https://spdx.dev/>
+* PHP Framework Interop Group - <https://www.php-fig.org/>

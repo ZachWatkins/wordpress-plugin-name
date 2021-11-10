@@ -47,12 +47,14 @@ class WordPress_Plugin_Name {
 				),
 			),
 		);
-		require_once WP_PLUGIN_INTRO_DIR_PATH . 'src/class-plugin-activation.php';
+		require_once WP_PLUGIN_INTRO_DIR_PATH . 'util/class-plugin-activation.php';
 		new WordPress_Plugin_Name\Plugin_Activation( $requirements );
 
 		// Load page template files.
-		require_once WP_PLUGIN_INTRO_DIR_PATH . 'src/class-page-template.php';
-		$templates = array( 'path' => 'templates/example.php' );
+		$templates = array(
+			'path' => 'templates/example.php',
+		);
+		require_once WP_PLUGIN_INTRO_DIR_PATH . 'util/class-page-template.php';
 		new WordPress_Plugin_Name\Page_Template( $templates );
 
 	}

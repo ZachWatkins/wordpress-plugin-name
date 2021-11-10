@@ -13,5 +13,8 @@
             "email": "watkinza@gmail.com",
             "homepage": "https://github.com/zachwatkins"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {"Thoughtful\\": "util/"}
+    }
 }
