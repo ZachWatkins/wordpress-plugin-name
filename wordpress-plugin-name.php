@@ -48,6 +48,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'WP_PLUGIN_INTRO_DIR_URL', plugin_dir_url( __FILE__ ) . '/' );
 define( 'WP_PLUGIN_INTRO_DIR_FILE', __FILE__ );
 define( 'WP_PLUGIN_INTRO_DIR_PATH', __DIR__ . DIRECTORY_SEPARATOR );
+define( 'THOUGHTFULWEB_UTIL_PLUGIN_FILE', __FILE__ );
 
 /**
  * The core plugin class is used to initialize the plugin.

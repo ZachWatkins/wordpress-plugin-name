@@ -4,7 +4,7 @@
  *
  * Links to PHP core documentation are included but this file will not be easy to grasp for beginners.
  *
- * @package    Thoughtful
+ * @package    ThoughtfulWeb
  * @subpackage Core
  * @copyright  Zachary Watkins 2021
  * @author     Zachary Watkins <watkinza@gmail.com>
@@ -13,7 +13,7 @@
  * @since      0.1.0
  */
 
-namespace Thoughtful\Util;
+namespace ThoughtfulWeb\Util;
 
 /**
  * The class that handles plugin activation and deactivation.
@@ -29,7 +29,7 @@ class Plugin_Activation {
 	 * @var string $file The root plugin file directory path. Cannot be defined using functions or
 	 *                   variables, so it is incomplete until construction.
 	 */
-	private static $file = WP_PLUGIN_DIR . DIRECTORY_SEPARATOR;
+	private static $file = THOUGHTFULWEB_UTIL_PLUGIN_FILE;
 
 	/**
 	 * Plugin requirements.
@@ -81,13 +81,7 @@ class Plugin_Activation {
 	 */
 	public function __construct( $requirements = false ) {
 
-		// Finish declaring class variables.
-		$plugin_dir       = trailingslashit( dirname( __FILE__, 2 ) );
-		$plugin_file_name = wp_basename( $plugin_dir ) . '.php';
-		$plugin_file_path = $plugin_dir . $plugin_file_name;
-		self::$file      .= plugin_basename( $plugin_file_path );
-
-		// Store plugin data.
+		// Ensure the Core WordPress plugin.php file is available.
 		if ( ! function_exists( 'get_plugin_data' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
@@ -113,10 +107,12 @@ class Plugin_Activation {
 	 */
 	private function alert( $wp_error ) {
 
-		if ( class_exists( '\Thoughtful\Util\Alert' ) && method_exists( '\Thoughtful\Util\Alert', 'display' ) ) {
-			\Thoughtful\Util\Alert::display( $wp_error );
+		if ( class_exists( '\ThoughtfulWeb\Util\Alert' ) && method_exists( '\ThoughtfulWeb\Util\Alert', 'display' ) ) {
+			\ThoughtfulWeb\Util\Alert::display( $wp_error );
 		} else {
-			wp_die( $wp_error );
+			$messages = $wp_error->get_error_messages();
+			$messages = implode( ' ', $messages );
+			wp_die( wp_kses_post( $messages ) );
 		}
 
 	}

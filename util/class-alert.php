@@ -2,7 +2,7 @@
 /**
  * The file that handles alerts for plugin activation issues.
  *
- * @package    Thoughtful
+ * @package    ThoughtfulWeb
  * @subpackage Utility
  * @copyright  Zachary Watkins 2021
  * @author     Zachary Watkins <watkinza@gmail.com>
@@ -11,7 +11,7 @@
  * @since      0.1.0
  */
 
-namespace Thoughtful\Util;
+namespace ThoughtfulWeb\Util;
 
 /**
  * The class that registers page template file registration.

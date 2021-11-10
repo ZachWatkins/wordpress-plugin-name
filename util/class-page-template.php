@@ -2,7 +2,7 @@
 /**
  * The file that facilitates page template file registration.
  *
- * @package    Thoughtful
+ * @package    ThoughtfulWeb
  * @subpackage Utility
  * @copyright  Zachary Watkins 2021
  * @author     Zachary Watkins <watkinza@gmail.com>
@@ -11,7 +11,7 @@
  * @since      0.1.0
  */
 
-namespace Thoughtful\Util;
+namespace ThoughtfulWeb\Util;
 
 /**
  * The class that registers page template file registration.
@@ -124,11 +124,13 @@ class Page_Template {
 	 */
 	private function alert( $code = '', $message = '', $data = '' ) {
 
-		if ( class_exists( '\Thoughtful\Util\Alert' ) && method_exists( '\Thoughtful\Util\Alert', 'display' ) ) {
-			\Thoughtful\Alert::display( $code, $message, $data );
+		if ( class_exists( '\ThoughtfulWeb\Util\Alert' ) && method_exists( '\ThoughtfulWeb\Util\Alert', 'display' ) ) {
+			\ThoughtfulWeb\Util\Alert::display( $code, $message, $data );
 		} else {
-			$error_obj = new \WP_Error( $code, $message, $data );
-			wp_die( $error_obj );
+			$wp_error = new \WP_Error( $code, $message, $data );
+			$messages = $wp_error->get_error_messages();
+			$messages = implode( ' ', $messages );
+			wp_die( wp_kses_post( $messages ) );
 		}
 
 	}

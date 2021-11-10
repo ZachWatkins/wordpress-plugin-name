@@ -15,6 +15,6 @@
         }
     ],
     "autoload": {
-        "psr-4": {"Thoughtful\\": "util/"}
+        "psr-4": {"ThoughtfulWeb\\": "util/"}
     }
 }
