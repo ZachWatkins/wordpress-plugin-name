@@ -1,6 +1,6 @@
 # WordPress Plugin Boilerplate
 
-"Great things are not done by impulse, but by a series of small things brought together." - Letter to Theo (October 1882) *Vincent Van Gogh*
+
 
 ## Features
 
@@ -64,3 +64,7 @@ Links to resources:
 * Composer package schema - <https://getcomposer.org/doc/04-schema.md>
 * The Software Package Data Exchange:reg: - <https://spdx.dev/>
 * PHP Framework Interop Group - <https://www.php-fig.org/>
+
+## Advice
+
+"Great things are not done by impulse, but by a series of small things brought together." - Letter to Theo (October 1882) *Vincent Van Gogh*

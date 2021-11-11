@@ -22,11 +22,11 @@ namespace ThoughtfulWeb\Util;
 class Page_Template {
 
 	/**
-	 * Base directory
+	 * Base directory for the plugin.
 	 *
-	 * @var basedir
+	 * @var string $basedir The directory of the root plugin file.
 	 */
-	private $basedir = WP_PLUGIN_INTRO_DIR_PATH;
+	private $basedir = '';
 
 	/**
 	 * Reserved names.
@@ -100,6 +100,13 @@ class Page_Template {
 		if ( empty( $templates ) ) {
 			return;
 		}
+
+		if ( ! defined( 'THOUGHTFULWEB_UTIL_PLUGIN_FILE' ) ) {
+			$this->alert( 'thoughtful_util_constant_undefined', 'The constant "THOUGHTFULWEB_UTIL_PLUGIN_FILE" is undefined.' );
+		}
+
+		// Set up the true $this->basedir value.
+		$this->basedir = plugin_dir_path( THOUGHTFULWEB_UTIL_PLUGIN_FILE );
 
 		// Store the template data.
 		$this->template_meta = $this->sanitize_template_meta( $templates );
