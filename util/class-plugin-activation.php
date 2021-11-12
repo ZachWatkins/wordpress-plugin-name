@@ -9,11 +9,14 @@
  * @copyright  Zachary Watkins 2021
  * @author     Zachary Watkins <watkinza@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
- * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/src/class-activation.php
+ * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/util/class-activation.php
  * @since      0.1.0
  */
 
+declare(strict_types=1);
 namespace ThoughtfulWeb\Util;
+
+use ThoughtfulWeb\Util\Error_Helper as Error_Helper;
 
 /**
  * The class that handles plugin activation and deactivation.
@@ -34,9 +37,9 @@ class Plugin_Activation {
 	/**
 	 * Plugin requirements.
 	 *
-	 * @var bool|array $requirements Activation requirements. Accepts false or array. Default false.
+	 * @var $requirements
 	 */
-	private $requirements = false;
+	private $requirements;
 
 	/**
 	 * Plugin dependency queries.
@@ -61,7 +64,7 @@ class Plugin_Activation {
 	 * @see   https://developer.wordpress.org/reference/functions/register_activation_hook/
 	 * @since 0.1.0
 	 *
-	 * @param bool|array $requirements {
+	 * @param null|array $requirements {
 	 *     Optional. Bool or array of activation requirements. Default false.
 	 *
 	 *     @type array $plugins {
@@ -79,41 +82,21 @@ class Plugin_Activation {
 	 * }
 	 * @return void
 	 */
-	public function __construct( $requirements = false ) {
+	public function __construct( $requirements = null ) {
 
 		// Ensure the Core WordPress plugin.php file is available.
 		if ( ! function_exists( 'get_plugin_data' ) ) {
 			require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		}
 
-		$this->plugin_headers = get_plugin_data( $this->file );
+		$this->plugin_headers = get_plugin_data( self::$file );
 		$this->requirements   = $requirements;
 		if ( is_array( $requirements ) && array_key_exists( 'plugins', $requirements ) ) {
 			$this->plugin_queries = $requirements['plugins'];
 		}
 
 		// Register activation hook.
-		register_activation_hook( $this->file, array( $this, 'activate_plugin' ) );
-
-	}
-
-	/**
-	 * Call an Alert class method if available.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @param  WP_Error $wp_error The WP_Error object.
-	 * @return bool|void
-	 */
-	private function alert( $wp_error ) {
-
-		if ( class_exists( '\ThoughtfulWeb\Util\Alert' ) && method_exists( '\ThoughtfulWeb\Util\Alert', 'display' ) ) {
-			\ThoughtfulWeb\Util\Alert::display( $wp_error );
-		} else {
-			$messages = $wp_error->get_error_messages();
-			$messages = implode( ' ', $messages );
-			wp_die( wp_kses_post( $messages ) );
-		}
+		register_activation_hook( self::$file, array( $this, 'activate_plugin' ) );
 
 	}
 
@@ -152,10 +135,10 @@ class Plugin_Activation {
 	public function deactivate_plugin( $wp_error ) {
 
 		// Deactivate the plugin.
-		deactivate_plugins( plugin_basename( $this->file ) );
+		deactivate_plugins( plugin_basename( self::$file ) );
 
 		// Alert the user to the issue.
-		$this->alert( $wp_error );
+		Error_Helper::display( $wp_error );
 
 	}
 
@@ -169,7 +152,7 @@ class Plugin_Activation {
 	 */
 	private function meets_activation_requirements() {
 
-		if ( ! $this->requirements ) {
+		if ( empty( $this->requirements ) ) {
 			return true;
 		}
 

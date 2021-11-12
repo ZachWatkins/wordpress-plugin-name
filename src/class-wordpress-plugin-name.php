@@ -48,14 +48,14 @@ class WordPress_Plugin_Name {
 			),
 		);
 		require_once WP_PLUGIN_INTRO_DIR_PATH . 'util/class-plugin-activation.php';
-		new WordPress_Plugin_Name\Plugin_Activation( $requirements );
+		new ThoughtfulWeb\Util\Plugin_Activation( $requirements );
 
 		// Load page template files.
 		$templates = array(
 			'path' => 'templates/example.php',
 		);
 		require_once WP_PLUGIN_INTRO_DIR_PATH . 'util/class-page-template.php';
-		new WordPress_Plugin_Name\Page_Template( $templates );
+		new ThoughtfulWeb\Util\Page_Template( $templates );
 
 	}
 }

@@ -7,11 +7,14 @@
  * @copyright  Zachary Watkins 2021
  * @author     Zachary Watkins <watkinza@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
- * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/src/class-page-template.php
+ * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/util/class-page-template.php
  * @since      0.1.0
  */
 
+declare(strict_types=1);
 namespace ThoughtfulWeb\Util;
+
+use ThoughtfulWeb\Util\Error_Helper as Error_Helper;
 
 /**
  * The class that registers page template file registration.
@@ -102,11 +105,12 @@ class Page_Template {
 		}
 
 		if ( ! defined( 'THOUGHTFULWEB_UTIL_PLUGIN_FILE' ) ) {
-			$this->alert( 'thoughtful_util_constant_undefined', 'The constant "THOUGHTFULWEB_UTIL_PLUGIN_FILE" is undefined.' );
+			$wp_error = new \WP_Error( 'thoughtful_util_constant_undefined', 'The constant "THOUGHTFULWEB_UTIL_PLUGIN_FILE" is undefined.' );
+			Error_Helper::display( $wp_error );
 		}
 
 		// Set up the true $this->basedir value.
-		$this->basedir = plugin_dir_path( THOUGHTFULWEB_UTIL_PLUGIN_FILE );
+		$this->basedir = plugin_dir_path( self::$file );
 
 		// Store the template data.
 		$this->template_meta = $this->sanitize_template_meta( $templates );
@@ -116,29 +120,6 @@ class Page_Template {
 
 		// Register templates.
 		$this->register_templates();
-
-	}
-
-	/**
-	 * Call an Alert class method if available.
-	 *
-	 * @since 0.1.0
-	 *
-	 * @param  string|int $code    Alert code.
-	 * @param  string     $message Alert message.
-	 * @param  mixed      $data    Optional. Alert data.
-	 * @return bool|void
-	 */
-	private function alert( $code = '', $message = '', $data = '' ) {
-
-		if ( class_exists( '\ThoughtfulWeb\Util\Alert' ) && method_exists( '\ThoughtfulWeb\Util\Alert', 'display' ) ) {
-			\ThoughtfulWeb\Util\Alert::display( $code, $message, $data );
-		} else {
-			$wp_error = new \WP_Error( $code, $message, $data );
-			$messages = $wp_error->get_error_messages();
-			$messages = implode( ' ', $messages );
-			wp_die( wp_kses_post( $messages ) );
-		}
 
 	}
 
@@ -159,7 +140,7 @@ class Page_Template {
 
 		if ( empty( $template_meta ) ) {
 
-			$this->alert(
+			$wp_error = new \WP_Error(
 				'plugin_templates_undefined',
 				__(
 					'The plugin called a page template class constructor without defining page template files.',
@@ -167,6 +148,7 @@ class Page_Template {
 				),
 				array( 'back_link' => true )
 			);
+			Error_Helper::display( $wp_error );
 
 		}
 
@@ -212,7 +194,7 @@ class Page_Template {
 
 		if ( false === is_array( $template_meta ) ) {
 
-			$this->alert(
+			$wp_error = new \WP_Error(
 				'plugin_template_undefined',
 				__(
 					'The template_meta variable must be an array.',
@@ -220,10 +202,11 @@ class Page_Template {
 				),
 				array( 'back_link' => true )
 			);
+			Error_Helper::display( $wp_error );
 
 		} elseif ( ! array_key_exists( 'path', $template_meta ) || empty( $template_meta['path'] ) ) {
 
-			$this->alert(
+			$wp_error = new \WP_Error(
 				'plugin_template_path_undefined',
 				__(
 					'The template_meta "path" member must be defined and must be a relative path. Example: templates/example.php',
@@ -231,6 +214,7 @@ class Page_Template {
 				),
 				array( 'back_link' => true )
 			);
+			Error_Helper::display( $wp_error );
 
 		} else {
 
@@ -239,7 +223,7 @@ class Page_Template {
 
 			if ( ! file_exists( $full_path ) ) {
 
-				$this->alert(
+				$wp_error = new \WP_Error(
 					'plugin_template_file_not_found',
 					sprintf(
 						/* translators: 1: Plugin defined page template file path 2: Full path */
@@ -252,6 +236,7 @@ class Page_Template {
 					),
 					array( 'back_link' => true )
 				);
+				Error_Helper::display( $wp_error );
 
 			} elseif ( 0 === strpos( $file, 'page-' ) ) {
 
@@ -259,7 +244,7 @@ class Page_Template {
 				 * Possible issue with page template files that start with "page-".
 				 * https://developer.wordpress.org/themes/template-files-section/page-template-files/#creating-custom-page-templates-for-global-use
 				 */
-				$this->alert(
+				$wp_error = new \WP_Error(
 					'plugin_template_filename',
 					sprintf(
 						/* translators: %s: Plugin defined page template file path */
@@ -271,6 +256,7 @@ class Page_Template {
 					),
 					array( 'back_link' => true )
 				);
+				Error_Helper::display( $wp_error );
 
 			} else {
 

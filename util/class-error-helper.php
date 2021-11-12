@@ -1,13 +1,13 @@
 <?php
 /**
- * The file that handles alerts for plugin activation issues.
+ * The file that extends WP_Error notification capabilities.
  *
  * @package    ThoughtfulWeb
  * @subpackage Utility
  * @copyright  Zachary Watkins 2021
  * @author     Zachary Watkins <watkinza@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
- * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/src/class-alert.php
+ * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/util/class-alert.php
  * @since      0.1.0
  */
 
@@ -19,7 +19,7 @@ namespace ThoughtfulWeb\Util;
  * @see   https://www.php.net/manual/en/language.oop5.basic.php
  * @since 0.1.0
  */
-class Alert {
+class Error_Helper {
 
 	/**
 	 * The class constructor.
