@@ -4,8 +4,8 @@
  *
  * Links to PHP core documentation are included but this file will not be easy to grasp for beginners.
  *
- * @package    ThoughtfulWeb
- * @subpackage Core
+ * @package    Thoughtful Web Library for WordPress
+ * @subpackage Utility
  * @copyright  Zachary Watkins 2021
  * @author     Zachary Watkins <watkinza@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
@@ -14,9 +14,9 @@
  */
 
 declare(strict_types=1);
-namespace ThoughtfulWeb\Util;
+namespace ThoughtfulWeb\Library;
 
-use ThoughtfulWeb\Util\Error_Helper as Error_Helper;
+use ThoughtfulWeb\Library\Error_Helper as Error_Helper;
 
 /**
  * The class that handles plugin activation and deactivation.
@@ -32,7 +32,7 @@ class Plugin_Activation {
 	 * @var string $file The root plugin file directory path. A Class variable cannot be defined using
 	 *                   functions or variables so it is incomplete until construction.
 	 */
-	private $file = THOUGHTFULWEB_UTIL_PLUGIN_FILE;
+	private static $file = THOUGHTFULWEB_UTIL_PLUGIN_FILE;
 
 	/**
 	 * Plugin requirements.
@@ -59,7 +59,7 @@ class Plugin_Activation {
 	 *     }
 	 * }
 	 */
-	private $requirements;
+	private $requirements = array();
 
 	/**
 	 * Plugin dependency queries.
@@ -84,19 +84,22 @@ class Plugin_Activation {
 	 * @see   https://developer.wordpress.org/reference/functions/register_activation_hook/
 	 * @since 0.1.0
 	 *
-	 * @param string|array $requirements File path or array of activation requirements. Default empty array.
+	 * @param string|array $requirements File path or array of activation requirements. Default empty string.
 	 *
 	 * @return void
 	 */
-	public function __construct( $requirements = array() ) {
+	public function __construct( $requirements = '' ) {
 
-		$this->requirements   = $requirements;
-		$this->plugin_headers = get_plugin_data( $this->file );
+		if ( ! empty( $requirements ) ) {
+			if ( is_string( $requirements ) ) {
+				$this->plugin_requirements = File_Helper::require( $requirements );
+			} else {
+				$this->requirements = $requirements;
+			}
+		}
+		$this->plugin_headers = get_plugin_data( self::$file );
 		if ( is_array( $requirements ) && array_key_exists( 'plugins', $requirements ) ) {
 			$this->plugin_queries = $requirements['plugins'];
-		} else {
-			// Handle the retrieval of the requirements file.
-			$this->plugin_requirements = File_Helper::require( $requirements );
 		}
 
 		// Register activation hook.

@@ -50,21 +50,21 @@ define( 'WP_PLUGIN_INTRO_DIR_FILE', __FILE__ );
 define( 'WP_PLUGIN_INTRO_DIR_PATH', __DIR__ . '/' );
 // Required by the Thoughtful Web Library.
 define( 'THOUGHTFULWEB_UTIL_PLUGIN_FILE', __FILE__ );
-define( 'THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS', __DIR__ . '/requirements.php' );
+define( 'THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS', __DIR__ . '/activation-requirements.php' );
 
 /**
  * The core plugin class is used to initialize the plugin.
  */
 require __DIR__ . '/vendor/autoload.php';
-require __DIR__ . '/src/class-wordpress-plugin-name.php';
-new WordPress_Plugin_Name();
 
 /**
  * Load activation-related hooks.
  */
-new \ThoughtfulWeb\Util\Plugin_Activation();
+new \ThoughtfulWeb\Library\Plugin_Activation();
 
 /**
  * Load page template files.
  */
-new \ThoughtfulWeb\Util\Page_Template();
+new \ThoughtfulWeb\Library\Page_Template();
+require __DIR__ . '/src/class-wordpress-plugin-name.php';
+new WordPress_Plugin_Name();

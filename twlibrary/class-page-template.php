@@ -2,7 +2,7 @@
 /**
  * The file that facilitates page template file registration.
  *
- * @package    ThoughtfulWeb
+ * @package    Thoughtful Web Library for WordPress
  * @subpackage Utility
  * @copyright  Zachary Watkins 2021
  * @author     Zachary Watkins <watkinza@gmail.com>
@@ -12,10 +12,10 @@
  */
 
 declare(strict_types=1);
-namespace ThoughtfulWeb\Util;
+namespace ThoughtfulWeb\Library;
 
-use ThoughtfulWeb\Util\Error_Helper as Error_Helper;
-use ThoughtfulWeb\Util\File_Helper as File_Helper;
+use ThoughtfulWeb\Library\Error_Helper as Error_Helper;
+use ThoughtfulWeb\Library\File_Helper as File_Helper;
 
 /**
  * The class that registers page template file registration.
@@ -31,7 +31,7 @@ class Page_Template {
 	 * @var string $file The root plugin file directory path. A Class variable cannot be defined using
 	 *                   functions or variables so it is incomplete until construction.
 	 */
-	private $file = THOUGHTFULWEB_UTIL_PLUGIN_FILE;
+	private static $file = THOUGHTFULWEB_UTIL_PLUGIN_FILE;
 
 	/**
 	 * Plugin base directory.
@@ -130,8 +130,17 @@ class Page_Template {
 	public function __construct( $requirements = array() ) {
 
 		if ( is_array( $requirements ) ) {
-			if ( array_key_exists( 'templates', $requirements ) && ! empty( $requirements['templates'] ) ) {
+			if (
+				array_key_exists( 'templates', $requirements )
+				&& ! empty( $requirements['templates'] )
+			) {
 				$this->requirements = $requirements;
+			} elseif (
+				defined( 'THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS' )
+				&& is_string( THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS )
+				&& ! empty( THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS )
+			) {
+				$this->requirements = File_Helper::require( THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS );
 			} else {
 				Error_Helper::display(
 					'plugin_requires_template',
@@ -151,7 +160,7 @@ class Page_Template {
 		}
 
 		// Set up the true $this->basedir value.
-		$this->basedir = plugin_dir_path( $this->file );
+		$this->basedir = plugin_dir_path( self::$file );
 
 		// Store template file paths and the plugin's base directory.
 		$this->template_headers = File_Helper::get_file_data(

@@ -2,7 +2,7 @@
 /**
  * WordPress centric file helper class.
  *
- * @package    ThoughtfulWeb
+ * @package    Thoughtful Web Library for WordPress
  * @subpackage Utility
  * @copyright  Zachary Watkins 2021
  * @author     Zachary Watkins <watkinza@gmail.com>
@@ -12,9 +12,9 @@
  */
 
 declare(strict_types=1);
-namespace ThoughtfulWeb\Util;
+namespace ThoughtfulWeb\Library;
 
-use ThoughtfulWeb\Util\Error_Helper as Error_Helper;
+use ThoughtfulWeb\Library\Error_Helper as Error_Helper;
 
 /**
  * Undocumented class
@@ -27,14 +27,14 @@ class File_Helper {
 	 * @var string $file The root plugin file directory path. A Class variable cannot be defined using
 	 *                   functions or variables so it is incomplete until construction.
 	 */
-	private $file = THOUGHTFULWEB_UTIL_PLUGIN_FILE;
+	private static $file = THOUGHTFULWEB_UTIL_PLUGIN_FILE;
 
 	/**
 	 * Default Headers.
 	 *
 	 * @var array $default_headers An associative array of page template headers.
 	 */
-	private $default_headers = array(
+	private static $default_headers = array(
 		'Description' => 'Description not found.',
 	);
 
@@ -53,14 +53,14 @@ class File_Helper {
 	 *
 	 * @return array
 	 */
-	private static function get_file_data( $files = array(), $default_headers = array() ) {
+	public static function get_file_data( $files = array(), $default_headers = array() ) {
 
 		// Set up the true $this->basedir value.
-		$basedir = plugin_dir_path( $this->file );
+		$basedir = plugin_dir_path( self::$file );
 
 		$results = array();
 
-		$default_headers = array_merge( $this->default_headers, $default_headers );
+		$default_headers = array_merge( self::$default_headers, $default_headers );
 
 		foreach ( $files as $file ) {
 			$file      = basename( $file );
@@ -71,6 +71,30 @@ class File_Helper {
 		}
 
 		return $results;
+
+	}
+
+	/**
+	 * Load file.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string $file The file to return.
+	 *
+	 * @return mixed
+	 */
+	public static function require( $file = '' ) {
+
+		if (
+			empty( $file )
+			|| ! file_exists( $file )
+		) {
+			Error_Helper::display( 'thoughtful_file_not_found', 'The plugin attempted to retrieve a file that was not found: ' . $file );
+		}
+
+		$result = include $file;
+
+		return $result;
 
 	}
 }

@@ -2,7 +2,7 @@
 /**
  * The file that extends WP_Error notification capabilities.
  *
- * @package    ThoughtfulWeb
+ * @package    Thoughtful Web Library for WordPress
  * @subpackage Utility
  * @copyright  Zachary Watkins 2021
  * @author     Zachary Watkins <watkinza@gmail.com>
@@ -12,7 +12,7 @@
  */
 
 declare(strict_types=1);
-namespace ThoughtfulWeb\Util;
+namespace ThoughtfulWeb\Library;
 
 /**
  * The class that registers page template file registration.
@@ -50,7 +50,7 @@ class Error_Helper {
 			return false;
 		}
 
-		wp_die( $this->escape_wp_error( $alert ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $alert is escaped before being passed in.
+		wp_die( self::escape_wp_error( $alert ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $alert is escaped before being passed in.
 
 	}
 
@@ -69,7 +69,7 @@ class Error_Helper {
 	 *
 	 * @return WP_Error The escaped error.
 	 */
-	private function escape_wp_error( $error ) {
+	private static function escape_wp_error( $error ) {
 
 		$code = $error->get_error_code();
 
