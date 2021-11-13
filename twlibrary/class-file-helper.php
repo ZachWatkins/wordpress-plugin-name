@@ -39,6 +39,13 @@ class File_Helper {
 	);
 
 	/**
+	 * Plugin data.
+	 *
+	 * @var array $plugin_data The plugin data.
+	 */
+	private static $plugin_data;
+
+	/**
 	 * Get page template file headers as associative arrays.
 	 *
 	 * @see    https://developer.wordpress.org/reference/functions/get_file_data/
@@ -72,6 +79,28 @@ class File_Helper {
 
 		return $results;
 
+	}
+
+	/**
+	 * Get plugin data.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return array
+	 */
+	public static function get_plugin_data() {
+
+		$plugin_data = array();
+
+		if ( is_admin() ) {
+			if( ! function_exists('get_plugin_data') ){
+				require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+			}
+			$plugin_data       = get_plugin_data( THOUGHTFULWEB_UTIL_PLUGIN_FILE );
+			self::$plugin_data = $plugin_data;
+		}
+
+		return $plugin_data;
 	}
 
 	/**

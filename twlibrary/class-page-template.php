@@ -127,7 +127,7 @@ class Page_Template {
 	 * }
 	 * @return void
 	 */
-	public function __construct( $requirements = array() ) {
+	public function __construct( $requirements = '' ) {
 
 		if ( is_array( $requirements ) ) {
 			if (

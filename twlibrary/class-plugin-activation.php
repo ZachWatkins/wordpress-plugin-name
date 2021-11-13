@@ -12,11 +12,11 @@
  * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/util/class-activation.php
  * @since      0.1.0
  */
-
 declare(strict_types=1);
 namespace ThoughtfulWeb\Library;
 
 use ThoughtfulWeb\Library\Error_Helper as Error_Helper;
+use ThoughtfulWeb\Library\File_Helper as File_Helper;
 
 /**
  * The class that handles plugin activation and deactivation.
@@ -90,14 +90,24 @@ class Plugin_Activation {
 	 */
 	public function __construct( $requirements = '' ) {
 
-		if ( ! empty( $requirements ) ) {
-			if ( is_string( $requirements ) ) {
-				$this->plugin_requirements = File_Helper::require( $requirements );
-			} else {
-				$this->requirements = $requirements;
-			}
+		if (
+			empty( $requirements )
+			&& defined( 'THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS' )
+			&& is_string( THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS )
+			&& ! empty( THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS )
+		) {
+			$requirements = THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS;
 		}
-		$this->plugin_headers = get_plugin_data( self::$file );
+
+		if ( empty( $requirements ) ) {
+			return;
+		} elseif ( is_string( $requirements ) ) {
+			$this->requirements = File_Helper::require( $requirements );
+		} else {
+			$this->requirements = $requirements;
+		}
+
+		$this->plugin_headers = File_Helper::get_plugin_data();
 		if ( is_array( $requirements ) && array_key_exists( 'plugins', $requirements ) ) {
 			$this->plugin_queries = $requirements['plugins'];
 		}
