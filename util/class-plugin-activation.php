@@ -29,15 +29,35 @@ class Plugin_Activation {
 	/**
 	 * Plugin activation file.
 	 *
-	 * @var string $file The root plugin file directory path. Cannot be defined using functions or
-	 *                   variables, so it is incomplete until construction.
+	 * @var string $file The root plugin file directory path. A Class variable cannot be defined using
+	 *                   functions or variables so it is incomplete until construction.
 	 */
-	private static $file = THOUGHTFULWEB_UTIL_PLUGIN_FILE;
+	private $file = THOUGHTFULWEB_UTIL_PLUGIN_FILE;
 
 	/**
 	 * Plugin requirements.
 	 *
-	 * @var $requirements
+	 * @var array $requirements {
+	 *     File path or array of activation requirements. Default empty array.
+	 *
+	 *     @type array $plugins {
+	 *         Optional. Array of plugin clauses. Inspired by the WP_Meta_Query class constructor parameter.
+	 *
+	 *         @type string $relation Optional. The keyword used to compare the activation status
+	 *                                of the plugins. Accepts 'AND', or 'OR'. Default 'AND'.
+	 *         @type array  ...$0 {
+	 *             An array of a plugin's data.
+	 *
+	 *             @type string $name Required. Display name of the plugin.
+	 *             @type string $path Required. Path to the plugin file relative to the plugins directory.
+	 *         }
+	 *     }
+	 *     @key array $templates {
+	 *         Page template data not able to be stored in the file header.
+	 *
+	 *         @key string $path The relative file path to the page template.
+	 *     }
+	 * }
 	 */
 	private $requirements;
 
@@ -64,35 +84,19 @@ class Plugin_Activation {
 	 * @see   https://developer.wordpress.org/reference/functions/register_activation_hook/
 	 * @since 0.1.0
 	 *
-	 * @param null|array $requirements {
-	 *     Optional. Bool or array of activation requirements. Default false.
+	 * @param string|array $requirements File path or array of activation requirements. Default empty array.
 	 *
-	 *     @type array $plugins {
-	 *         Optional. Array of plugin clauses. Inspired by the WP_Meta_Query class constructor parameter.
-	 *
-	 *         @type string $relation Optional. The keyword used to compare the activation status
-	 *                                of the plugins. Accepts 'AND', or 'OR'. Default 'AND'.
-	 *         @type array  ...$0 {
-	 *             Optional. An array of a plugin's data.
-	 *
-	 *             @type string $name Required. Display name of the plugin.
-	 *             @type string $path Required. Path to the plugin file relative to the plugins directory.
-	 *         }
-	 *     }
-	 * }
 	 * @return void
 	 */
-	public function __construct( $requirements = null ) {
+	public function __construct( $requirements = array() ) {
 
-		// Ensure the Core WordPress plugin.php file is available.
-		if ( ! function_exists( 'get_plugin_data' ) ) {
-			require_once ABSPATH . 'wp-admin/includes/plugin.php';
-		}
-
-		$this->plugin_headers = get_plugin_data( self::$file );
 		$this->requirements   = $requirements;
+		$this->plugin_headers = get_plugin_data( $this->file );
 		if ( is_array( $requirements ) && array_key_exists( 'plugins', $requirements ) ) {
 			$this->plugin_queries = $requirements['plugins'];
+		} else {
+			// Handle the retrieval of the requirements file.
+			$this->plugin_requirements = File_Helper::require( $requirements );
 		}
 
 		// Register activation hook.
@@ -205,7 +209,7 @@ class Plugin_Activation {
 			unset( $plugin_query['relation'] );
 		}
 
-		// Retrieve plugin statuses.
+		// Retrieve plugin active status.
 		$all_active = true;
 		foreach ( $plugin_query as $key => $plugin ) {
 			$active = is_plugin_active( $plugin['file'] );
@@ -259,17 +263,22 @@ class Plugin_Activation {
 			$inactive_plugins_phrase .= strtolower( ", $relation " ) . $plugin_last;
 		}
 
-		$result = sprintf(
-			/* translators: %s: Required plugin names. */
-			_n(
-				' It needs the %s plugin to be installed and activated first.',
-				' It needs the %s plugins to be installed and activated first.',
-				$plural,
-				'wordpress-plugin-name'
-			),
-			$inactive_plugins_phrase
+		$error = new \WP_Error(
+			'thoughtful_util_plugin_activation_error',
+			sprintf(
+				/* translators: %s: Required plugin names. */
+				_n(
+					' It needs the %s plugin to be installed and activated first.',
+					' It needs the %s plugins to be installed and activated first.',
+					$plural,
+					'thoughtful_web'
+				),
+				$inactive_plugins_phrase
+			)
 		);
 
-		return new \WP_Error( 'thoughtful_util_plugin_activation_error', $result );
+		Error_Helper::display( $wp_error );
+
+		return false;
 	}
 }

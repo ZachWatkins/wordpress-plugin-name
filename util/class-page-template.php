@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace ThoughtfulWeb\Util;
 
 use ThoughtfulWeb\Util\Error_Helper as Error_Helper;
+use ThoughtfulWeb\Util\File_Helper as File_Helper;
 
 /**
  * The class that registers page template file registration.
@@ -25,11 +26,19 @@ use ThoughtfulWeb\Util\Error_Helper as Error_Helper;
 class Page_Template {
 
 	/**
-	 * Base directory for the plugin.
+	 * Plugin activation file.
 	 *
-	 * @var string $basedir The directory of the root plugin file.
+	 * @var string $file The root plugin file directory path. A Class variable cannot be defined using
+	 *                   functions or variables so it is incomplete until construction.
 	 */
-	private $basedir = '';
+	private $file = THOUGHTFULWEB_UTIL_PLUGIN_FILE;
+
+	/**
+	 * Plugin base directory.
+	 *
+	 * @var string $basedir The plugin base file directory.
+	 */
+	private $basedir;
 
 	/**
 	 * Reserved names.
@@ -88,35 +97,64 @@ class Page_Template {
 	private $template_paths;
 
 	/**
+	 * Requirements file contents.
+	 *
+	 * @var array $requirements The requirements file's contents.
+	 */
+	private $requirements;
+
+	/**
 	 * Construct the class.
 	 *
 	 * @since  0.1.0
-	 * @param  array $templates {
-	 *     Page template data not able to be stored in the file header.
+	 * @param  array|string $requirements {
+	 *     File path or array of activation requirements. Default empty array.
 	 *
-	 *     @key string $path The relative file path to the page template.
+	 *     @type array $plugins {
+	 *         Optional. Array of plugin clauses. Inspired by the WP_Meta_Query class constructor parameter.
+	 *
+	 *         @type string $relation Optional. The keyword used to compare the activation status
+	 *                                of the plugins. Accepts 'AND', or 'OR'. Default 'AND'.
+	 *         @type array  ...$0 {
+	 *             An array of a plugin's data.
+	 *
+	 *             @type string $name Required. Display name of the plugin.
+	 *             @type string $path Required. Path to the plugin file relative to the plugins directory.
+	 *         }
+	 *     }
+	 *     @key array $templates {
+	 *         Page template data not able to be stored in the file header.
+	 *
+	 *         @key string $path The relative file path to the page template.
+	 *     }
 	 * }
 	 * @return void
 	 */
-	public function __construct( $templates = array() ) {
+	public function __construct( $requirements = array() ) {
 
-		if ( empty( $templates ) ) {
+		if (
+			is_array( $requirements )
+			&& array_key_exists( 'templates', $requirements )
+			&& ! empty( $requirements['templates'] )
+		) {
+			// Array of requirements.
+			$this->requirements = $requirements;
+		} elseif ( is_string( $requirements ) && $requirements ) {
+			// File path to array of requirements.
+			$this->requirements = File_Helper::require( $requirements );
+		} else {
+			// Invalid parameter.
 			return;
 		}
 
-		if ( ! defined( 'THOUGHTFULWEB_UTIL_PLUGIN_FILE' ) ) {
-			$wp_error = new \WP_Error( 'thoughtful_util_constant_undefined', 'The constant "THOUGHTFULWEB_UTIL_PLUGIN_FILE" is undefined.' );
-			Error_Helper::display( $wp_error );
-		}
-
 		// Set up the true $this->basedir value.
-		$this->basedir = plugin_dir_path( self::$file );
-
-		// Store the template data.
-		$this->template_meta = $this->sanitize_template_meta( $templates );
+		$this->basedir = plugin_dir_path( $this->file );
 
 		// Store template file paths and the plugin's base directory.
-		$this->set_template_headers();
+		$this->get_template_headers();
+
+		// Store the template data.
+		$this->sanitize_required_template_meta();
 
 		// Register templates.
 		$this->register_templates();
@@ -127,24 +165,22 @@ class Page_Template {
 	 * Sanitize the template_meta variable.
 	 *
 	 * @since  0.1.0
-	 * @param  array $template_meta {
-	 *     Array of page template data definitions not able to be stored in the file header.
 	 *
-	 *     @key string $path The relative file path of the page template.
-	 * }
-	 * @return array
+	 * @return void
 	 */
-	public function sanitize_template_meta( $template_meta = array() ) {
+	public function sanitize_required_template_meta() {
+
+		$template_meta = $this->requirements['templates'];
 
 		$result = true;
 
 		if ( empty( $template_meta ) ) {
 
 			$wp_error = new \WP_Error(
-				'plugin_templates_undefined',
+				'plugin_requires_template',
 				__(
 					'The plugin called a page template class constructor without defining page template files.',
-					'wordpress-plugin-name'
+					'thoughtful_web'
 				),
 				array( 'back_link' => true )
 			);
@@ -169,7 +205,7 @@ class Page_Template {
 			}
 		}
 
-		return $template_meta;
+		$this->requirements['templates'] = $template_meta;
 
 	}
 
@@ -195,10 +231,10 @@ class Page_Template {
 		if ( false === is_array( $template_meta ) ) {
 
 			$wp_error = new \WP_Error(
-				'plugin_template_undefined',
+				'plugin_template_meta_undefined',
 				__(
 					'The template_meta variable must be an array.',
-					'wordpress-plugin-name'
+					'thoughtful_web'
 				),
 				array( 'back_link' => true )
 			);
@@ -210,7 +246,7 @@ class Page_Template {
 				'plugin_template_path_undefined',
 				__(
 					'The template_meta "path" member must be defined and must be a relative path. Example: templates/example.php',
-					'wordpress-plugin-name'
+					'thoughtful_web'
 				),
 				array( 'back_link' => true )
 			);
@@ -229,7 +265,7 @@ class Page_Template {
 						/* translators: 1: Plugin defined page template file path 2: Full path */
 						__(
 							'The template file %1$s does not exist at the path %2$s.',
-							'wordpress-plugin-name'
+							'thoughtful_web'
 						),
 						$template_meta['path'],
 						$full_path
@@ -250,7 +286,7 @@ class Page_Template {
 						/* translators: %s: Plugin defined page template file path */
 						__(
 							'Hi, Zach here. I am unsure if this is the case for hook-based page template registration but there may be an issue with your page template name. The template file name "%s" cannot start with "page-" as a prefix, as WordPress may interpret the file as a specialized template meant to apply to only one page on your site. Source: https://developer.wordpress.org/themes/template-files-section/page-template-files/#creating-custom-page-templates-for-global-use',
-							'wordpress-plugin-name'
+							'thoughtful_web'
 						),
 						$template_meta['path']
 					),
@@ -278,7 +314,7 @@ class Page_Template {
 	 * @since  0.1.0
 	 * @return void
 	 */
-	private function set_template_headers() {
+	private function get_template_headers() {
 
 		foreach ( $this->template_meta as $template_meta ) {
 			$file      = basename( $template_meta['path'] );
@@ -293,9 +329,11 @@ class Page_Template {
 	/**
 	 * Set template_paths variable.
 	 *
+	 * @since 0.1.0
+	 *
 	 * @return void
 	 */
-	private function set_template_paths() {
+	private function get_template_paths() {
 
 		$template_paths   = array();
 		$template_headers = $this->template_headers;
@@ -333,7 +371,7 @@ class Page_Template {
 	private function register_templates() {
 
 		// Store template file paths The WordPress Way for use in Core filters.
-		$this->set_template_paths();
+		$this->get_template_paths();
 
 		if ( version_compare( floatval( $GLOBALS['wp_version'] ), '4.7', '<' ) ) {
 			add_filter( 'page_attributes_dropdown_pages_args', array( $this, 'add_to_cache' ) );
