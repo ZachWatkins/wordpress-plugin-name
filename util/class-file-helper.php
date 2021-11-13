@@ -16,7 +16,27 @@ namespace ThoughtfulWeb\Util;
 
 use ThoughtfulWeb\Util\Error_Helper as Error_Helper;
 
+/**
+ * Undocumented class
+ */
 class File_Helper {
+
+	/**
+	 * Plugin activation file.
+	 *
+	 * @var string $file The root plugin file directory path. A Class variable cannot be defined using
+	 *                   functions or variables so it is incomplete until construction.
+	 */
+	private $file = THOUGHTFULWEB_UTIL_PLUGIN_FILE;
+
+	/**
+	 * Default Headers.
+	 *
+	 * @var array $default_headers An associative array of page template headers.
+	 */
+	private $default_headers = array(
+		'Description' => 'Description not found.',
+	);
 
 	/**
 	 * Get page template file headers as associative arrays.
@@ -24,44 +44,33 @@ class File_Helper {
 	 * @see    https://developer.wordpress.org/reference/functions/get_file_data/
 	 * @see    https://www.php.net/manual/en/function.array-merge.php
 	 * @see    https://www.php.net/manual/en/function.is-array.php
+	 *
 	 * @since  0.1.0
-	 * @return void
+	 *
+	 * @param array $files The file path, relative to the page template without a leading slash.
+	 *
+	 * @param array $default_headers An associative array of page template headers.
+	 *
+	 * @return array
 	 */
-	private static function set_template_headers() {
+	private static function get_file_data( $files = array(), $default_headers = array() ) {
 
-	foreach ( $this->template_meta as $template_meta ) {
-		$file      = basename( $template_meta['path'] );
-		$file_data = get_file_data( $this->basedir . $template_meta['path'], $this->default_headers );
-		if ( is_array( $file_data ) ) {
-			$this->template_headers[ $file ] = $file_data;
+		// Set up the true $this->basedir value.
+		$basedir = plugin_dir_path( $this->file );
+
+		$results = array();
+
+		$default_headers = array_merge( $this->default_headers, $default_headers );
+
+		foreach ( $files as $file ) {
+			$file      = basename( $file );
+			$file_data = get_file_data( $basedir . $file, $default_headers );
+			if ( is_array( $file_data ) ) {
+				$results[ $file ] = $file_data;
+			}
 		}
-	}
+
+		return $results;
 
 	}
-
-	/**
-	* Set template_paths variable.
-	*
-	* @since 0.1.0
-	*
-	* @return void
-	*/
-	private function set_template_paths() {
-
-	$template_paths   = array();
-	$template_headers = $this->template_headers;
-
-	foreach ( $this->template_meta as $key => $template ) {
-
-		$file = basename( $template['path'] );
-		$name = $template_headers[ $file ]['TemplateName'];
-
-		// Define the structure The WordPress Way.
-		$template_paths[ $file ] = $name;
-
-	}
-
-	$this->template_paths = $template_paths;
-
-	}
-	}
+}

@@ -77,17 +77,6 @@ class Page_Template {
 	private $template_headers = array();
 
 	/**
-	 * Template file headers and other data.
-	 *
-	 * @var array $template_meta {
-	 *     The page template headers and other data.
-	 *
-	 *     @key string $path The relative file page to the page template.
-	 * }
-	 */
-	private $template_meta = array();
-
-	/**
 	 * Template file paths for hooks.
 	 *
 	 * @var array $template_paths {
@@ -106,7 +95,15 @@ class Page_Template {
 	/**
 	 * Construct the class.
 	 *
+	 * @see https://www.php.net/manual/en/function.is-array.php
+	 * @see https://www.php.net/manual/en/function.array-key-exists.php
+	 * @see https://www.php.net/manual/en/function.empty.php
+	 * @see https://developer.wordpress.org/reference/classes/wp_error/
+	 * @see https://www.php.net/manual/en/function.is-string.php
+	 * @see https://developer.wordpress.org/reference/functions/plugin_dir_path/
+	 *
 	 * @since  0.1.0
+	 *
 	 * @param  array|string $requirements {
 	 *     File path or array of activation requirements. Default empty array.
 	 *
@@ -132,13 +129,19 @@ class Page_Template {
 	 */
 	public function __construct( $requirements = array() ) {
 
-		if (
-			is_array( $requirements )
-			&& array_key_exists( 'templates', $requirements )
-			&& ! empty( $requirements['templates'] )
-		) {
-			// Array of requirements.
-			$this->requirements = $requirements;
+		if ( is_array( $requirements ) ) {
+			if ( array_key_exists( 'templates', $requirements ) && ! empty( $requirements['templates'] ) ) {
+				$this->requirements = $requirements;
+			} else {
+				Error_Helper::display(
+					'plugin_requires_template',
+					__(
+						'The plugin requires one or more templates to activate but did not specify file paths to the templates.',
+						'thoughtful_web'
+					),
+					array( 'back_link' => true )
+				);
+			}
 		} elseif ( is_string( $requirements ) && $requirements ) {
 			// File path to array of requirements.
 			$this->requirements = File_Helper::require( $requirements );
@@ -151,7 +154,10 @@ class Page_Template {
 		$this->basedir = plugin_dir_path( $this->file );
 
 		// Store template file paths and the plugin's base directory.
-		$this->get_template_headers();
+		$this->template_headers = File_Helper::get_file_data(
+			$this->requirements['templates'],
+			$this->default_headers
+		);
 
 		// Store the template data.
 		$this->sanitize_required_template_meta();
@@ -164,6 +170,13 @@ class Page_Template {
 	/**
 	 * Sanitize the template_meta variable.
 	 *
+	 * @see    https://www.php.net/manual/en/function.array-keys.php
+	 * @see    https://www.php.net/manual/en/function.range.php
+	 * @see    https://www.php.net/manual/en/function.count.php
+	 * @see    https://www.php.net/manual/en/function.array-values.php
+	 * @see    https://www.php.net/manual/en/function.is-array.php
+	 * @see    https://www.php.net/manual/en/control-structures.foreach.php
+	 *
 	 * @since  0.1.0
 	 *
 	 * @return void
@@ -173,20 +186,6 @@ class Page_Template {
 		$template_meta = $this->requirements['templates'];
 
 		$result = true;
-
-		if ( empty( $template_meta ) ) {
-
-			$wp_error = new \WP_Error(
-				'plugin_requires_template',
-				__(
-					'The plugin called a page template class constructor without defining page template files.',
-					'thoughtful_web'
-				),
-				array( 'back_link' => true )
-			);
-			Error_Helper::display( $wp_error );
-
-		}
 
 		// Ensure template_meta is an array of arrays.
 		$is_numeric  = array_keys( $template_meta ) === range( 0, count( $template_meta ) - 1 );
@@ -230,7 +229,7 @@ class Page_Template {
 
 		if ( false === is_array( $template_meta ) ) {
 
-			$wp_error = new \WP_Error(
+			Error_Helper::display(
 				'plugin_template_meta_undefined',
 				__(
 					'The template_meta variable must be an array.',
@@ -238,11 +237,10 @@ class Page_Template {
 				),
 				array( 'back_link' => true )
 			);
-			Error_Helper::display( $wp_error );
 
 		} elseif ( ! array_key_exists( 'path', $template_meta ) || empty( $template_meta['path'] ) ) {
 
-			$wp_error = new \WP_Error(
+			Error_Helper::display(
 				'plugin_template_path_undefined',
 				__(
 					'The template_meta "path" member must be defined and must be a relative path. Example: templates/example.php',
@@ -250,7 +248,6 @@ class Page_Template {
 				),
 				array( 'back_link' => true )
 			);
-			Error_Helper::display( $wp_error );
 
 		} else {
 
@@ -259,7 +256,7 @@ class Page_Template {
 
 			if ( ! file_exists( $full_path ) ) {
 
-				$wp_error = new \WP_Error(
+				Error_Helper::display(
 					'plugin_template_file_not_found',
 					sprintf(
 						/* translators: 1: Plugin defined page template file path 2: Full path */
@@ -272,7 +269,6 @@ class Page_Template {
 					),
 					array( 'back_link' => true )
 				);
-				Error_Helper::display( $wp_error );
 
 			} elseif ( 0 === strpos( $file, 'page-' ) ) {
 
@@ -280,7 +276,7 @@ class Page_Template {
 				 * Possible issue with page template files that start with "page-".
 				 * https://developer.wordpress.org/themes/template-files-section/page-template-files/#creating-custom-page-templates-for-global-use
 				 */
-				$wp_error = new \WP_Error(
+				Error_Helper::display(
 					'plugin_template_filename',
 					sprintf(
 						/* translators: %s: Plugin defined page template file path */
@@ -292,7 +288,6 @@ class Page_Template {
 					),
 					array( 'back_link' => true )
 				);
-				Error_Helper::display( $wp_error );
 
 			} else {
 
@@ -306,28 +301,9 @@ class Page_Template {
 	}
 
 	/**
-	 * Get page template file headers as associative arrays.
-	 *
-	 * @see    https://developer.wordpress.org/reference/functions/get_file_data/
-	 * @see    https://www.php.net/manual/en/function.array-merge.php
-	 * @see    https://www.php.net/manual/en/function.is-array.php
-	 * @since  0.1.0
-	 * @return void
-	 */
-	private function get_template_headers() {
-
-		foreach ( $this->template_meta as $template_meta ) {
-			$file      = basename( $template_meta['path'] );
-			$file_data = get_file_data( $this->basedir . $template_meta['path'], $this->default_headers );
-			if ( is_array( $file_data ) ) {
-				$this->template_headers[ $file ] = $file_data;
-			}
-		}
-
-	}
-
-	/**
 	 * Set template_paths variable.
+	 *
+	 * @see https://www.php.net/manual/en/function.basename.php
 	 *
 	 * @since 0.1.0
 	 *
@@ -338,7 +314,7 @@ class Page_Template {
 		$template_paths   = array();
 		$template_headers = $this->template_headers;
 
-		foreach ( $this->template_meta as $key => $template ) {
+		foreach ( $this->requirements['templates'] as $key => $template ) {
 
 			$file = basename( $template['path'] );
 			$name = $template_headers[ $file ]['TemplateName'];

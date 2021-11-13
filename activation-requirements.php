@@ -32,13 +32,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  *             An array of a plugin's data.
  *
  *             @type string $name Required. Display name of the plugin.
- *             @type string $path Required. Path to the plugin file relative to the plugins directory.
+ *             @type string $path Required. Path to the plugin file relative to the plugins directory without a leading slash.
  *         }
  *     }
  *     @key array $templates {
  *         Page template data not able to be stored in the file header.
  *
- *         @key string $path The relative file path to the page template.
+ *         @key string $path The relative file path to the page template without a leading slash.
  *     }
  * }
  */

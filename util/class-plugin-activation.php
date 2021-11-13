@@ -263,7 +263,7 @@ class Plugin_Activation {
 			$inactive_plugins_phrase .= strtolower( ", $relation " ) . $plugin_last;
 		}
 
-		$error = new \WP_Error(
+		Error_Helper::display(
 			'thoughtful_util_plugin_activation_error',
 			sprintf(
 				/* translators: %s: Required plugin names. */
@@ -276,8 +276,6 @@ class Plugin_Activation {
 				$inactive_plugins_phrase
 			)
 		);
-
-		Error_Helper::display( $wp_error );
 
 		return false;
 	}
