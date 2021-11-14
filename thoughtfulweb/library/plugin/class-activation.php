@@ -4,8 +4,8 @@
  *
  * Links to PHP core documentation are included but this file will not be easy to grasp for beginners.
  *
- * @package    Thoughtful Web Library for WordPress
- * @subpackage Utility
+ * @package    ThoughtfulWeb\Library
+ * @subpackage Plugin
  * @copyright  Zachary Watkins 2021
  * @author     Zachary Watkins <watkinza@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
@@ -13,10 +13,10 @@
  * @since      0.1.0
  */
 declare(strict_types=1);
-namespace ThoughtfulWeb\Library;
+namespace ThoughtfulWeb\Library\Plugin;
 
-use ThoughtfulWeb\Library\Error_Helper as Error_Helper;
-use ThoughtfulWeb\Library\File_Helper as File_Helper;
+use ThoughtfulWeb\Library\Monitor\Error as TWLM_Error;
+use ThoughtfulWeb\Library\File\Include as TWLF_Include;
 
 /**
  * The class that handles plugin activation and deactivation.
@@ -24,7 +24,7 @@ use ThoughtfulWeb\Library\File_Helper as File_Helper;
  * @see   https://www.php.net/manual/en/language.oop5.basic.php
  * @since 0.1.0
  */
-class Plugin_Activation {
+class Activation {
 
 	/**
 	 * Plugin activation file.
@@ -59,7 +59,7 @@ class Plugin_Activation {
 	 *     }
 	 * }
 	 */
-	private $requirements = array();
+	private static $requirements = array();
 
 	/**
 	 * Plugin dependency queries.
@@ -102,12 +102,12 @@ class Plugin_Activation {
 		if ( empty( $requirements ) ) {
 			return;
 		} elseif ( is_string( $requirements ) ) {
-			$this->requirements = File_Helper::require( $requirements );
+			self::$requirements = new TWLF_Include( $requirements );
 		} else {
-			$this->requirements = $requirements;
+			self::$requirements = $requirements;
 		}
 
-		$this->plugin_headers = File_Helper::get_plugin_data();
+		self::get_plugin_data();
 		if ( is_array( $requirements ) && array_key_exists( 'plugins', $requirements ) ) {
 			$this->plugin_queries = $requirements['plugins'];
 		}
@@ -115,6 +115,26 @@ class Plugin_Activation {
 		// Register activation hook.
 		register_activation_hook( self::$file, array( $this, 'activate_plugin' ) );
 
+	}
+
+	/**
+	 * Get plugin data.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	public static function get_plugin_data() {
+
+		$plugin_data = array();
+
+		if ( is_admin() ) {
+			if ( ! function_exists( 'get_plugin_data' ) ) {
+				require_once ABSPATH . 'wp-admin/includes/plugin.php';
+			}
+			$plugin_data       = get_plugin_data( self::$file );
+			self::$plugin_data = $plugin_data;
+		}
 	}
 
 	/**
@@ -155,7 +175,7 @@ class Plugin_Activation {
 		deactivate_plugins( plugin_basename( self::$file ) );
 
 		// Alert the user to the issue.
-		Error_Helper::display( $wp_error );
+		TWL_Error::display( $wp_error );
 
 	}
 
@@ -169,12 +189,12 @@ class Plugin_Activation {
 	 */
 	private function meets_activation_requirements() {
 
-		if ( empty( $this->requirements ) ) {
+		if ( empty( $this::requirements ) ) {
 			return true;
 		}
 
 		// Verify if required plugins are installed.
-		$results = $this->validate_plugins();
+		$results = $this->validate_required_plugins();
 
 		return $results;
 
@@ -203,7 +223,7 @@ class Plugin_Activation {
 	 * @since  0.1.0
 	 * @return bool|string
 	 */
-	private function validate_plugins() {
+	private function validate_required_plugins() {
 
 		$plugin_query = $this->plugin_queries;
 		$results      = true;
@@ -277,7 +297,7 @@ class Plugin_Activation {
 		}
 
 		Error_Helper::display(
-			'thoughtful_util_plugin_activation_error',
+			'thoughtful_web_plugin_activation_error',
 			sprintf(
 				/* translators: %s: Required plugin names. */
 				_n(

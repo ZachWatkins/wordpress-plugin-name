@@ -1,47 +1,40 @@
 <?php
 /**
- * Activation requirements for the plugin.
- * These values are consumed by the ThoughtfulWeb class files.
+ * Plugin activation requirements.
  *
- * @package    WordPress_Plugin_Name
- * @subpackage Configuration
+ * @package    ThoughtfulWeb\Library
+ * @subpackage Activation_Requirements
+ * @see        ThoughtfulWeb\Library\Activation_Requirements::$requirements
  * @copyright  Zachary Watkins 2021
  * @author     Zachary Watkins <watkinza@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
- * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/src/class-wordpress-plugin-name.php
+ * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/activation-requirements.php
  * @since      0.1.0
  */
 
-// If this file is called directly, abort.
-if ( ! defined( 'ABSPATH' ) ) {
-	die( 'We\'re sorry, but you can not directly access this file.' );
+// If this file is called directly, or is included by a file other than those we expect, then abort.
+$allowed_scripts = array(
+	__DIR__ . '/thoughtfulweb/library/class-file-helper.php',
+);
+
+if (
+	isset( $_SERVER['SCRIPT_FILENAME'] )
+	&& (
+		! defined( 'ABSPATH' )
+		|| ! in_array( realpath( $_SERVER['SCRIPT_FILENAME'] ), $allowed_scripts, true )
+		( isset( $_SERVER['REQUEST_METHOD'] ) && 'GET' === $_SERVER['REQUEST_METHOD'] && realpath( __FILE__ ) === realpath( $_SERVER['SCRIPT_FILENAME'] ) )
+	)
+) {
+
+	header( 'HTTP/1.0 404 Not Found', true, 404 );
+
+	/* choose the appropriate page to redirect users */
+	header( 'location: /404.php' );
+
+	die();
+
 }
 
-/**
- * Activation requirements clauses.
- *
- * @var array {
- *     File path or array of activation requirements. Default empty array.
- *
- *     @type array $plugins {
- *         Optional. Array of plugin clauses. Inspired by the WP_Meta_Query class constructor parameter.
- *
- *         @type string $relation Optional. The keyword used to compare the activation status
- *                                of the plugins. Accepts 'AND', or 'OR'. Default 'AND'.
- *         @type array  ...$0 {
- *             An array of a plugin's data.
- *
- *             @type string $name Required. Display name of the plugin.
- *             @type string $path Required. Path to the plugin file relative to the plugins directory without a leading slash.
- *         }
- *     }
- *     @key array $templates {
- *         Page template data not able to be stored in the file header.
- *
- *         @key string $path The relative file path to the page template without a leading slash.
- *     }
- * }
- */
 return array(
 	'plugins'   => array(
 		'relation' => 'OR',

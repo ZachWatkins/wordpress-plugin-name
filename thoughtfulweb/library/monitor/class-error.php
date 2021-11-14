@@ -2,8 +2,8 @@
 /**
  * The file that extends WP_Error notification capabilities.
  *
- * @package    Thoughtful Web Library for WordPress
- * @subpackage Utility
+ * @package    ThoughtfulWeb\Library
+ * @subpackage Monitor
  * @copyright  Zachary Watkins 2021
  * @author     Zachary Watkins <watkinza@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
@@ -12,7 +12,7 @@
  */
 
 declare(strict_types=1);
-namespace ThoughtfulWeb\Library;
+namespace ThoughtfulWeb\Library\Monitor;
 
 /**
  * The class that registers page template file registration.
@@ -20,7 +20,7 @@ namespace ThoughtfulWeb\Library;
  * @see   https://www.php.net/manual/en/language.oop5.basic.php
  * @since 0.1.0
  */
-class Error_Helper {
+class Error {
 
 	/**
 	 * The class constructor.
