@@ -15,8 +15,8 @@
 declare(strict_types=1);
 namespace ThoughtfulWeb\Library\Plugin;
 
+use ThoughtfulWeb\Library\Plugin\Requirements as TWLP_Requirements;
 use ThoughtfulWeb\Library\Monitor\Error as TWLM_Error;
-use ThoughtfulWeb\Library\File\Include as TWLF_Include;
 
 /**
  * The class that handles plugin activation and deactivation.
@@ -32,7 +32,7 @@ class Activation {
 	 * @var string $file The root plugin file directory path. A Class variable cannot be defined using
 	 *                   functions or variables so it is incomplete until construction.
 	 */
-	private static $file = THOUGHTFULWEB_UTIL_PLUGIN_FILE;
+	private $file = THOUGHTFULWEB_UTIL_PLUGIN_FILE;
 
 	/**
 	 * Plugin requirements.
@@ -59,7 +59,7 @@ class Activation {
 	 *     }
 	 * }
 	 */
-	private static $requirements = array();
+	private $requirements = array();
 
 	/**
 	 * Plugin dependency queries.
@@ -67,13 +67,6 @@ class Activation {
 	 * @var bool|array $plugin_queries Plugin dependencies. Accepts false or array. Default false.
 	 */
 	private $plugin_queries = false;
-
-	/**
-	 * Failed activation message.
-	 *
-	 * @var bool|array $failed_message The plugin activation failure message. Accepts false or array. Default false.
-	 */
-	private $failure_message = false;
 
 	/**
 	 * Initialize the class
@@ -90,30 +83,15 @@ class Activation {
 	 */
 	public function __construct( $requirements = '' ) {
 
-		if (
-			empty( $requirements )
-			&& defined( 'THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS' )
-			&& is_string( THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS )
-			&& ! empty( THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS )
-		) {
-			$requirements = THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS;
-		}
+		$this->requirements = $requirements;
 
-		if ( empty( $requirements ) ) {
-			return;
-		} elseif ( is_string( $requirements ) ) {
-			self::$requirements = new TWLF_Include( $requirements );
-		} else {
-			self::$requirements = $requirements;
-		}
-
-		self::get_plugin_data();
+		$this->get_plugin_data();
 		if ( is_array( $requirements ) && array_key_exists( 'plugins', $requirements ) ) {
 			$this->plugin_queries = $requirements['plugins'];
 		}
 
 		// Register activation hook.
-		register_activation_hook( self::$file, array( $this, 'activate_plugin' ) );
+		register_activation_hook( $this->file, array( $this, 'activate_plugin' ) );
 
 	}
 
@@ -124,7 +102,7 @@ class Activation {
 	 *
 	 * @return void
 	 */
-	public static function get_plugin_data() {
+	public function get_plugin_data() {
 
 		$plugin_data = array();
 
@@ -132,8 +110,8 @@ class Activation {
 			if ( ! function_exists( 'get_plugin_data' ) ) {
 				require_once ABSPATH . 'wp-admin/includes/plugin.php';
 			}
-			$plugin_data       = get_plugin_data( self::$file );
-			self::$plugin_data = $plugin_data;
+			$plugin_data       = get_plugin_data( $this->file );
+			$this->plugin_data = $plugin_data;
 		}
 	}
 
@@ -145,14 +123,12 @@ class Activation {
 	 */
 	public function activate_plugin() {
 
-		// Returns true or error message string.
-		$result = $this->meets_activation_requirements();
+		// Returns true or a WP_Error.
+		$config_or_error = new TWLP_Requirements( $this->requirements );
 
 		// Handle result.
-		if ( true === $result ) {
-			return;
-		} elseif ( is_wp_error( $result ) ) {
-			$this->deactivate_plugin( $result );
+		if ( is_wp_error( $config_or_error ) ) {
+			$this->deactivate_plugin( $config_or_error );
 		}
 
 	}
@@ -172,144 +148,10 @@ class Activation {
 	public function deactivate_plugin( $wp_error ) {
 
 		// Deactivate the plugin.
-		deactivate_plugins( plugin_basename( self::$file ) );
+		deactivate_plugins( plugin_basename( $this->file ) );
 
 		// Alert the user to the issue.
-		TWL_Error::display( $wp_error );
+		TWLM_Error::display( $wp_error );
 
-	}
-
-	/**
-	 * Validate plugin activation requirements.
-	 *
-	 * Returns true or an array if requirements are not met.
-	 *
-	 * @since  0.1.0
-	 * @return bool|array
-	 */
-	private function meets_activation_requirements() {
-
-		if ( empty( $this::requirements ) ) {
-			return true;
-		}
-
-		// Verify if required plugins are installed.
-		$results = $this->validate_required_plugins();
-
-		return $results;
-
-	}
-
-	/**
-	 * Validate required plugins.
-	 *
-	 * @see    https://www.php.net/manual/en/function.is-array.php
-	 * @see    https://www.php.net/manual/en/function.isset.php
-	 * @see    https://www.php.net/manual/en/function.strtoupper.php
-	 * @see    https://www.php.net/manual/en/function.unset.php
-	 * @see    https://www.php.net/manual/en/control-structures.foreach.php
-	 * @see    https://www.php.net/manual/en/control-structures.break.php
-	 * @see    https://developer.wordpress.org/reference/functions/is_plugin_active/
-	 * @see    https://www.php.net/manual/en/function.array-key-exists.php
-	 * @see    https://www.php.net/manual/en/function.empty.php
-	 * @see    https://www.php.net/manual/en/function.in-array.php
-	 * @see    https://www.php.net/manual/en/function.array-keys.php
-	 * @see    https://www.php.net/manual/en/function.count.php
-	 * @see    https://www.php.net/manual/en/function.implode.php
-	 * @see    https://www.php.net/manual/en/function.array-pop.php
-	 * @see    https://www.php.net/manual/en/function.sprintf.php
-	 * @see    https://www.php.net/manual/en/function.strtolower.php
-	 * @see    https://developer.wordpress.org/reference/functions/_n/
-	 * @since  0.1.0
-	 * @return bool|string
-	 */
-	private function validate_required_plugins() {
-
-		$plugin_query = $this->plugin_queries;
-		$results      = true;
-
-		if ( ! is_array( $plugin_query ) ) {
-			return $results;
-		}
-
-		// Enforce a default value of 'AND' for $relation.
-		if ( isset( $plugin_query['relation'] ) && 'OR' === strtoupper( $plugin_query['relation'] ) ) {
-			$relation = 'OR';
-		} else {
-			$relation = 'AND';
-		}
-		if ( isset( $plugin_query['relation'] ) ) {
-			unset( $plugin_query['relation'] );
-		}
-
-		// Retrieve plugin active status.
-		$all_active = true;
-		foreach ( $plugin_query as $key => $plugin ) {
-			$active = is_plugin_active( $plugin['file'] );
-			// Store active status.
-			$plugin_query[ $key ]['active'] = $active;
-			// Monitor overall plugin active status.
-			if ( ! $active ) {
-				$all_active = false;
-			}
-		}
-		$this->plugin_queries = $plugin_query;
-
-		// Evaluate results so far.
-		if ( 'AND' === $relation && $all_active ) {
-			return $results;
-		}
-
-		// Determine which plugins to report failure for.
-		$inactive_plugins = array();
-		if ( 'AND' === $relation ) {
-			foreach ( $plugin_query as $plugin ) {
-				if ( ! $plugin['active'] ) {
-					$inactive_plugins[] = $plugin['name'];
-				}
-			}
-		} elseif ( 'OR' === $relation ) {
-			$found_active = false;
-			foreach ( $plugin_query as $plugin ) {
-				if ( $plugin['active'] ) {
-					$found_active = true;
-					break;
-				} else {
-					$inactive_plugins[] = $plugin['name'];
-				}
-			}
-		}
-
-		// Exit if we still have not found plugins to report an error for.
-		if ( empty( $inactive_plugins ) ) {
-			return $results;
-		}
-
-		// Assemble all inactive plugins as a phrase using the relation parameter.
-		$inactive_plugins_phrase = '';
-		$plural                  = 'OR' === $relation ? 1 : count( $inactive_plugins );
-		if ( 2 >= $plural ) {
-			$inactive_plugins_phrase = implode( strtolower( " $relation " ), $inactive_plugins );
-		} else {
-			$plugin_last              = array_pop( $inactive_plugins );
-			$inactive_plugins_phrase  = implode( ', ', $inactive_plugins );
-			$inactive_plugins_phrase .= strtolower( ", $relation " ) . $plugin_last;
-		}
-
-		Error_Helper::display(
-			'thoughtful_web_plugin_activation_error',
-			sprintf(
-				/* translators: %s: Required plugin names. */
-				_n(
-					' It needs the %s plugin to be installed and activated first.',
-					' It needs the %s plugins to be installed and activated first.',
-					$plural,
-					'thoughtful_web'
-				),
-				$inactive_plugins_phrase
-			)
-		);
-
-		return false;
 	}
 }

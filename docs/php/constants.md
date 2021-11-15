@@ -13,6 +13,9 @@ The full path and filename of the file with symlinks resolved. If used inside an
 `__DIR__`  
 The directory of the file. If used inside an include, the directory of the included file is returned. This is equivalent to `dirname(__FILE__)`. This directory name does not have a trailing slash unless it is the root directory. [[1]](#sources-cited)
 
+`DIRECTORY_SEPARATOR`  
+On Windows this is \, and on other systems this is /.
+
 `__FUNCTION__`  
 The function name, or {closure} for anonymous functions. [[1]](#sources-cited)
 

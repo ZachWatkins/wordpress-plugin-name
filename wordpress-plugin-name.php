@@ -50,7 +50,6 @@ define( 'WP_PLUGIN_INTRO_DIR_FILE', __FILE__ );
 define( 'WP_PLUGIN_INTRO_DIR_PATH', __DIR__ . '/' );
 // Required by the Thoughtful Web Library.
 define( 'THOUGHTFULWEB_UTIL_PLUGIN_FILE', __FILE__ );
-define( 'THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS', __DIR__ . '/activation-requirements.php' );
 
 /**
  * The core plugin class is used to initialize the plugin.
@@ -60,7 +59,7 @@ require __DIR__ . '/vendor/autoload.php';
 /**
  * Load activation-related hooks.
  */
-new \ThoughtfulWeb\Library\Plugin_Activation();
+new \ThoughtfulWeb\Library\Plugin\Activation();
 
 /**
  * Load page template files.

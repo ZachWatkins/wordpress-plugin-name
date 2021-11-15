@@ -22,7 +22,7 @@ use ThoughtfulWeb\Library\Monitor\Error as TWLM_Error;
  * @see   https://www.php.net/manual/en/language.oop5.basic.php
  * @since 0.1.0
  */
-class File {
+class Include {
 
 	/**
 	 * Default error arguments.
@@ -45,22 +45,70 @@ class File {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param string $file     The file to return.
-	 * @param array  $err_args Extra arguments related to error handling.
+	 * @param string $file           The file to return.
+	 * @param array  $authentication Authentication validation data.
+	 * @param array  $error_args       Optional. Extra arguments related to error handling. Default empty array.
 	 *
 	 * @return mixed
 	 */
-	public function __construct( $file = '', $err_args = array() ) {
+	public function __construct( $file = '', $authentication = array(), $error_args = array() ) {
 
-		$result = false;
+		if (
+			$this->validate( $conditions )
+			&& $this->authorize( $file, $conditions )
+		) {
 
-		if ( TWLM_Error::validate( 'file_path', $file ) ) {
-
-			$result = include $file;
+			include $file;
 
 		}
 
-		return $result;
+		return false;
+
+	}
+
+	/**
+	 * Authorize the file execution attempt.
+	 *
+	 * @param string $file The directory path to the file being included.
+	 * @param array  $conditions {
+	 *     The conditions to check from the file being included.
+	 *
+	 *     @key string      $including_file  Server script filename including the file.
+	 *     @key string[...] $allowed_scripts Directory path to files allowed to include the
+	 *                                       file. Must be OS-specific.
+	 *     @key string      $request_method  Server request method. Expects GET.
+	 *     @key bool        $abspath         If the ABSPATH constant is defined, indicating
+	 *                                       WordPress is including the file.
+	 * }
+	 *
+	 * @return bool
+	 */
+	public function authorize( $file, $conditions ) {
+
+		$authorized = false;
+
+		if ( $this->authorized ) {
+			return $authorized;
+		} else {
+			$this->error_404();
+		}
+	}
+
+	/**
+	 * Emit 404 error headers and end script execution.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	public function error_404() {
+
+		header( 'HTTP/1.0 404 Not Found', true, 404 );
+
+		/* choose the appropriate page to redirect users */
+		header( 'location: /404.php' );
+
+		die();
 
 	}
 }
