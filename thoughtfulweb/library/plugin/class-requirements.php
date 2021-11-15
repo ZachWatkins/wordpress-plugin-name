@@ -191,7 +191,7 @@ class Requirements {
 		$results      = true;
 
 		if ( ! is_array( $plugin_query ) ) {
-			return $requirements ) && ! empty( $requirements ) && ;
+			return $results;
 		}
 
 		// Enforce a default value of 'AND' for $relation.
