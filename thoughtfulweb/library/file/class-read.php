@@ -14,7 +14,7 @@
 declare(strict_types=1);
 namespace ThoughtfulWeb\Library\File;
 
-use ThoughtfulWeb\Library\Monitor\Error as TWLM_Error;
+use ThoughtfulWeb\Library\Monitor\Incident as TWLM_Error;
 
 /**
  * The File Include class.
@@ -22,7 +22,7 @@ use ThoughtfulWeb\Library\Monitor\Error as TWLM_Error;
  * @see   https://www.php.net/manual/en/language.oop5.basic.php
  * @since 0.1.0
  */
-class Include {
+class Read {
 
 	/**
 	 * Default error arguments.
@@ -45,20 +45,23 @@ class Include {
 	 *
 	 * @since 0.1.0
 	 *
-	 * @param string $file           The file to return.
-	 * @param array  $authentication Authentication validation data.
-	 * @param array  $error_args       Optional. Extra arguments related to error handling. Default empty array.
+	 * @param string $file        The file to return.
+	 * @param array  $credentials Access authentication credentials.
+	 * @param array  $error_args  Optional. Extra arguments related to error handling. Default empty array.
 	 *
 	 * @return mixed
 	 */
-	public function __construct( $file = '', $authentication = array(), $error_args = array() ) {
+	public function __construct( $file = '', $credentials = array(), $error_args = array() ) {
 
-		if (
-			$this->validate( $conditions )
-			&& $this->authorize( $file, $conditions )
-		) {
+		$authorized = $this->authorized( $file, $credentials );
+
+		if ( true === $authorized ) {
 
 			include $file;
+
+		} else {
+
+			new TWLM_Error( $this->err_args );
 
 		}
 
