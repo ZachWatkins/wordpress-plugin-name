@@ -17,7 +17,7 @@ declare(strict_types=1);
 namespace ThoughtfulWeb\Library\Plugin;
 
 use ThoughtfulWeb\Library\File\Include as TWLF_Include;
-use ThoughtfulWeb\Library\Monitor\Error as TWLM_Error;
+use ThoughtfulWeb\Library\Monitor\Incident as TWLM_Error;
 
 /**
  * The class that validates configuration requirements.

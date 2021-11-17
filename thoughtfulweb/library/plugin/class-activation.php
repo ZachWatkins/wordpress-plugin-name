@@ -16,7 +16,7 @@ declare(strict_types=1);
 namespace ThoughtfulWeb\Library\Plugin;
 
 use ThoughtfulWeb\Library\Plugin\Requirements as TWLP_Requirements;
-use ThoughtfulWeb\Library\Monitor\Error as TWLM_Error;
+use ThoughtfulWeb\Library\Monitor\Incident as TWLM_Error;
 
 /**
  * The class that handles plugin activation and deactivation.
@@ -119,11 +119,11 @@ class Activation {
 	 * Ensure plugin activation requirements are met and a graceful deactivation if not.
 	 *
 	 * @since  0.1.0
-	 * @return void
+	 *
+	 * @return true|TWLM_Error
 	 */
 	public function activate_plugin() {
 
-		// Returns true or a WP_Error.
 		$config_or_error = new TWLP_Requirements( $this->requirements );
 
 		// Handle result.
