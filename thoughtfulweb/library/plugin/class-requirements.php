@@ -16,7 +16,7 @@
 declare(strict_types=1);
 namespace ThoughtfulWeb\Library\Plugin;
 
-use ThoughtfulWeb\Library\File\Include as TWLF_Include;
+use ThoughtfulWeb\Library\File_Read as TWL_FileRead;
 use ThoughtfulWeb\Library\Monitor\Incident as TWLM_Error;
 
 /**
@@ -97,7 +97,7 @@ class Requirements {
 
 		// Check for config file.
 		if ( file_exists( $this->config_file ) ) {
-			$config_data = new TWLF_Include( $this->config_file );
+			$config_data = new TWL_FileRead( $this->config_file );
 			if ( is_array( $config_data ) ) {
 				// Override config file options with those defined in the plugin's source code.
 				$results = array_merge( $config_data, $results );
@@ -106,7 +106,7 @@ class Requirements {
 
 		// Import unique config file.
 		if ( is_string( $requirements ) && ! empty( $requirements ) && file_exists( $this->config_file ) ) {
-			$config_data = new TWLF_Include( $requirements );
+			$config_data = new TWL_FileRead( $requirements );
 			if ( is_array( $config_data ) ) {
 				// Override config file options with those defined in the plugin's source code.
 				$results = array_merge( $config_data, $results );
