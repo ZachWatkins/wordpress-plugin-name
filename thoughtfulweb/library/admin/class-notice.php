@@ -24,6 +24,19 @@ namespace ThoughtfulWeb\Library\Admin;
 class Notice {
 
 	/**
+	 * Default class constructor arguments.
+	 *
+	 * @var array $default_args The default argument values for the class constructor's "args" parameter.
+	 */
+	private $default_args = array(
+		'level'   => 'error',
+		'dismiss' => true,
+		'permit'  => array(
+			'cap' => 'read',
+		),
+	);
+
+	/**
 	 * The admin notice store.
 	 *
 	 * @see https://developer.wordpress.org/reference/hooks/admin_notices/
@@ -36,8 +49,17 @@ class Notice {
 	 *     @key array The notice slug. {
 	 *         The notice configuration parameters.
 	 *
-	 *         @key string $mode    The notice mode.
+	 *         @key string $slug    The slug used by core processes.
 	 *         @key string $message The notice message.
+	 *         @key array  $args    {
+	 *             Extra arguments for configuring the notice.
+	 *
+	 *             @key string   $level   The notice level. Accepts success, warning, or error.
+	 *                                    Default is error.
+	 *             @key bool     $dismiss If the notice can be dismissed.
+	 *             @key string[] $usercan Parameters to check against `current_user_can` before
+	 *                                    showing the notice. Must pass all checks.
+	 *         }
 	 *     }
 	 * }
 	 */
@@ -51,27 +73,59 @@ class Notice {
 	 * @since 0.1.0
 	 *
 	 * @param string $slug    The slug used by core processes.
-	 * @param string $mode    The notice mode. Accepts success, warning, and error.
 	 * @param string $message The notice message template string.
-	 * @param bool   $dismiss If the notice can be dismissed.
-	 * @param array  $permit  How to decide which user(s) to show the notice to.
+	 * @param array  $args    {
+	 *     Extra arguments for configuring the notice.
+	 *
+	 *     @key string   $level   The notice level. Accepts success, warning, or error. Default is
+	 *                            error.
+	 *     @key bool     $dismiss If the notice can be dismissed.
+	 *     @key string[] $usercan Parameters to check against `current_user_can` before showing the
+	 *                            notice. Must pass all checks.
+	 * }
 	 *
 	 * @return void
 	 */
-	public function __construct( $slug, $mode, $message, $dismiss = true, $permit = array( 'cap' => 'read' ) ) {
+	public function __construct( $slug, $message, $args = array() ) {
 
-		$first_notice = empty( $this->notices ) ? true : false;
-		$notice       = array(
-			'mode'    => $mode,
-			'message' => $message,
-			'permit'  => $permit,
-		);
+		$this->set( $slug, $message, $args );
 
-		$this->notices[ $slug ] = $notice;
+	}
 
-		if ( $first_notice ) {
+	/**
+	 * Register a new admin notice to the notices class property.
+	 * Must be instantiated before the 'admin_notices' hook.
+	 *
+	 * @see https://codex.wordpress.org/Plugin_API/Action_Reference
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string $slug    The slug used by core processes.
+	 * @param string $message The notice message template string.
+	 * @param array  $args    {
+	 *     Extra arguments for configuring the notice.
+	 *
+	 *     @key string   $level   The notice level. Accepts success, warning, or error. Default is
+	 *                            error.
+	 *     @key bool     $dismiss If the notice can be dismissed.
+	 *     @key string[] $usercan Parameters to check against `current_user_can` before showing the
+	 *                            notice. Must pass all checks.
+	 * }
+	 *
+	 * @return void
+	 */
+	public function set( $slug, $message, $args = array() ) {
+
+		// First time setting a notice for this instance of the class.
+		if ( empty( $this->notices ) ) {
 			$this->add_hooks();
 		}
+
+		$this->notices[ $slug ] = array(
+			'slug'    => $slug,
+			'message' => $message,
+			'args'    => $args,
+		);
 	}
 
 	/**
@@ -96,10 +150,8 @@ class Notice {
 	 */
 	public function display_notices() {
 
-		global $pagenow;
-
 		// Exit early if no notices found.
-		$notices = $this->notices;
+		$notices = apply_filters( 'twlib_admin_notices', $this->notices );
 		if ( empty( $notices ) ) {
 			return;
 		}
@@ -108,20 +160,26 @@ class Notice {
 
 		foreach ( $notices as $slug => $notice ) {
 			// Check user against permissions.
-			$permit_user = $this->can_view_notice( $notice['permit'] );
-			if ( false === $permit_user ) {
+			$user_can = $this->user_can_view( $notice['usercan'] );
+			if ( false === $user_can ) {
 				continue;
 			}
 
-			// Add the message to the output.
+			// Extract first word from notice level.
+			$notice_level = $notice['args']['level'];
+			$notice_level = esc_attr( $notice_level );
+			$notice_level = explode( ' ', $notice_level )[0];
+			// Render output.
 			$output .= sprintf(
-				'<div id="' . $slug . '" class="notice notice-' . esc_attr( $notice['mode'] ) . '"><p>',
+				'<div id="%s" class="notice notice-%s"><p>',
+				$slug,
+				$notice_level
 			);
-			/* translators: Translations must occur before this class is provided with the message. */
-			$output .= $notice['message'];
+			$output .= wp_kses_post( $notice['message'] );
 			$output .= '</p></div>';
 		}
 
+		/* translators: Translations must occur before passing the message to the class constructor or `add` method. */
 		echo wp_kses_post( $output );
 	}
 
@@ -132,18 +190,11 @@ class Notice {
 	 *
 	 * @return boolean
 	 */
-	public function can_view_notice( $permits ) {
+	public function user_can_view( $usercan ) {
 
-		foreach ( $permits as $type => $value ) {
-			switch( $type ) {
-				case 'cap':
-				case 'role':
-					if ( ! current_user_can( $value ) ) {
-						return false;
-					}
-					break;
-				default:
-					break;
+		foreach ( $usercan as $value ) {
+			if ( ! current_user_can( $value ) ) {
+				return false;
 			}
 		}
 
