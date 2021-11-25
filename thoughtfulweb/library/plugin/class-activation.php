@@ -12,11 +12,12 @@
  * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/util/class-activation.php
  * @since      0.1.0
  */
+
 declare(strict_types=1);
 namespace ThoughtfulWeb\Library\Plugin;
 
 use ThoughtfulWeb\Library\Plugin\Requirements as TWLP_Requirements;
-use ThoughtfulWeb\Library\Monitor\Incident as TWLM_Error;
+use ThoughtfulWeb\Library\Monitor\Event as TWL_Monitor_Event;
 
 /**
  * The class that handles plugin activation and deactivation.
@@ -63,13 +64,6 @@ class Activation {
 	private $requirements = array();
 
 	/**
-	 * Plugin dependency queries.
-	 *
-	 * @var bool|array $plugin_queries Plugin dependencies. Accepts false or array. Default false.
-	 */
-	private $plugin_queries = false;
-
-	/**
 	 * Initialize the class
 	 *
 	 * @todo Add support for an array of plugin clauses.
@@ -85,8 +79,8 @@ class Activation {
 	 */
 	public function __construct( $file, $requirements = '' ) {
 
-		$this->file = $file;
-		$this->requirements = $this->sanitize_requirements_param( $requirements );
+		$this->file         = $file;
+		$this->requirements = $this->get_requirements_array( $requirements );
 
 		$this->get_plugin_data();
 		if ( is_array( $requirements ) && array_key_exists( 'plugins', $requirements ) ) {
@@ -99,21 +93,22 @@ class Activation {
 	}
 
 	/**
-	 * Sanitize the requirements parameter.
+	 * Sanitize and return array of requirements, maybe from a file.
 	 *
 	 * @since 0.1.0
 	 *
 	 * @param string|array $requirements File path or array of activation requirements. Default empty string.
 	 *
-	 * @return string|array
+	 * @return array
 	 */
-	private function sanitize_requirements_param( $requirements ) {
+	private function get_requirements_array( $requirements ) {
+
 		if ( is_array( $requirements ) ) {
 			return $requirements;
-		} elseif ( ! is_string( $requirements ) ) {
-			return '';
-		} elseif ( 'activation-requirements.php' === $requirements && ) {
-			'activation-requirements.php'
+		} elseif ( is_string( $requirements ) && ! file_exists( $requirements ) ) {
+			return array();
+		} else {
+			return include $requirements;
 		}
 	}
 
@@ -142,7 +137,7 @@ class Activation {
 	 *
 	 * @since  0.1.0
 	 *
-	 * @return true|TWLM_Error
+	 * @return void
 	 */
 	public function activate_plugin() {
 
@@ -173,7 +168,7 @@ class Activation {
 		deactivate_plugins( plugin_basename( $this->file ) );
 
 		// Alert the user to the issue.
-		TWLM_Error::display( $wp_error );
+		TWL_Monitor_Event::display( $wp_error );
 
 	}
 }
