@@ -12,10 +12,10 @@
  */
 
 declare(strict_types=1);
-namespace ThoughtfulWeb\Library;
+namespace ThoughtfulWeb\Library\Theme;
 
 use ThoughtfulWeb\Library\Error_Helper as Error_Helper;
-use ThoughtfulWeb\Library\File_Helper as File_Helper;
+use ThoughtfulWeb\Library\File\Load as TWL_File_Load;
 
 /**
  * The class that registers page template file registration.
@@ -39,18 +39,6 @@ class Page_Template {
 	 * @var string $basedir The plugin base file directory.
 	 */
 	private $basedir;
-
-	/**
-	 * Reserved names.
-	 *
-	 * These page template names are reserved by WordPress themes.
-	 *
-	 * @var reserved_filems
-	 */
-	private $reserved_filenames = array(
-		'page.php',
-		'page-%s.php',
-	);
 
 	/**
 	 * Default page template headers.
@@ -129,18 +117,18 @@ class Page_Template {
 	 */
 	public function __construct( $requirements = '' ) {
 
-		if ( is_array( $requirements ) ) {
-			if (
-				array_key_exists( 'templates', $requirements )
-				&& ! empty( $requirements['templates'] )
-			) {
-				$this->requirements = $requirements;
-			} elseif (
-				defined( 'THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS' )
-				&& is_string( THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS )
-				&& ! empty( THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS )
-			) {
-				$this->requirements = File_Helper::require( THOUGHTFULWEB_UTIL_PLUGIN_REQUIREMENTS );
+		if (
+			is_array( $requirements )
+			&& array_key_exists( 'templates', $requirements )
+			&& ! empty( $requirements['templates'] )
+		) {
+			$this->requirements = $requirements;
+		} elseif (
+			is_string( $requirements )
+			&& file_exists( $requirements )
+		) {
+			$this->requirements = include $requirements;
+		}
 			} else {
 				Error_Helper::display(
 					'plugin_requires_template',
