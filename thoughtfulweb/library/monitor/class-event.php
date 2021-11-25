@@ -23,17 +23,11 @@ namespace ThoughtfulWeb\Library\Monitor;
 class Event {
 
 	/**
-	 * Default class constructor arguments.
+	 * Supported channels of communicating WP_Error events.
 	 *
-	 * @var array $default_args The default arguments used when handling the error.
+	 * @var array $channels The configurations of the event monitor. Accepts 'die', 'error_log', and 'email'.
 	 */
-	private $default_args = array(
-		'code'    => '',
-		'message' => '',
-		'data'    => array(),
-		'channel' => $channel,
-		'throws'  => $throws,
-	);
+	private $supported_channels = array( 'die', 'error_log', 'email' );
 
 	/**
 	 * The WP_Error object.
@@ -43,89 +37,254 @@ class Event {
 	private $wp_error;
 
 	/**
-	 * The Event monitor configurations.
+	 * The Event monitor channel for communicating this instance's events.
 	 *
-	 * @var array config The configurations of the event monitor.
+	 * @var array $channels The configurations of the event monitor.
 	 */
+	private $channels;
+
+	/**
+	 * Channel configuration options.
+	 *
+	 * @var array $channel_args {
+	 *     Channel configurations needed for some channels. Optional.
+	 *
+	 *     @key string $email_address  The email address to send the message to.
+	 *     @key string $email_template The email template string passed to `sprintf` before sending.
+	 *     @key string $error_log      The error log file destination.
+	 *     @key bool   $email_log      Log emails.
+	 * }
+	 */
+	private static $channel_args;
 
 	/**
 	 * The class constructor.
 	 *
 	 * @todo Implement $channel options for email, error log, webhook, WP Admin alert, etc.
 	 *
-	 * @param string|int $code      Error code.
-	 * @param string     $message   Error message.
-	 * @param mixed      $data      Optional. Error data. Default is empty array.
-	 * @param string[]   $channel   Optional. How the event is communicated. Default is 'die'.
-	 *                              Suggested implementation options in todo above.
-	 * @param int[]      $throws    Optional. The event code. Accepts an integer, array of integers,
-	 *                              or constants like E_ERROR that represent integers. Default E_USER_ERROR.
+	 * @param string|int $code         Error code.
+	 * @param string     $message      Error message.
+	 * @param mixed      $data         Optional. Error data. Default is empty array.
+	 * @param string[]   $channels     Optional. How the event is communicated. Default 'die'.
+	 *                                 See $supported_channels property for accepted values.
+	 *                                 Suggested implementation options in todo above.
+	 * @param null|array $channel_args {
+	 *     Channel configurations needed for some channels. Optional.
+	 *
+	 *     @key string $email_address  The email address to send the message to.
+	 *     @key string $email_template The email template string passed to `sprintf` before sending.
+	 *     @key string $error_log      The error log file destination.
+	 *     @key string $email_log      The email log file destination.
+	 * }
 	 */
-	public function __construct( $code = '', $message = '', $data = '', $channel = 'halt', $throws = E_USER_ERROR ) {
+	public function __construct( $code, $message, $data, $channels = 'die', $channel_args = null ) {
 
-		// Declare unique values as an array.
-		$error_args
-		 = array(
-			'code'    => $code,
-			'message' => $message,
-			'data'    => $data,
-		);
-		array_filter( $provided_args, 'array_filter' );
-		// Combine default values and unique values.
-		$args = array_merge( $this->default_args, $provided_args );
-		// Remove falsy values.
-		$filtered_args = array_filter( $args, 'array_filter' );
-		// If the provided args are falsy, return.
-		if ( ! $provided_args ) {
-			return;
+		// Validate and register channel names.
+		$this->channels = $this->sanitize_channels_arg( $channels );
+
+		// Validate the channel arguments before storing.
+		if ( $channel_args && is_array( $channel_args ) ) {
+			$this->channel_args = $channel_args;
 		}
 
-		$this->config = array_merge( $this->config, $filtered_args );
+		// Register channel action hooks.
+		$this->add_channel_hooks();
 
-		// Monitor the error in question.
-		add_action( 'wp_error_added', array( $this, 'wp_error_added' ), 10, 4 );
 		// Generate a new error object.
-		if ( $filtered_args ) {
-			$this->wp_error = new \WP_Error( $args['code'], args['message'], args['data'] );
-		}
-
+		$this->wp_error = new \WP_Error( $code, $message, $data );
 
 	}
 
 	/**
-	 * Display an alert with precise context and delivery.
-	 * Based on WP_Error class constructor.
+	 * Sanitize the channels parameter.
 	 *
-	 * @see   https://developer.wordpress.org/reference/classes/wp_error/
-	 * @see   https://developer.wordpress.org/reference/functions/is_wp_error/
-	 * @see   https://developer.wordpress.org/reference/functions/wp_die/
-	 * @see   https://github.com/WordPress/WordPress-Coding-Standards/wiki/Escaping-a-WP_Error-object
 	 * @since 0.1.0
 	 *
-	 * @param  WP_Error $event The error event object.
-	 * @return bool|void
+	 * @param mixed $channels Channel options passed to the class constructor.
+	 *
+	 * @return array
 	 */
-	public static function action_die( $code, $message, $data, $wp_error ) {
+	private function sanitize_channels_arg( $channels ) {
 
-		if ( $code !== $this->args['code'] ) {
-			return;
+		// Declare the channels where this WP_Error will push to.
+		$channels = is_string( $channels ) ? array( $channels ) : $channels;
+
+		if ( is_array( $channels ) && ! empty( $channels ) ) {
+			// Remove unsupported channels.
+			$channels = array_filter( $channels, array( $this, 'filter_channels' ) );
+			$channels = array_values( $channels );
+		} else {
+			$channels = array();
 		}
 
-		switch ($this->channel) {
-			case 'value':
-				# code...
-				break;
-
-			default:
-				# code...
-				break;
+		// Set the full, true path for the email and error logs.
+		if ( isset( $channels['email_log'] ) ) {
+			$channels['email_log'] = realpath( $channels['email_log'] );
 		}
-		wp_die( self::escape_wp_error( $event ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $alert is escaped before being passed in.
+		if ( isset( $channels['error_log'] ) ) {
+			$channels['error_log'] = realpath( $channels['error_log'] );
+		}
+
+		return $channels;
+	}
+
+	/**
+	 * Filter supported channels.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string[] $channel The submitted channels.
+	 *
+	 * @return string[]
+	 */
+	private function filter_channels( $channel ) {
+
+		return in_array( $channel, $this->supported_channels, true );
 
 	}
 
 	/**
-	 * Copied from WordPress Coding Standards.
+	 * Add channel event hooks.
+	 *
+	 * @see https://developer.wordpress.org/reference/hooks/wp_mail_failed/
+	 *
+	 * @since 0.1.0
+	 *
+	 * @return void
+	 */
+	private function add_channel_hooks() {
+
+		// Monitor the error in question.
+		// Use get_called_class() to make static class methods callable.
+		foreach ( $this->channels as $channel ) {
+			add_action( 'wp_error_added', array( get_called_class(), "{$channel}_error_added" ), 10, 4 );
+		}
+
+		// Monitor failed email deliveries.
+		if ( isset( $this->channels['email'] ) ) {
+			add_action( 'wp_mail_failed', array( $this, 'log_mailer_errors' ), 10, 1 );
+		}
+
+	}
+
+	/**
+	 * Send the error message to the "die" channel.
+	 *
+	 * @see   https://developer.wordpress.org/reference/functions/wp_die/
+	 * @see   https://github.com/WordPress/WordPress-Coding-Standards/wiki/Escaping-a-WP_Error-object
+	 *
+	 *  @since 0.1.0
+	 *
+	 * @param string|int $code     Error code.
+	 * @param string     $message  Error message.
+	 * @param mixed      $data     Error data. Might be empty.
+	 * @param WP_Error   $wp_error The WP_Error object.
+	 *
+	 * @return void
+	 */
+	public static function die_error_added( $code, $message, $data, $wp_error ) {
+
+		wp_die( self::escape_wp_error( $wp_error ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- $alert is escaped before being passed in.
+
+	}
+
+	/**
+	 * Send the error message to the "log" channel.
+	 *
+	 * @see https://www.php.net/manual/en/function.error-log.php
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string|int $code     Error code.
+	 * @param string     $message  Error message.
+	 * @param mixed      $data     Error data. Might be empty.
+	 * @param WP_Error   $wp_error The WP_Error object.
+	 *
+	 * @return void
+	 */
+	public static function error_log_error_added( $code, $message, $data, $wp_error ) {
+
+		if ( isset( self::$channel_args['error_log'] ) ) {
+			error_log( $message, 0, self::$channel_args['error_log'] );
+		} else {
+			error_log( $message );
+		}
+
+	}
+
+	/**
+	 * Send the error message to the "log" channel.
+	 * Note: This function is only available after the `plugins_loaded` action hook.
+	 *
+	 * @see https://developer.wordpress.org/reference/functions/wp_mail/
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string|int $code     Error code.
+	 * @param string     $message  Error message.
+	 * @param mixed      $data     Error data. Might be empty.
+	 * @param WP_Error   $wp_error The WP_Error object.
+	 *
+	 * @return void
+	 */
+	public static function email_error_added( $code, $message, $data, $wp_error ) {
+
+		// Determine the email recipient.
+		$args        = self::$channel_args;
+		$admin_email = get_site_option( 'admin_email' );
+		$recipient   = isset( $args['email_address'] ) ? $args['email_address'] : $admin_email;
+
+		// If the recipient cannot be found, exit.
+		if ( false === $admin_email || ! isset( $args['email_title'] ) ) {
+			return;
+		}
+
+		// Determine the remaining mailer arguments.
+		$title   = $args['email_title'];
+		$message = isset( $args['email_template'] ) ? sprintf( $args['email_template'], $message ) : $message;
+		$headers = array(
+			'From: Site Admin <' . $admin_email . '>',
+			'Content-Type: text/html; charset=UTF-8',
+		);
+
+		// Send the email.
+		wp_mail( $recipient, $title, $message, $headers );
+
+	}
+
+	/**
+	 * Log failed email deliveries.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param WP_Error $wp_error The WP_Error object created by the failed email delivery.
+	 *
+	 * @return void
+	 */
+	public function log_mailer_errors( $wp_error ) {
+
+		// Determine the destination for the email error log entry.
+		$wp_debug_log = defined( 'WP_DEBUG_LOG' ) ? WP_DEBUG_LOG : true;
+		if ( ini_get( 'mail.log' ) ) {
+			$log_path = ini_get( 'mail.log' );
+		} elseif ( in_array( strtolower( (string) $wp_debug_log ), array( 'true', '1' ), true ) ) {
+			$log_path = WP_CONTENT_DIR . '/debug.log';
+		} elseif ( is_string( $wp_debug_log ) ) {
+			$log_path = $wp_debug_log;
+		} else {
+			$log_path = false;
+		}
+
+		if ( is_string( $log_path ) && file_exists( $log_path ) ) {
+			// Execute the logging action.
+			error_log( $wp_error->get_error_message(), 0, $log_path );
+		}
+	}
+
+	/**
+	 * Taken from WordPress Coding Standards. Authors below.
+	 * Last edited by Juliette on Dec 26, 2018.
+	 *
 	 * Escape a WP_Error object for passing directly to wp_die().
 	 *
 	 * The wp_die() function accepts an WP_Error object as the first parameter, but it
@@ -133,7 +292,11 @@ class Event {
 	 * the object through this function before giving it to wp_die(), the potential for
 	 * XSS should be avoided.
 	 *
-	 * @see https://github.com/WordPress/WordPress-Coding-Standards/wiki/Escaping-a-WP_Error-object
+	 * @author J.D. Grimes <jdg@codesymphony.co> (https://github.com/JDGrimes)
+	 * @author Juliette <info@adviesenzo.nl> (https://github.com/jrfnl)
+	 * @author Gary Jones (https://github.com/GaryJones)
+	 *
+	 * @link https://github.com/WordPress/WordPress-Coding-Standards/wiki/Escaping-a-WP_Error-object
 	 *
 	 * @param WP_Error $error The error to escape.
 	 *
