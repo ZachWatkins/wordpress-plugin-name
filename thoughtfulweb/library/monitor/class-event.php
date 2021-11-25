@@ -73,8 +73,6 @@ class Event {
 	 *
 	 *     @key string $email_address  The email address to send the message to.
 	 *     @key string $email_template The email template string passed to `sprintf` before sending.
-	 *     @key string $error_log      The error log file destination.
-	 *     @key string $email_log      The email log file destination.
 	 * }
 	 */
 	public function __construct( $code, $message, $data, $channels = 'die', $channel_args = null ) {
@@ -115,14 +113,6 @@ class Event {
 			$channels = array_values( $channels );
 		} else {
 			$channels = array();
-		}
-
-		// Set the full, true path for the email and error logs.
-		if ( isset( $channels['email_log'] ) ) {
-			$channels['email_log'] = realpath( $channels['email_log'] );
-		}
-		if ( isset( $channels['error_log'] ) ) {
-			$channels['error_log'] = realpath( $channels['error_log'] );
 		}
 
 		return $channels;
@@ -204,10 +194,20 @@ class Event {
 	 */
 	public static function error_log_error_added( $code, $message, $data, $wp_error ) {
 
-		if ( isset( self::$channel_args['error_log'] ) ) {
-			error_log( $message, 0, self::$channel_args['error_log'] );
+		// Determine the destination for the email error log entry.
+		$wp_debug_log = defined( 'WP_DEBUG_LOG' ) ? WP_DEBUG_LOG : true;
+		if ( ini_get( 'error_log' ) ) {
+			$log_path = ini_get( 'error_log' );
+		} elseif ( in_array( strtolower( (string) $wp_debug_log ), array( 'true', '1' ), true ) ) {
+			$log_path = WP_CONTENT_DIR . '/debug.log';
+		} elseif ( is_string( $wp_debug_log ) ) {
+			$log_path = $wp_debug_log;
 		} else {
-			error_log( $message );
+			return;
+		}
+
+		if ( is_string( $log_path ) && file_exists( $log_path ) ) {
+			error_log( $message, 0, $log_path );
 		}
 
 	}
@@ -272,7 +272,7 @@ class Event {
 		} elseif ( is_string( $wp_debug_log ) ) {
 			$log_path = $wp_debug_log;
 		} else {
-			$log_path = false;
+			return;
 		}
 
 		if ( is_string( $log_path ) && file_exists( $log_path ) ) {
