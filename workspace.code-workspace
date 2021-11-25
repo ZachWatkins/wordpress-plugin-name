@@ -20,11 +20,15 @@
 		},
 		{
 			"path": "..\\..\\.."
+		},
+		{
+			"path": "..\\..\\..\\..\\..\\..\\..\\Downloads\\my-own-lightbox-as-a-jquery-plugin-with-exposed-methods"
 		}
 	],
 	"settings": {
 		"editor.wordWrap": "on",
 		"editor.detectIndentation": false,
-		"editor.insertSpaces": false
+		"editor.insertSpaces": false,
+		"files.eol": "\n"
 	}
 }

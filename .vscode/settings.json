@@ -7,9 +7,11 @@
     "diffEditor.ignoreTrimWhitespace": false,
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
+	"files.eol": "\n",
 	"php.validate.enable": true,
 	"php.validate.run": "onSave",
 	"[markdown]": {
 		"files.trimTrailingWhitespace": false
-	}
+    },
+    "editor.insertSpaces": false
 }
