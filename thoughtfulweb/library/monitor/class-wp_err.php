@@ -15,12 +15,12 @@ declare(strict_types=1);
 namespace ThoughtfulWeb\Library\Monitor;
 
 /**
- * The class that registers page template file registration.
+ * The class that monitors WP Errors and pushes notifications to channels.
  *
  * @see   https://www.php.net/manual/en/language.oop5.basic.php
  * @since 0.1.0
  */
-class Event {
+class WP_Err {
 
 	/**
 	 * Supported channels of communicating WP_Error events.
@@ -62,20 +62,27 @@ class Event {
 	 *
 	 * @todo Implement $channel options for email, error log, webhook, WP Admin alert, etc.
 	 *
-	 * @param string|int $code         Error code.
-	 * @param string     $message      Error message.
-	 * @param mixed      $data         Optional. Error data. Default is empty array.
-	 * @param string[]   $channels     Optional. How the event is communicated. Default 'die'.
-	 *                                 See $supported_channels property for accepted values.
-	 *                                 Suggested implementation options in todo above.
-	 * @param null|array $channel_args {
+	 * @param string|int|WP_Error $code         Error code.
+	 * @param string              $message      Error message.
+	 * @param mixed               $data         Optional. Error data. Default is empty array.
+	 * @param string[]            $channels     Optional. How the event is communicated. Default 'die'.
+	 *                                          See $supported_channels property for accepted values.
+	 *                                          Suggested implementation options in todo above.
+	 * @param null|array          $channel_args {
 	 *     Channel configurations needed for some channels. Optional.
 	 *
 	 *     @key string $email_address  The email address to send the message to.
 	 *     @key string $email_template The email template string passed to `sprintf` before sending.
 	 * }
 	 */
-	public function __construct( $code, $message, $data, $channels = 'die', $channel_args = null ) {
+	public function __construct( $code, $message = '', $data = '', $channels = 'die', $channel_args = null ) {
+
+		if ( is_wp_error( $code ) ) {
+			$wp_error = $code;
+			$code     = $wp_error->get_error_code();
+			$message  = $wp_error->get_error_message( $code );
+			$data     = $wp_error->get_error_data( $code );
+		}
 
 		// Validate and register channel names.
 		$this->channels = $this->sanitize_channels_arg( $channels );

@@ -17,7 +17,7 @@ declare(strict_types=1);
 namespace ThoughtfulWeb\Library\Plugin;
 
 use ThoughtfulWeb\Library\Plugin\Requirements as TWLP_Requirements;
-use ThoughtfulWeb\Library\Monitor\Event as TWL_Monitor_Event;
+use ThoughtfulWeb\Library\Monitor\WP_Err as TWL_Monitor_WP_Err;
 
 /**
  * The class that handles plugin activation and deactivation.
@@ -168,7 +168,7 @@ class Activation {
 		deactivate_plugins( plugin_basename( $this->file ) );
 
 		// Alert the user to the issue.
-		TWL_Monitor_Event::display( $wp_error );
+		new TWL_Monitor_WP_Err( $wp_error, '', '', 'die' );
 
 	}
 }
