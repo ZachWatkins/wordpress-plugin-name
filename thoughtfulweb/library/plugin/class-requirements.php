@@ -32,7 +32,7 @@ class Requirements {
 	 *
 	 * @var config_file
 	 */
-	private $config_file = THOUGHTFULWEB_UTIL_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'activation-requirements.php';
+	private $config_file = __DIR__ . '../../../activation-requirements.php';
 
 	/**
 	 * Plugin requirements.
@@ -77,6 +77,7 @@ class Requirements {
 	 */
 	public function __construct( $requirements ) {
 
+		
 		$this->requirements = $this->get( $requirements );
 		return $this->requirements;
 
