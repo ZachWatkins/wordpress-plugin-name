@@ -14,26 +14,12 @@
 
 // If this file is called directly, or is included by a file other than those we expect, then abort.
 $allowed_scripts = array(
-	__DIR__ . '/thoughtfulweb/library/class-file-helper.php',
+	__DIR__ . '/thoughtfulweb/library/admin/page/class-settings.php',
+	__DIR__ . '/thoughtfulweb/library/plugin/class-activation.php',
+	__DIR__ . '/thoughtfulweb/library/plugin/class-requirements.php',
+	__DIR__ . '/thoughtfulweb/library/theme/class-page-template.php',
 );
-
-if (
-	isset( $_SERVER['SCRIPT_FILENAME'] )
-	&& (
-		! defined( 'ABSPATH' )
-		|| ! in_array( realpath( $_SERVER['SCRIPT_FILENAME'] ), $allowed_scripts, true )
-		( isset( $_SERVER['REQUEST_METHOD'] ) && 'GET' === $_SERVER['REQUEST_METHOD'] && realpath( __FILE__ ) === realpath( $_SERVER['SCRIPT_FILENAME'] ) )
-	)
-) {
-
-	header( 'HTTP/1.0 404 Not Found', true, 404 );
-
-	/* choose the appropriate page to redirect users */
-	header( 'location: /404.php' );
-
-	die();
-
-}
+new \ThoughtfulWeb\Library\File\Auth_Include( __FILE__, $allowed_scripts, $_SERVER, 'ABSPATH' );
 
 return array(
 	'plugins'   => array(

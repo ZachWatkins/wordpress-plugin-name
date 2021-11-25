@@ -48,8 +48,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 define( 'WP_PLUGIN_INTRO_DIR_URL', plugin_dir_url( __FILE__ ) . '/' );
 define( 'WP_PLUGIN_INTRO_DIR_FILE', __FILE__ );
 define( 'WP_PLUGIN_INTRO_DIR_PATH', __DIR__ . '/' );
-// Required by the Thoughtful Web Library.
-define( 'THOUGHTFULWEB_UTIL_PLUGIN_FILE', __FILE__ );
 
 /**
  * The core plugin class is used to initialize the plugin.
@@ -59,11 +57,11 @@ require __DIR__ . '/vendor/autoload.php';
 /**
  * Load activation-related hooks.
  */
-new \ThoughtfulWeb\Library\Plugin\Activation();
+new \ThoughtfulWeb\Library\Plugin\Activation( __FILE__, __DIR__ . '/activation-requirements.php' );
 
 /**
  * Load page template files.
  */
-new \ThoughtfulWeb\Library\Page_Template();
+new \ThoughtfulWeb\Library\Theme\Page_Template();
 require __DIR__ . '/src/class-wordpress-plugin-name.php';
 new WordPress_Plugin_Name();

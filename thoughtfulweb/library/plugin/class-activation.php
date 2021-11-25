@@ -27,12 +27,13 @@ use ThoughtfulWeb\Library\Monitor\Incident as TWLM_Error;
 class Activation {
 
 	/**
-	 * Plugin activation file.
+	 * Plugin root file.
 	 *
-	 * @var string $file The root plugin file directory path. A Class variable cannot be defined using
-	 *                   functions or variables so it is incomplete until construction.
+	 * @var string $file Placeholder until construction. The path to the root plugin file. A Class
+	 *                   variable cannot be defined using functions or variables so it is
+	 *                   incomplete until construction.
 	 */
-	private $file = THOUGHTFULWEB_UTIL_PLUGIN_FILE;
+	private $file = __DIR__ . '../../../plugin-file.php';
 
 	/**
 	 * Plugin requirements.
@@ -77,13 +78,15 @@ class Activation {
 	 * @see   https://developer.wordpress.org/reference/functions/register_activation_hook/
 	 * @since 0.1.0
 	 *
+	 * @param string       $file         The root plugin file.
 	 * @param string|array $requirements File path or array of activation requirements. Default empty string.
 	 *
 	 * @return void
 	 */
-	public function __construct( $requirements = '' ) {
+	public function __construct( $file, $requirements = '' ) {
 
-		$this->requirements = $requirements;
+		$this->file = $file;
+		$this->requirements = $this->sanitize_requirements_param( $requirements );
 
 		$this->get_plugin_data();
 		if ( is_array( $requirements ) && array_key_exists( 'plugins', $requirements ) ) {
@@ -93,6 +96,25 @@ class Activation {
 		// Register activation hook.
 		register_activation_hook( $this->file, array( $this, 'activate_plugin' ) );
 
+	}
+
+	/**
+	 * Sanitize the requirements parameter.
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param string|array $requirements File path or array of activation requirements. Default empty string.
+	 *
+	 * @return string|array
+	 */
+	private function sanitize_requirements_param( $requirements ) {
+		if ( is_array( $requirements ) ) {
+			return $requirements;
+		} elseif ( ! is_string( $requirements ) ) {
+			return '';
+		} elseif ( 'activation-requirements.php' === $requirements && ) {
+			'activation-requirements.php'
+		}
 	}
 
 	/**
