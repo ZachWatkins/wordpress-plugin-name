@@ -1,0 +1,3 @@
+[submodule "thoughtful-web/library-wp"]
+	path = thoughtful-web/library-wp
+	url = https://github.com/thoughtful-web/library-wp
