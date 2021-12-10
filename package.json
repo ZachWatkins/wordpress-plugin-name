@@ -1,0 +1,20 @@
+{
+  "name": "wordpress-plugin-name",
+  "version": "0.1.0",
+  "description": "A GPL-2.0+ WordPress Plugin to serve as an introduction to WordPress plugin development.",
+  "main": "index.js",
+  "private": true,
+  "scripts": {
+    "start": "git config core.hooksPath hooks && composer install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZachWatkins/wordpress-plugin-name.git"
+  },
+  "author": "Zachary Kendall Watkins <zwatkins.it@gmail.com> (https://github.com/zachwatkins/)",
+  "license": "GPL-2.0-or-later",
+  "bugs": {
+    "url": "https://github.com/ZachWatkins/wordpress-plugin-name/issues"
+  },
+  "homepage": "https://github.com/ZachWatkins/wordpress-plugin-name#readme"
+}
