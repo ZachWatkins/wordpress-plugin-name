@@ -4,91 +4,93 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e19f530afbfe3f4884a6525a6c46af04",
-    "packages": [],
-    "packages-dev": [
+    "content-hash": "7e5a7b028ef5821920695fdd77f1c3c7",
+    "packages": [
         {
-            "name": "dealerdirect/phpcodesniffer-composer-installer",
-            "version": "v0.7.1",
+            "name": "thoughtful-web/library-wp",
+            "version": "dev-develop",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Dealerdirect/phpcodesniffer-composer-installer.git",
-                "reference": "fe390591e0241955f22eb9ba327d137e501c771c"
+                "url": "https://github.com/thoughtful-web/library-wp.git",
+                "reference": "ff88d1244295dbd7c147b65a4dbaf9821dd47839"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Dealerdirect/phpcodesniffer-composer-installer/zipball/fe390591e0241955f22eb9ba327d137e501c771c",
-                "reference": "fe390591e0241955f22eb9ba327d137e501c771c",
+                "url": "https://api.github.com/repos/thoughtful-web/library-wp/zipball/ff88d1244295dbd7c147b65a4dbaf9821dd47839",
+                "reference": "ff88d1244295dbd7c147b65a4dbaf9821dd47839",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^1.0 || ^2.0",
-                "php": ">=5.3",
-                "squizlabs/php_codesniffer": "^2.0 || ^3.0 || ^4.0"
+                "php": ">=7.3.5"
             },
             "require-dev": {
-                "composer/composer": "*",
-                "phpcompatibility/php-compatibility": "^9.0",
-                "sensiolabs/security-checker": "^4.1.0"
+                "wp-coding-standards/wpcs": "*"
             },
-            "type": "composer-plugin",
+            "type": "library",
             "extra": {
-                "class": "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin"
+                "phpcodesniffer-search-depth": 5
             },
             "autoload": {
                 "psr-4": {
-                    "Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\": "src/"
+                    "Thoughtful_Web\\Library_WP\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "scripts": {
+                "post-install-cmd": [
+                    "composer run-script --no-dev config-wpcs",
+                    "phpcs --config-set colors 1"
+                ],
+                "config-wpcs": [
+                    "phpcs --config-set installed_paths vendor/wp-coding-standards/wpcs",
+                    "phpcs --config-set default_standard WordPress"
+                ],
+                "checkwp": [
+                    "phpcs --ignore=*/vendor/*,*/node_modules/* --filter=gitmodified ."
+                ],
+                "fixwp": [
+                    "phpcbf --ignore=*/vendor/*,*/node_modules/* --filter=gitmodified ."
+                ]
+            },
             "license": [
-                "MIT"
+                "GPL-2.0-or-later"
             ],
             "authors": [
                 {
-                    "name": "Franck Nijhof",
-                    "email": "franck.nijhof@dealerdirect.com",
-                    "homepage": "http://www.frenck.nl",
-                    "role": "Developer / IT Manager"
+                    "name": "Zachary Kendall Watkins",
+                    "email": "zachwatkins@tapfuel.io",
+                    "homepage": "https://github.com/zachwatkins/",
+                    "role": "Creator"
+                },
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/thoughtful-web/library-wp/graphs/contributors"
                 }
             ],
-            "description": "PHP_CodeSniffer Standards Composer Installer Plugin",
-            "homepage": "http://www.dealerdirect.com",
+            "description": "Helpful WordPress scripts released as free open source software under GNU GPL-2.0+ License",
             "keywords": [
-                "PHPCodeSniffer",
-                "PHP_CodeSniffer",
-                "code quality",
-                "codesniffer",
-                "composer",
-                "installer",
-                "phpcs",
-                "plugin",
-                "qa",
-                "quality",
-                "standard",
-                "standards",
-                "style guide",
-                "stylecheck",
-                "tests"
+                "WordPress"
             ],
             "support": {
-                "issues": "https://github.com/dealerdirect/phpcodesniffer-composer-installer/issues",
-                "source": "https://github.com/dealerdirect/phpcodesniffer-composer-installer"
+                "issues": "https://github.com/thoughtful-web/library-wp/issues",
+                "source": "https://github.com/thoughtful-web/library-wp/",
+                "docs": "https://raw.githubusercontent.com/thoughtful-web/library-wp/main/README.md"
             },
-            "time": "2020-12-07T18:04:37+00:00"
-        },
+            "time": "2021-12-15T05:34:38+00:00"
+        }
+    ],
+    "packages-dev": [
         {
             "name": "squizlabs/php_codesniffer",
-            "version": "3.6.1",
+            "version": "3.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
-                "reference": "f268ca40d54617c6e06757f83f699775c9b3ff2e"
+                "reference": "5e4e71592f69da17871dba6e80dd51bce74a351a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/f268ca40d54617c6e06757f83f699775c9b3ff2e",
-                "reference": "f268ca40d54617c6e06757f83f699775c9b3ff2e",
+                "url": "https://api.github.com/repos/squizlabs/PHP_CodeSniffer/zipball/5e4e71592f69da17871dba6e80dd51bce74a351a",
+                "reference": "5e4e71592f69da17871dba6e80dd51bce74a351a",
                 "shasum": ""
             },
             "require": {
@@ -131,7 +133,7 @@
                 "source": "https://github.com/squizlabs/PHP_CodeSniffer",
                 "wiki": "https://github.com/squizlabs/PHP_CodeSniffer/wiki"
             },
-            "time": "2021-10-11T04:00:11+00:00"
+            "time": "2021-12-12T21:44:58+00:00"
         },
         {
             "name": "wp-coding-standards/wpcs",
@@ -187,7 +189,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "thoughtful-web/library-wp": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

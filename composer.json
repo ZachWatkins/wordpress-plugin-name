@@ -16,6 +16,15 @@
 	"require-dev": {
 		"wp-coding-standards/wpcs": "*"
 	},
+	"repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/thoughtful-web/library-wp"
+        }
+    ],
+    "require": {
+        "thoughtful-web/library-wp": "dev-develop"
+    },
 	"scripts": {
 		"post-install-cmd": [
 			"composer run-script --no-dev config-wpcs"
