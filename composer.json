@@ -10,9 +10,6 @@
 			"homepage": "https://github.com/zachwatkins"
 		}
 	],
-	"autoload": {
-		"classmap": ["thoughtfulweb/"]
-	},
 	"require-dev": {
 		"wp-coding-standards/wpcs": "*"
 	},

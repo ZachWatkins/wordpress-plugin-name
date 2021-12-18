@@ -2,9 +2,9 @@
 /**
  * Plugin activation requirements.
  *
- * @package    ThoughtfulWeb\Library
- * @subpackage Activation_Requirements
- * @see        ThoughtfulWeb\Library\Activation_Requirements::$requirements
+ * @package    Thoughtful Web Library for WordPress
+ * @subpackage Plugin Requirements
+ * @see        Thoughtful_Web\Library_WP\Plugin\Requirements::$requirements
  * @copyright  Zachary Watkins 2021
  * @author     Zachary Watkins <watkinza@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
@@ -13,15 +13,12 @@
  */
 
 // If this file is called directly, or is included by a file other than those we expect, then abort.
-$allowed_scripts = array(
-	__DIR__ . '/thoughtfulweb/library/admin/page/class-settings.php',
-	__DIR__ . '/thoughtfulweb/library/plugin/class-activation.php',
-	__DIR__ . '/thoughtfulweb/library/plugin/class-requirements.php',
-	__DIR__ . '/thoughtfulweb/library/theme/class-page-template.php',
-);
-new \ThoughtfulWeb\Library\File\Auth_Include( __FILE__, $allowed_scripts, $_SERVER, 'ABSPATH' );
+if ( ! defined( 'ABSPATH' ) ) {
+	die();
+}
 
 return array(
+	'main'      => dirname( __FILE__, 3 ) . '/wordpress-plugin-name.php',
 	'plugins'   => array(
 		'relation' => 'OR',
 		array(
@@ -34,6 +31,8 @@ return array(
 		),
 	),
 	'templates' => array(
-		'path' => 'templates/example.php',
+		array(
+			'path' => 'templates/example.php'
+		),
 	),
 );

@@ -21,13 +21,6 @@
 class WordPress_Plugin_Name {
 
 	/**
-	 * Base directory for the plugin.
-	 *
-	 * @var string $basedir The directory of the root plugin file.
-	 */
-	private static $basedir = WP_PLUGIN_INTRO_DIR_PATH;
-
-	/**
 	 * Initialize the class.
 	 *
 	 * @since  0.1.0
@@ -35,9 +28,25 @@ class WordPress_Plugin_Name {
 	 */
 	public function __construct() {
 
+		$activation_requirements = include dirname( __FILE__, 2 ) . '/config/install/requirements.php';
+
+		/**
+		 * Load activation-related hooks.
+		 */
+		if ( $activation_requirements ) {
+			new \Thoughtful_Web\Library_WP\Plugin\Activation( $activation_requirements );
+		}
+
+		/**
+		 * Load page template files.
+		 */
+		if ( isset( $activation_requirements['templates'] ) ) {
+			new \Thoughtful_Web\Library_WP\Theme\Page_Template( $activation_requirements );
+		}
+
 		// Load the assets.
-		require_once self::$basedir . 'src/class-assets.php';
-		new WordPress_Plugin_Name\Assets();
+		require __DIR__ . '/class-assets.php';
+		new \WordPress_Plugin_Name\Assets();
 
 	}
 }
