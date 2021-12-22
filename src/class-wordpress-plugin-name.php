@@ -28,7 +28,7 @@ class WordPress_Plugin_Name {
 	 */
 	public function __construct() {
 
-		$activation_requirements = include dirname( __FILE__, 2 ) . '/config/install/requirements.php';
+		$this->requirements = include dirname( __FILE__, 2 ) . '/config/required-plugins.php';
 
 		/**
 		 * Load activation-related hooks.
