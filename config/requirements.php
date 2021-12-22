@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 return array(
-	'main'      => dirname( __FILE__, 3 ) . '/wordpress-plugin-name.php',
+	'main'      => dirname( __FILE__, 2 ) . '/wordpress-plugin-name.php',
 	'plugins'   => array(
 		'relation' => 'OR',
 		array(
@@ -28,11 +28,6 @@ return array(
 		array(
 			'name' => 'Advanced Custom Fields Pro',
 			'file' => 'advanced-custom-fields-pro/acf.php',
-		),
-	),
-	'templates' => array(
-		array(
-			'path' => 'templates/example.php'
 		),
 	),
 );
