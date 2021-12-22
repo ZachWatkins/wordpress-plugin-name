@@ -1,5 +1,6 @@
 {
 	"name": "zachwatkins/wordpress-plugin-name",
+	"version": "1.0.0",
 	"description": "A GPL-2.0+ WordPress Plugin to serve as an introduction to WordPress plugin development.",
 	"type": "wordpress-plugin",
 	"license": "GPL-2.0-or-later",
