@@ -12,6 +12,7 @@
  */
 
 use \WordPress_Plugin_Name\Assets;
+use \Thoughtful_Web\Library_WP\Plugin\Activation;
 use \Thoughtful_Web\Library_WP\Admin\Page\Settings;
 
 /**
@@ -31,13 +32,13 @@ class WordPress_Plugin_Name {
 	 */
 	public function __construct() {
 
-		$this->requirements = include dirname( __FILE__, 2 ) . '/config/required-plugins.php';
 
 		/**
 		 * Load activation-related hooks.
 		 */
-		if ( $activation_requirements ) {
-			new \Thoughtful_Web\Library_WP\Plugin\Activation( $activation_requirements );
+		$required_plugins = include dirname( __FILE__, 2 ) . '/config/required-plugins.php';
+		if ( $required_plugins ) {
+			new \Thoughtful_Web\Library_WP\Plugin\Activation( $required_plugins );
 		}
 
 		/**
