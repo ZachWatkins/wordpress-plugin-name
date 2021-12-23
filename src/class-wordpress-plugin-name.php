@@ -30,7 +30,7 @@ class WordPress_Plugin_Name {
 	 * @since  0.1.0
 	 * @return void
 	 */
-	public function __construct() {
+	public function __construct( $root_plugin_file ) {
 
 
 		/**
@@ -38,7 +38,7 @@ class WordPress_Plugin_Name {
 		 */
 		$required_plugins = include dirname( __FILE__, 2 ) . '/config/required-plugins.php';
 		if ( $required_plugins ) {
-			new \ThoughtfulWeb\LibraryWP\Plugin\Activation( $required_plugins );
+			new \ThoughtfulWeb\LibraryWP\Plugin\Activation\Requirements( $root_plugin_file, $required_plugins );
 		}
 
 		/**

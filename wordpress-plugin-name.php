@@ -56,4 +56,4 @@ require __DIR__ . '/vendor/autoload.php';
 
 // Load the main class file.
 require __DIR__ . '/src/class-wordpress-plugin-name.php';
-new \WordPress_Plugin_Name();
+new \WordPress_Plugin_Name( __FILE__ );
