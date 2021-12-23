@@ -11,6 +11,7 @@
  * @since      0.1.0
  */
 
+use \WordPress_Plugin_Name\Assets;
 use \Thoughtful_Web\Library_WP\Admin\Page\Settings;
 
 /**
