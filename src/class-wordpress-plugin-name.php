@@ -11,6 +11,8 @@
  * @since      0.1.0
  */
 
+use \Thoughtful_Web\Library_WP\Admin\Page\Settings;
+
 /**
  * The core plugin Class.
  *
@@ -35,6 +37,14 @@ class WordPress_Plugin_Name {
 		 */
 		if ( $activation_requirements ) {
 			new \Thoughtful_Web\Library_WP\Plugin\Activation( $activation_requirements );
+		}
+
+		/**
+		 * Load the settings page.
+		 */
+		$settings_config = include dirname( __FILE__, 2 ) . '/config/admin/page/settings.php';
+		if ( $settings_config ) {
+			new \Thoughtful_Web\Library_WP\Admin\Page\Settings( $settings_config );
 		}
 
 		/**
