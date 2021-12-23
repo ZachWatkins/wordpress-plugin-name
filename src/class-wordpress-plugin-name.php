@@ -12,8 +12,8 @@
  */
 
 use \WordPress_Plugin_Name\Assets;
-use \Thoughtful_Web\Library_WP\Plugin\Activation;
-use \Thoughtful_Web\Library_WP\Admin\Page\Settings;
+use \ThoughtfulWeb\LibraryWP\Plugin\Activation;
+use \ThoughtfulWeb\LibraryWP\Admin\Page\Settings;
 
 /**
  * The core plugin Class.
@@ -38,7 +38,7 @@ class WordPress_Plugin_Name {
 		 */
 		$required_plugins = include dirname( __FILE__, 2 ) . '/config/required-plugins.php';
 		if ( $required_plugins ) {
-			new \Thoughtful_Web\Library_WP\Plugin\Activation( $required_plugins );
+			new \ThoughtfulWeb\LibraryWP\Plugin\Activation( $required_plugins );
 		}
 
 		/**
@@ -46,14 +46,14 @@ class WordPress_Plugin_Name {
 		 */
 		$settings_config = include dirname( __FILE__, 2 ) . '/config/admin/page/settings.php';
 		if ( $settings_config ) {
-			new \Thoughtful_Web\Library_WP\Admin\Page\Settings( $settings_config );
+			new \ThoughtfulWeb\LibraryWP\Admin\Page\Settings( $settings_config );
 		}
 
 		/**
 		 * Load page template files.
 		 */
 		if ( isset( $activation_requirements['templates'] ) ) {
-			// new \Thoughtful_Web\Library_WP\Theme\Page_Template( $activation_requirements );
+			// new \ThoughtfulWeb\LibraryWP\Theme\Page_Template( $activation_requirements );
 		}
 
 		// Load the assets.

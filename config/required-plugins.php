@@ -4,7 +4,7 @@
  *
  * @package    Thoughtful Web Library for WordPress
  * @subpackage Plugin Requirements
- * @see        Thoughtful_Web\Library_WP\Plugin\Requirements::$requirements
+ * @see        ThoughtfulWeb\LibraryWP\Plugin\Requirements::$requirements
  * @copyright  Zachary Watkins 2021
  * @author     Zachary Watkins <watkinza@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
