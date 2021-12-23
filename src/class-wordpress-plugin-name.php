@@ -53,7 +53,7 @@ class WordPress_Plugin_Name {
 		 * Load page template files.
 		 */
 		if ( isset( $activation_requirements['templates'] ) ) {
-			new \Thoughtful_Web\Library_WP\Theme\Page_Template( $activation_requirements );
+			// new \Thoughtful_Web\Library_WP\Theme\Page_Template( $activation_requirements );
 		}
 
 		// Load the assets.
