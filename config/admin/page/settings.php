@@ -35,7 +35,9 @@ return array(
 					'desc'        => 'My text field description',
 					'placeholder' => 'my placeholder',
 					'data_args'   => array(
-						'default' => 'A thoughtful, optional, default value',
+						'default'       => 'A thoughtful, optional, default value',
+						'data-lpignore' => 'true',
+						'size'          => '40',
 					)
 				),
 				array(
@@ -46,11 +48,35 @@ return array(
 					'placeholder' => 'my placeholder',
 				),
 				array(
-					'label'       => 'My Editor Field',
-					'id'          => 'unique_editor_field',
-					'type'        => 'wp_editor',
-					'desc'        => 'My editor field description',
-					'placeholder' => 'my placeholder',
+					'label'   => 'My Checkbox Field',
+					'id'      => 'unique_checkbox_field',
+					'type'    => 'checkbox',
+					'desc'    => 'My checkbox field description',
+					'choice' => array(
+						'1' => 'My Choice',
+					),
+					'data_args' => array(
+						'default' => array(
+							'1' => 'My Choice',
+						)
+					),
+				),
+				array(
+					'label'   => 'My Checkbox Field',
+					'id'      => 'unique_checkboxes_field',
+					'type'    => 'checkbox',
+					'desc'    => 'My checkbox field description',
+					'choices' => array(
+						'option_one'   => 'Option 1',
+						'option_two'   => 'Option 2',
+						'option_three' => 'Option 3',
+					),
+					'data_args' => array(
+						'default' => array(
+							'option_one',
+							'option_two',
+						),
+					),
 				),
 			),
 		),
@@ -60,10 +86,11 @@ return array(
 			'description' => '',
 			'fields'      => array(
 				array(
-					'label'   => 'My Checkbox Field',
-					'id'      => 'unique_checkbox_field',
-					'type'    => 'checkbox',
-					'desc'    => 'My checkbox field description',
+					'label'       => 'My Editor Field',
+					'id'          => 'unique_wp_editor_field',
+					'type'        => 'wp_editor',
+					'desc'        => 'My editor field description',
+					'placeholder' => 'my placeholder',
 				),
 				array(
 					'label'   => 'My Radio Field',
