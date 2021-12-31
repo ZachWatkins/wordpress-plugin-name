@@ -25,8 +25,8 @@ return array(
 	'sections'     => array(
 		array(
 			'section'     => 'unique-section-id-1',
-			'description' => '',
-			'title'       => '',
+			'title'       => 'Section One',
+			'description' => 'A description for Section One',
 			'fields'      => array(
 				array(
 					'label'       => 'My Text Field',
@@ -38,7 +38,16 @@ return array(
 						'default'       => 'A thoughtful, optional, default value',
 						'data-lpignore' => 'true',
 						'size'          => '40',
-					)
+					),
+				),
+				array(
+					'label'     => 'My Color Field',
+					'id'        => 'unique_color_field',
+					'type'      => 'color',
+					'desc'      => 'My color field description',
+					'data_args' => array(
+						'default' => '#000000',
+					),
 				),
 				array(
 					'label'       => 'My Textarea Field',
@@ -48,25 +57,25 @@ return array(
 					'placeholder' => 'my placeholder',
 				),
 				array(
-					'label'   => 'My Checkbox Field',
-					'id'      => 'unique_checkbox_field',
-					'type'    => 'checkbox',
-					'desc'    => 'My checkbox field description',
-					'choice' => array(
+					'label'     => 'My Checkbox Field',
+					'id'        => 'unique_checkbox_field',
+					'type'      => 'checkbox',
+					'desc'      => 'My checkbox field description',
+					'choice'    => array(
 						'1' => 'My Choice',
 					),
 					'data_args' => array(
 						'default' => array(
 							'1' => 'My Choice',
-						)
+						),
 					),
 				),
 				array(
-					'label'   => 'My Checkbox Field',
-					'id'      => 'unique_checkboxes_field',
-					'type'    => 'checkbox',
-					'desc'    => 'My checkbox field description',
-					'choices' => array(
+					'label'     => 'My Checkbox Fields',
+					'id'        => 'unique_checkbox_fields',
+					'type'      => 'checkbox',
+					'desc'      => 'My checkbox fields description',
+					'choices'   => array(
 						'option_one'   => 'Option 1',
 						'option_two'   => 'Option 2',
 						'option_three' => 'Option 3',
@@ -82,15 +91,39 @@ return array(
 		),
 		array(
 			'section'     => 'unique-section-id-2',
-			'title'       => '',
-			'description' => '',
+			'title'       => 'Section Two',
+			'description' => 'Section Two description text',
 			'fields'      => array(
 				array(
-					'label'       => 'My Editor Field',
-					'id'          => 'unique_wp_editor_field',
-					'type'        => 'wp_editor',
-					'desc'        => 'My editor field description',
-					'placeholder' => 'my placeholder',
+					'label'   => 'My WP Editor Field',
+					'id'      => 'unique_wp_editor_field',
+					'type'    => 'wp_editor',
+					'desc'    => 'My WP Editor field description',
+					'default' => 'my placeholder',
+				),
+				array(
+					'label'       => 'My Decimal Number Field',
+					'id'          => 'unique_decimal_number_field',
+					'type'        => 'number',
+					'desc'        => 'My number field description',
+					'placeholder' => 'Multiple of 0.1',
+					'data_args'   => array(
+						'step' => '0.1',
+						'min'  => '0',
+						'max'  => '10',
+					),
+				),
+				array(
+					'label'       => 'My Negative Number Field',
+					'id'          => 'unique_negative_number_field',
+					'type'        => 'number',
+					'desc'        => 'My negative number field description',
+					'placeholder' => 'Multiple of -1',
+					'data_args'   => array(
+						'step' => '1',
+						'min'  => '-10',
+						'max'  => '0',
+					),
 				),
 				array(
 					'label'   => 'My Radio Field',
