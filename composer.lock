@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/thoughtful-web/library-wp.git",
-                "reference": "40e2f2b36951bb0a7908ec50783c665c3a3d9c7b"
+                "reference": "b2b49b9928f04086c89ed0e53a235f1300155e69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thoughtful-web/library-wp/zipball/40e2f2b36951bb0a7908ec50783c665c3a3d9c7b",
-                "reference": "40e2f2b36951bb0a7908ec50783c665c3a3d9c7b",
+                "url": "https://api.github.com/repos/thoughtful-web/library-wp/zipball/b2b49b9928f04086c89ed0e53a235f1300155e69",
+                "reference": "b2b49b9928f04086c89ed0e53a235f1300155e69",
                 "shasum": ""
             },
             "require": {
@@ -75,7 +75,7 @@
                 "source": "https://github.com/thoughtful-web/library-wp/",
                 "docs": "https://raw.githubusercontent.com/thoughtful-web/library-wp/main/README.md"
             },
-            "time": "2021-12-28T03:27:52+00:00"
+            "time": "2021-12-31T10:49:40+00:00"
         }
     ],
     "packages-dev": [
