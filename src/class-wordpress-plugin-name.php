@@ -44,12 +44,7 @@ class WordPress_Plugin_Name {
 		/**
 		 * Load the settings page.
 		 */
-		$settings_config = include dirname( __FILE__, 2 ) . '/config/admin/page/settings.php';
-		if ( $settings_config ) {
-			new \ThoughtfulWeb\LibraryWP\Admin\Page\Settings( $settings_config );
-			include_once __DIR__ . '/class-settings.php';
-			new \WordPress_Plugin_Name\Settings();
-		}
+		new \ThoughtfulWeb\LibraryWP\Admin\Page\Settings();
 
 		/**
 		 * Load page template files.
