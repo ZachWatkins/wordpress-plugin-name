@@ -6,7 +6,7 @@
  *
  * @package    ThoughtfulWeb\Library
  * @subpackage Plugin
- * @copyright  Zachary Watkins 2021
+ * @copyright  Zachary Watkins 2022
  * @author     Zachary Watkins <watkinza@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
  * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/util/class-activation.php

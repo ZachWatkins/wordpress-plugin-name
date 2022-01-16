@@ -9,7 +9,7 @@
  * @package    ThoughtfulWeb\Library
  * @subpackage Admin
  * @author     Zachary Kendall Watkins <zwatkins.it@gmail.com>
- * @copyright  2021 Zachary Kendall Watkins
+ * @copyright  Zachary Kendall Watkins 2022
  * @license    https://www.gnu.org/licenses/gpl-2.0.html GPL-2.0-or-later
  * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/thoughtfulweb/library/admin/class-notice.php
  * @since      0.1.0
