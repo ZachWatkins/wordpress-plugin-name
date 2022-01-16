@@ -17,11 +17,16 @@
 	"repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/thoughtful-web/library-wp"
-        }
+            "url": "https://github.com/thoughtful-web/settings-page-wp"
+        },
+		{
+			"type": "vcs",
+			"url": "https://github.com/thoughtful-web/activation-requirements-wp"
+		}
     ],
     "require": {
-        "thoughtful-web/library-wp": "dev-develop"
+        "thoughtful-web/settings-page-wp": "dev-develop",
+        "thoughtful-web/activation-requirements-wp": "dev-main"
     },
 	"scripts": {
 		"post-install-cmd": [
