@@ -21,7 +21,15 @@ return array(
 	),
 	'description'  => 'A thoughtful settings page description.',
 	'option_group' => 'thoughtful_settings',
-	'network'      => false,
+	'stylesheet'   => array(
+		'file' => 'settings.css',
+		'deps' => array(),
+	),
+	'script'       => array(
+		'file'      => 'settings.js',
+		'deps'      => array(),
+		'in_footer' => true,
+	),
 	'sections'     => array(
 		array(
 			'section'     => 'unique-section-id-1',
@@ -32,20 +40,20 @@ return array(
 					'label'       => 'My Text Field',
 					'id'          => 'unique_text_field',
 					'type'        => 'text',
-					'desc'        => 'My text field description',
-					'placeholder' => 'my placeholder',
+					'description' => 'My text field description',
 					'data_args'   => array(
 						'default'       => 'A thoughtful, optional, default value',
 						'data-lpignore' => 'true',
 						'size'          => '40',
+						'placeholder'   => 'my placeholder',
 					),
 				),
 				array(
-					'label'     => 'My Color Field',
-					'id'        => 'unique_color_field',
-					'type'      => 'color',
-					'desc'      => 'My color field description',
-					'data_args' => array(
+					'label'       => 'My Color Field',
+					'id'          => 'unique_color_field',
+					'type'        => 'color',
+					'description' => 'My color field description',
+					'data_args'   => array(
 						'default' => '#000000',
 					),
 				),
@@ -53,34 +61,34 @@ return array(
 					'label'       => 'My Textarea Field',
 					'id'          => 'unique_textarea_field',
 					'type'        => 'textarea',
-					'desc'        => 'My textarea field',
+					'description' => 'My textarea field',
 					'placeholder' => 'my placeholder',
 				),
 				array(
-					'label'     => 'My Checkbox Field',
-					'id'        => 'unique_checkbox_field',
-					'type'      => 'checkbox',
-					'desc'      => 'My checkbox field description',
-					'choice'    => array(
+					'label'       => 'My Checkbox Field',
+					'id'          => 'unique_checkbox_field',
+					'type'        => 'checkbox',
+					'description' => 'My checkbox field description',
+					'choice'      => array(
 						'1' => 'My Choice',
 					),
-					'data_args' => array(
+					'data_args'   => array(
 						'default' => array(
 							'1' => 'My Choice',
 						),
 					),
 				),
 				array(
-					'label'     => 'My Checkbox Fields',
-					'id'        => 'unique_checkbox_fields',
-					'type'      => 'checkbox',
-					'desc'      => 'My checkbox fields description',
-					'choices'   => array(
+					'label'       => 'My Checkbox Fields',
+					'id'          => 'unique_checkbox_fields',
+					'type'        => 'checkbox',
+					'description' => 'My checkbox fields description',
+					'choices'     => array(
 						'option_one'   => 'Option 1',
 						'option_two'   => 'Option 2',
 						'option_three' => 'Option 3',
 					),
-					'data_args' => array(
+					'data_args'   => array(
 						'default' => array(
 							'option_one',
 							'option_two',
@@ -95,17 +103,17 @@ return array(
 			'description' => 'Section Two description text',
 			'fields'      => array(
 				array(
-					'label'   => 'My WP Editor Field',
-					'id'      => 'unique_wp_editor_field',
-					'type'    => 'wp_editor',
-					'desc'    => 'My WP Editor field description',
-					'default' => 'my placeholder',
+					'label'       => 'My WP Editor Field',
+					'id'          => 'unique_wp_editor_field',
+					'type'        => 'wp_editor',
+					'description' => 'My WP Editor field description',
+					'default'     => 'my placeholder',
 				),
 				array(
 					'label'       => 'My Decimal Number Field',
 					'id'          => 'unique_decimal_number_field',
 					'type'        => 'number',
-					'desc'        => 'My number field description',
+					'description' => 'My number field description',
 					'placeholder' => 'Multiple of 0.1',
 					'data_args'   => array(
 						'step' => '0.1',
@@ -117,7 +125,7 @@ return array(
 					'label'       => 'My Negative Number Field',
 					'id'          => 'unique_negative_number_field',
 					'type'        => 'number',
-					'desc'        => 'My negative number field description',
+					'description' => 'My negative number field description',
 					'placeholder' => 'Multiple of -1',
 					'data_args'   => array(
 						'step' => '1',
@@ -126,51 +134,64 @@ return array(
 					),
 				),
 				array(
-					'label'   => 'My Radio Field',
-					'id'      => 'unique_radio_field',
-					'type'    => 'radio',
-					'choices' => array(
+					'label'       => 'My Radio Field',
+					'id'          => 'unique_radio_field',
+					'type'        => 'radio',
+					'choices'     => array(
 						'option_one'   => 'Option 1',
 						'option_two'   => 'Option 2',
 						'option_three' => 'Option 3',
 					),
-					'desc'    => 'My radio field description',
+					'description' => 'My radio field description',
 				),
 				array(
-					'label'   => 'My Select Field',
-					'id'      => 'unique_select_field',
-					'type'    => 'select',
-					'choices' => array(
+					'label'       => 'My Select Field',
+					'id'          => 'unique_select_field',
+					'type'        => 'select',
+					'choices'     => array(
 						'option_one'   => 'Option 1',
 						'option_two'   => 'Option 2',
 						'option_three' => 'Option 3',
 					),
-					'desc'    => 'My select field description',
+					'description' => 'My select field description',
 				),
 				array(
-					'label'   => 'My Multi-select Field',
-					'id'      => 'unique_multiselect_field',
-					'type'    => 'multiselect',
-					'choices' => array(
+					'label'       => 'My Multi-select Field',
+					'id'          => 'unique_multiselect_field',
+					'type'        => 'select',
+					'choices'     => array(
 						'option_one'   => 'Option 1',
 						'option_two'   => 'Option 2',
 						'option_three' => 'Option 3',
 					),
-					'desc'    => 'My multi-select field description',
+					'description' => 'My multi-select field description',
+					'data_args'   => array(
+						'multiple' => 'multiple',
+					),
 				),
 				array(
 					'label'       => 'My Media Field',
 					'id'          => 'unique_media_field',
 					'type'        => 'media',
 					'returnvalue' => 'id',
-					'desc'        => 'My media field description',
+					'description' => 'My media field description',
 				),
 				array(
 					'label'       => 'My Email Field',
 					'id'          => 'unique_email_field',
 					'type'        => 'email',
-					'desc'        => 'My email field description',
+					'description' => 'My email field description',
 					'placeholder' => 'my placeholder',
+				),
+				array(
+					'label'       => 'My Phone Field',
+					'id'          => 'unique_phone_field',
+					'type'        => 'tel',
+					'description' => 'Example: 555-555-5555',
+					'placeholder' => '555-555-5555',
+					'data_args'   => array(
+						'pattern' => '[0-9]{3}-[0-9]{3}-[0-9]{4}',
+					),
 				),
 			),
 		),
