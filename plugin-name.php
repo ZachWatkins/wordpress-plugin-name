@@ -54,6 +54,16 @@ define( 'WP_PLUGIN_INTRO_DIR_PATH', __DIR__ . '/' );
  */
 require __DIR__ . '/vendor/autoload.php';
 
+/**
+ * Apply plugin activation requirements.
+ */
+new \ThoughtfulWeb\ActivationRequirementsWP\Plugin( __FILE__ );
+
+/**
+ * Load the settings page.
+ */
+new \ThoughtfulWeb\SettingsPageWP\Page();
+
 // Load the main class file.
-require __DIR__ . '/src/class-wordpress-plugin-name.php';
-new \WordPress_Plugin_Name( __FILE__ );
+require __DIR__ . '/src/class-plugin-name.php';
+new \Plugin_Name();
