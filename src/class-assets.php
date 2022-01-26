@@ -11,7 +11,7 @@
  * @since      0.1.0
  */
 
-namespace WordPress_Plugin_Name;
+namespace Plugin_Name;
 
 /**
  * The class that registers public web assets.
