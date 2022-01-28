@@ -26,7 +26,7 @@
     ],
     "require": {
         "thoughtful-web/settings-page-wp": "dev-develop",
-        "thoughtful-web/activation-requirements-wp": "dev-main"
+        "thoughtful-web/activation-requirements-wp": "dev-develop"
     },
 	"scripts": {
 		"post-install-cmd": [

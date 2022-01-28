@@ -1,13 +1,7 @@
 {
     "plugins": {
         "relation": "OR",
-        "0": {
-            "name": "Advanced Custom Fields",
-            "file": "advanced-custom-fields\/acf.php"
-        },
-        "1": {
-            "name": "Advanced Custom Fields Pro",
-            "file": "advanced-custom-fields-pro\/acf.php"
-        }
+        "0": "advanced-custom-fields\/acf.php",
+        "1": "advanced-custom-fields-pro\/acf.php"
     }
 }
