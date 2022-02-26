@@ -9,15 +9,6 @@
     },
     "option_group": "thoughtful_settings",
     "description": "A thoughtful settings page description.",
-    "stylesheet": {
-        "file": "settings.css",
-        "deps": []
-    },
-    "script": {
-        "file": "settings.js",
-        "deps": [],
-        "in_footer": true
-    },
     "sections": [
         {
             "section": "unique-section-id-1",
@@ -63,9 +54,7 @@
                         "1": "My Choice"
                     },
                     "data_args": {
-                        "default": {
-                            "1": "My Choice"
-                        }
+                        "default": "1"
                     }
                 },
                 {
@@ -160,6 +149,20 @@
                     "data_args": {
                         "multiple": true,
                         "default": ["option_one","option_two"]
+                    }
+                },
+                {
+                    "label": "My Multi-select Field #2",
+                    "id": "unique_multiselect_field_2",
+                    "type": "select",
+                    "description": "My multi-select field description",
+                    "choices": {
+                        "option_one": "Option 1",
+                        "option_two": "Option 2",
+                        "option_three": "Option 3"
+                    },
+                    "data_args": {
+                        "multiple": true
                     }
                 },
                 {

@@ -4,10 +4,22 @@
 			"path": "../"
 		},
 		{
-			"path": "../../../../../../../../repositories/thoughtful-web-library"
+			"path": "../../wordpress-plugin"
 		},
 		{
-			"path": "../../../.."
+			"path": "../../../../../../../../repositories/thoughtful-web-settings-page-wp"
+		},
+		{
+			"path": "../../../../../../../../repositories/thoughtful-web-activation-requirements-wp"
+		},
+		{
+			"path": "../../../../../../../wso/app/public/wp-content/plugins/cla-workstation-order"
+		},
+		{
+			"path": "../../../../../../../homeandranch/app/public/wp-content/themes/homeranch"
+		},
+		{
+			"path": "../../../../../../../homeandranch/app/public/wp-content/plugins/task-interface-management"
 		}
 	],
 	"settings": {

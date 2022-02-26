@@ -4,24 +4,28 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "10ed9a3c946dcbfebe0951ebfe8aa62c",
+    "content-hash": "cc8fbd80ee0bc8678048a5ff445fb7d0",
     "packages": [
         {
             "name": "thoughtful-web/activation-requirements-wp",
-            "version": "dev-develop",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thoughtful-web/activation-requirements-wp.git",
-                "reference": "e39a2299fef6056c1c975d5bee1647b1ccd09c4d"
+                "reference": "58c64e923cc36efe4e108a281a60f50688915b19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thoughtful-web/activation-requirements-wp/zipball/e39a2299fef6056c1c975d5bee1647b1ccd09c4d",
-                "reference": "e39a2299fef6056c1c975d5bee1647b1ccd09c4d",
+                "url": "https://api.github.com/repos/thoughtful-web/activation-requirements-wp/zipball/58c64e923cc36efe4e108a281a60f50688915b19",
+                "reference": "58c64e923cc36efe4e108a281a60f50688915b19",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.3.5"
+            },
+            "require-dev": {
+                "squizlabs/php_codesniffer": "^3.6",
+                "wp-coding-standards/wpcs": "^2.3"
             },
             "type": "library",
             "autoload": {
@@ -29,6 +33,7 @@
                     "ThoughtfulWeb\\ActivationRequirementsWP\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0-or-later"
             ],
@@ -51,24 +56,24 @@
                 "wordpress"
             ],
             "support": {
+                "docs": "https://raw.githubusercontent.com/thoughtful-web/activation-requirements-wp/main/README.md",
                 "issues": "https://github.com/thoughtful-web/activation-requirements-wp/issues",
-                "source": "https://github.com/thoughtful-web/activation-requirements-wp/",
-                "docs": "https://raw.githubusercontent.com/thoughtful-web/activation-requirements-wp/main/README.md"
+                "source": "https://github.com/thoughtful-web/activation-requirements-wp/"
             },
-            "time": "2022-01-28T04:23:49+00:00"
+            "time": "2022-02-16T13:52:43+00:00"
         },
         {
             "name": "thoughtful-web/settings-page-wp",
-            "version": "dev-develop",
+            "version": "v1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thoughtful-web/settings-page-wp.git",
-                "reference": "94605fe789da9a580b081d7b137e230c0b9836d8"
+                "reference": "cab62e8144ef9fe4c17c505ac374994ce645e4a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thoughtful-web/settings-page-wp/zipball/94605fe789da9a580b081d7b137e230c0b9836d8",
-                "reference": "94605fe789da9a580b081d7b137e230c0b9836d8",
+                "url": "https://api.github.com/repos/thoughtful-web/settings-page-wp/zipball/cab62e8144ef9fe4c17c505ac374994ce645e4a5",
+                "reference": "cab62e8144ef9fe4c17c505ac374994ce645e4a5",
                 "shasum": ""
             },
             "require": {
@@ -84,6 +89,7 @@
                     "ThoughtfulWeb\\SettingsPageWP\\": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "GPL-2.0-or-later"
             ],
@@ -102,17 +108,17 @@
             "description": "WordPress Settings page generator and validator released as free open source software under GNU GPL-2.0+ License",
             "homepage": "https://github.com/thoughtful-web/settings-page-wp",
             "keywords": [
+                "Settings",
                 "options",
-                "settings",
                 "settings page",
                 "wordpress"
             ],
             "support": {
+                "docs": "https://raw.githubusercontent.com/thoughtful-web/settings-page-wp/main/README.md",
                 "issues": "https://github.com/thoughtful-web/settings-page-wp/issues",
-                "source": "https://github.com/thoughtful-web/settings-page-wp/",
-                "docs": "https://raw.githubusercontent.com/thoughtful-web/settings-page-wp/main/README.md"
+                "source": "https://github.com/thoughtful-web/settings-page-wp/"
             },
-            "time": "2022-01-25T05:05:09+00:00"
+            "time": "2022-02-19T03:51:03+00:00"
         }
     ],
     "packages-dev": [
@@ -226,10 +232,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "thoughtful-web/settings-page-wp": 20,
-        "thoughtful-web/activation-requirements-wp": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

@@ -14,19 +14,9 @@
 	"require-dev": {
 		"wp-coding-standards/wpcs": "*"
 	},
-	"repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/thoughtful-web/settings-page-wp"
-        },
-		{
-			"type": "vcs",
-			"url": "https://github.com/thoughtful-web/activation-requirements-wp"
-		}
-    ],
     "require": {
-        "thoughtful-web/settings-page-wp": "dev-develop",
-        "thoughtful-web/activation-requirements-wp": "dev-develop"
+        "thoughtful-web/settings-page-wp": "^1.0.0",
+        "thoughtful-web/activation-requirements-wp": "^1.0.0"
     },
 	"scripts": {
 		"post-install-cmd": [

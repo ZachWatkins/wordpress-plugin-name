@@ -57,8 +57,7 @@ require __DIR__ . '/vendor/autoload.php';
 /**
  * Apply plugin activation requirements.
  */
-error_log(serialize(get_option( 'active_plugins' )));
-new \ThoughtfulWeb\ActivationRequirementsWP\Plugin( __FILE__ );
+new \ThoughtfulWeb\ActivationRequirementsWP\Plugin();
 
 /**
  * Load the settings page.
