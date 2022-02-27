@@ -11,7 +11,11 @@
  * @since      0.1.0
  */
 
-use \Plugin_Name\Assets;
+namespace Plugin_Name\Src;
+
+use \Plugin_Name\Src\Assets;
+use \Plugin_Name\Util\PostType;
+use \Plugin_Name\Util\Taxonomy;
 use \ThoughtfulWeb\SettingsPageWP\Page;
 
 /**
@@ -34,6 +38,35 @@ class Plugin_Name {
 		// Load the assets.
 		require __DIR__ . '/class-assets.php';
 		new Assets();
+
+		// Load the settings page.
+		new \ThoughtfulWeb\SettingsPageWP\Page();
+
+		// Register a custom post type.
+		new PostType( 'new_post_type', 'New Post Type', 'New Post Types', 'dashicons-portfolio' );
+		$meta = array(
+			array(
+				'slug' => 'text_field',
+				'name' => 'Text Field',
+				'type' => 'text',
+			),
+			array(
+				'slug' => 'checkbox_field',
+				'name' => 'Checkbox Field',
+				'type' => 'checkbox',
+			),
+			array(
+				'slug' => 'link_field',
+				'name' => 'Link Field',
+				'type' => 'link',
+			),
+			array(
+				'slug' => 'editor_field',
+				'name' => 'Editor Field',
+				'type' => 'editor',
+			),
+		);
+		new Taxonomy( 'new_taxonomy', 'New Taxonomy', 'New Taxonomies', 'new_post_type', array(), $meta, true, true );
 
 	}
 }

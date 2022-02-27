@@ -8,7 +8,7 @@
  * @subpackage wordpress-plugin/src
  */
 
-namespace WordPress_Plugin;
+namespace Plugin_Name\Util;
 
 /**
  * Builds and registers a custom taxonomy.
@@ -195,7 +195,7 @@ class Taxonomy {
 
 					// Output the form field.
 					switch ( $meta['type'] ) {
-						case 'full':
+						case 'editor':
 							$value = $term_meta ? stripslashes( $term_meta ) : '';
 							$value = html_entity_decode( $value );
 							wp_editor(

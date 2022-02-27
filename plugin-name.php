@@ -45,9 +45,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @see https://developer.wordpress.org/reference/functions/plugin_dir_url/
  * @see https://www.php.net/manual/en/function.dirname.php
  */
-define( 'WP_PLUGIN_INTRO_DIR_URL', plugin_dir_url( __FILE__ ) . '/' );
-define( 'WP_PLUGIN_INTRO_DIR_FILE', __FILE__ );
-define( 'WP_PLUGIN_INTRO_DIR_PATH', __DIR__ . '/' );
+define( 'PLUGIN_NAME_DIR_URL', plugin_dir_url( __FILE__ ) . '/' );
+define( 'PLUGIN_NAME_DIR_FILE', __FILE__ );
+define( 'PLUGIN_NAME_DIR_PATH', __DIR__ . '/' );
 
 /**
  * The core plugin class is used to initialize the plugin.
@@ -58,11 +58,6 @@ require __DIR__ . '/vendor/autoload.php';
  * Apply plugin activation requirements.
  */
 new \ThoughtfulWeb\ActivationRequirementsWP\Plugin();
-
-/**
- * Load the settings page.
- */
-new \ThoughtfulWeb\SettingsPageWP\Page();
 
 // Load the main class file.
 require __DIR__ . '/src/class-plugin-name.php';

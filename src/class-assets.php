@@ -11,7 +11,7 @@
  * @since      0.1.0
  */
 
-namespace Plugin_Name;
+namespace Plugin_Name\Src;
 
 /**
  * The class that registers public web assets.
@@ -56,9 +56,9 @@ class Assets {
 
 		wp_register_style(
 			'wordpress-plugin-name-admin',
-			WP_PLUGIN_INTRO_DIR_URL . 'css/admin.css',
+			PLUGIN_NAME_DIR_URL . 'css/admin.css',
 			false,
-			filemtime( WP_PLUGIN_INTRO_DIR_PATH . 'css/admin.css' ),
+			filemtime( PLUGIN_NAME_DIR_PATH . 'css/admin.css' ),
 			'screen'
 		);
 
@@ -91,18 +91,18 @@ class Assets {
 		// Register public styles.
 		wp_register_style(
 			'wordpress-plugin-name-public',
-			WP_PLUGIN_INTRO_DIR_URL . 'css/style.css',
+			PLUGIN_NAME_DIR_URL . 'css/style.css',
 			false,
-			filemtime( WP_PLUGIN_INTRO_DIR_PATH . 'css/style.css' ),
+			filemtime( PLUGIN_NAME_DIR_PATH . 'css/style.css' ),
 			'screen'
 		);
 
 		// Register public JavaScript in the site footer with jQuery pre-loaded.
 		wp_register_script(
 			'wordpress-plugin-name-public-script',
-			WP_PLUGIN_INTRO_DIR_URL . 'js/public.js',
+			PLUGIN_NAME_DIR_URL . 'js/public.js',
 			array( 'jquery' ),
-			filemtime( WP_PLUGIN_INTRO_DIR_PATH . 'js/public.js' ),
+			filemtime( PLUGIN_NAME_DIR_PATH . 'js/public.js' ),
 			true
 		);
 
