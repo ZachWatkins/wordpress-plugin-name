@@ -57,5 +57,10 @@ require __DIR__ . '/vendor/autoload.php';
 // Apply plugin activation requirements.
 new \ThoughtfulWeb\ActivationRequirementsWP\Plugin();
 
+// On activation, flush rewrite rules for new publicly available post types and taxonomies.
+if ( has_action( 'activate_' . PLUGIN_NAME_DIR_FILE, 'flush_rewrite_rules' ) === false ) {
+	register_activation_hook( PLUGIN_NAME_DIR_FILE, 'flush_rewrite_rules' );
+}
+
 // Load the main class file.
 new \Plugin_Name\Src\Init();
