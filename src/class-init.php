@@ -42,8 +42,8 @@ class Init {
 		new \ThoughtfulWeb\SettingsPageWP\Page();
 
 		// Register a custom post type.
-		new PostType( 'new_post_type', 'New Post Type', 'New Post Types', 'dashicons-portfolio' );
-		$meta = array(
+		new PostType( 'new_post_type', 'New Post Type', 'New Post Types', array( 'taxonomy' => 'new_taxonomy' ) );
+		$taxonomy_meta = array(
 			array(
 				'slug' => 'text_field',
 				'name' => 'Text Field',
@@ -65,7 +65,7 @@ class Init {
 				'type' => 'editor',
 			),
 		);
-		new Taxonomy( 'new_taxonomy', 'New Taxonomy', 'New Taxonomies', 'new_post_type', array(), $meta, true, true );
+		new Taxonomy( 'new_taxonomy', 'New Taxonomy', 'New Taxonomies', 'new_post_type', array(), $taxonomy_meta, true, true );
 
 	}
 }
