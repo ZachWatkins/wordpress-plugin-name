@@ -54,11 +54,8 @@ define( 'PLUGIN_NAME_DIR_PATH', __DIR__ . '/' );
  */
 require __DIR__ . '/vendor/autoload.php';
 
-/**
- * Apply plugin activation requirements.
- */
+// Apply plugin activation requirements.
 new \ThoughtfulWeb\ActivationRequirementsWP\Plugin();
 
 // Load the main class file.
-require __DIR__ . '/src/class-plugin-name.php';
-new \Plugin_Name();
+new \Plugin_Name\Src\Init();

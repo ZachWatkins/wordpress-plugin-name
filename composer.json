@@ -21,7 +21,7 @@
 	"autoload": {
 		"classmap": [
 			"util/",
-			"src/class-plugin-name.php",
+			"src/class-init.php",
 			"src/class-assets.php"
 		]
 	},

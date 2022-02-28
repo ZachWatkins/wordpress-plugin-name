@@ -25,7 +25,7 @@ use \ThoughtfulWeb\SettingsPageWP\Page;
  * @since  0.1.0
  * @return void
  */
-class Plugin_Name {
+class Init {
 
 	/**
 	 * Initialize the class.
@@ -36,7 +36,6 @@ class Plugin_Name {
 	public function __construct() {
 
 		// Load the assets.
-		require __DIR__ . '/class-assets.php';
 		new Assets();
 
 		// Load the settings page.
