@@ -123,19 +123,19 @@ class PostType {
 		add_action( 'init', array( $this, 'register' ) );
 
 		// Register post type templates.
-		// if ( ! empty( $templates ) ) {
-		// 	// Render single template.
-		// 	if ( isset( $templates['single'] ) ) {
-		// 		$this->single_template = $templates['single'];
-		// 		add_filter( 'single_template', array( $this, 'get_single_template' ) );
-		// 	}
+		if ( ! empty( $templates ) ) {
+			// Render single template.
+			if ( isset( $templates['single'] ) ) {
+				$this->single_template = $templates['single'];
+				add_filter( 'single_template', array( $this, 'get_single_template' ) );
+			}
 
-		// 	// Render archive template.
-		// 	if ( isset( $templates['archive'] ) ) {
-		// 		$this->archive_template = $templates['archive'];
-		// 		add_filter( 'archive_template', array( $this, 'get_archive_template' ) );
-		// 	}
-		// }
+			// Render archive template.
+			if ( isset( $templates['archive'] ) ) {
+				$this->archive_template = $templates['archive'];
+				add_filter( 'archive_template', array( $this, 'get_archive_template' ) );
+			}
+		}
 
 	}
 
