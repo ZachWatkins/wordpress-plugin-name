@@ -526,21 +526,25 @@ class Taxonomy {
 		global $typenow;
 		global $wp_query;
 
-		$is_post_type_page = ! is_array( $this->post_slug ) ? $typenow === $this->post_slug : in_array( $typenow, $this->post_slug, true );
+		$is_post_type_page = ! is_array( $this->post_types ) ? $typenow === $this->post_types : in_array( $typenow, $this->post_types, true );
 
 		if ( $is_post_type_page ) {
 
 			$taxonomy     = $this->taxonomy;
 			$taxonomy_obj = get_taxonomy( $taxonomy );
-			wp_dropdown_categories( array(
+			$args         = array(
 				'show_option_all' =>  __( "Show All {$taxonomy_obj->label}" ),
 				'value_field'     => 'slug',
 				'taxonomy'        =>  $taxonomy,
 				'name'            =>  $taxonomy,
 				'orderby'         =>  'name',
-				'selected'        =>  $wp_query->query[ $taxonomy ],
 				'hide_empty'      =>  false,
-			) );
+			);
+			$query_args   = $wp_query->query;
+			if ( isset( $query_args[ $taxonomy ] ) ) {
+				$args['selected'] = $query_args[ $taxonomy ];
+			}
+			wp_dropdown_categories( $args );
 
 		}
 

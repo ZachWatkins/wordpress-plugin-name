@@ -44,6 +44,9 @@ class Init {
 		// Register a custom post type.
 		new PostType( 'new_post_type', 'New Post Type', 'New Post Types', array( 'taxonomy' => 'new_taxonomy' ) );
 
+		// Register Advanced Custom Fields.
+		add_action('acf/init', array( $this, 'acf_files' ) );
+
 		// Register a custom taxonomy.
 		$taxonomy_meta = array(
 			array(
@@ -68,6 +71,17 @@ class Init {
 			),
 		);
 		new Taxonomy( 'new_taxonomy', 'New Taxonomy', 'New Taxonomies', 'new_post_type', array(), $taxonomy_meta, true, true );
+
+	}
+
+	/**
+	 * Register ACF files.
+	 *
+	 * @return void
+	 */
+	public function acf_files() {
+
+		require PLUGIN_NAME_DIR_PATH . '/advanced-custom-fields/new-post-type.php';
 
 	}
 }
