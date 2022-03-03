@@ -162,11 +162,13 @@ class Taxonomy {
 	 * @return void
 	 */
 	public function add_meta_boxes( $taxonomy, $meta ) {
+		// Ensure the meta_boxes variable is an array of arrays.
 		if ( ! array_key_exists( 0, $meta ) ) {
 			$this->meta_boxes[] = $meta;
 		} else {
 			$this->meta_boxes = $meta;
 		}
+		// Add action hooks.
 		add_action( "{$taxonomy}_edit_form_fields", array( $this, 'taxonomy_edit_meta_field' ), 10, 2 );
 		add_action( "edited_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ), 10, 2 );
 	}
@@ -211,9 +213,12 @@ class Taxonomy {
 		// put the term ID into a variable.
 		$t_id = $tag->term_id;
 
+		// Make sure the form request comes from WordPress.
+		wp_nonce_field( basename( __FILE__ ), "term_meta_{$taxonomy}_nonce" );
+
 		foreach ( $this->meta_boxes as $key => $meta ) {
 			// Retrieve the existing value(s) for this meta field. This returns an array.
-			$taxonomy      = $meta['slug'];
+			$taxonomy  = $meta['slug'];
 			$term_meta = get_term_meta( $t_id, "term_meta_{$taxonomy}" );
 
 			?><tr class="form-field term-<?php echo esc_attr( $taxonomy ); ?>-wrap">
@@ -221,28 +226,20 @@ class Taxonomy {
 				<td>
 					<?php
 
-					// Make sure the form request comes from WordPress.
-					wp_nonce_field( basename( __FILE__ ), "term_meta_{$taxonomy}_nonce" );
-
 					// Output the form field.
 					switch ( $meta['type'] ) {
 						case 'editor':
-							$value = $term_meta ? stripslashes( $term_meta ) : '';
-							$value = html_entity_decode( $value );
+							$value = $term_meta ? wp_kses_post( $term_meta ) : '';
 							wp_editor(
 								$value,
-								'term_meta_' . $taxonomy,
-								array(
-									'textarea_name' => 'term_meta_' . $taxonomy,
-									'wpautop'       => false,
-								)
+								"term_meta_{$taxonomy}",
+								array( 'textarea_name' => "term_meta_{$taxonomy}" )
 							);
 							break;
 
 						case 'link':
-							$value  = $term_meta ? stripslashes( $term_meta ) : '';
-							$value  = html_entity_decode( $value );
-							$output = "<input type=\"url\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\" placeholder=\"https://example.com\" pattern=\"http[s]?://.*\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'agrilife-degree-programs' ) . '</p>';
+							$value  = $term_meta ? sanitize_text_field( $term_meta ) : '';
+							$output = "<input type=\"url\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\" placeholder=\"https://example.com\" pattern=\"http[s]?://.*\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-name' ) . '</p>';
 							echo wp_kses(
 								$output,
 								array(
@@ -278,9 +275,8 @@ class Taxonomy {
 							break;
 
 						default:
-							$value  = $term_meta ? stripslashes( $term_meta ) : '';
-							$value  = html_entity_decode( $value );
-							$output = "<input type=\"text\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-textdomain' ) . '</p>';
+							$value  = $term_meta ? sanitize_text_field( $term_meta ) : '';
+							$output = "<input type=\"text\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-name' ) . '</p>';
 							echo wp_kses(
 								$output,
 								array(
@@ -306,7 +302,7 @@ class Taxonomy {
 	}
 
 	/**
-	 * Save custom fields
+	 * Save custom fields with sanitization measures.
 	 *
 	 * @param int $term_id The term ID.
 	 * @param int $tt_id   The term taxonomy ID.
@@ -314,29 +310,27 @@ class Taxonomy {
 	 */
 	public function save_taxonomy_custom_meta( $term_id, $tt_id ) {
 
+		// Ensure this request came from WordPress.
+		$nonce_key = sanitize_key( "term_meta_{$this->taxonomy}_nonce" );
+		if ( ! isset( $_POST[ $nonce_key ] ) || ! wp_verify_nonce( $nonce_key, basename( __FILE__ ) ) ) {
+			return;
+		}
+
 		foreach ( $this->meta_boxes as $key => $meta ) {
 
-			$taxonomy = $meta['slug'];
-			$key  = sanitize_key( "term_meta_$taxonomy" );
-			$nkey = isset( $_POST[ $key . '_nonce' ] ) ? sanitize_key( $_POST[ $key . '_nonce' ] ) : null;
-
-			if (
-				! isset( $nkey )
-				|| ! wp_verify_nonce( $nkey, basename( __FILE__ ) )
-			) {
-				continue;
-			}
+			$key = sanitize_key( "term_meta_{$meta['slug']}" );
 
 			if ( 'checkbox' === $meta['type'] ) {
 
-				$value = isset( $_POST[ $key ] ) ? sanitize_key( wp_unslash( $_POST[ $key ] ) ) : null;
+				$value = isset( $_POST[ $key ] ) ? sanitize_key( wp_unslash( $_POST[ $key ] ) ) : '';
+
+			} elseif ( 'editor' === $meta['type'] ) {
+
+				$value = wp_kses_post( $_POST[ $key ] );
 
 			} else {
 
-				$post_meta = sanitize_text_field( wp_unslash( $_POST[ $key ] ) );
-				$t_id      = $term_id;
-				$value     = wp_unslash( $post_meta );
-				$value     = sanitize_text_field( htmlentities( $value ) );
+				$value = sanitize_text_field( $_POST[ $key ] );
 
 			}
 
@@ -531,7 +525,10 @@ class Taxonomy {
 
 		global $typenow;
 		global $wp_query;
-		if ( $typenow == $this->post_slug ) {
+
+		$is_post_type_page = ! is_array( $this->post_slug ) ? $typenow === $this->post_slug : in_array( $typenow, $this->post_slug, true );
+
+		if ( $is_post_type_page ) {
 
 			$taxonomy     = $this->taxonomy;
 			$taxonomy_obj = get_taxonomy( $taxonomy );
@@ -550,7 +547,7 @@ class Taxonomy {
 	}
 
 	/**
-	 * Convert the admin select element value to a taxonomy term ID for the query.
+	 * Convert the Term ID in a query variable to a Term Slug for readability.
 	 *
 	 * @param WP_Query $query The main WordPress Query object for listing admin posts.
 	 *

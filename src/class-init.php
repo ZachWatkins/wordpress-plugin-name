@@ -43,6 +43,8 @@ class Init {
 
 		// Register a custom post type.
 		new PostType( 'new_post_type', 'New Post Type', 'New Post Types', array( 'taxonomy' => 'new_taxonomy' ) );
+
+		// Register a custom taxonomy.
 		$taxonomy_meta = array(
 			array(
 				'slug' => 'text_field',
