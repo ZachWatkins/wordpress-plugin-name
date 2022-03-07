@@ -14,8 +14,7 @@
 namespace Plugin_Name\Src;
 
 use \Plugin_Name\Src\Assets;
-use \Plugin_Name\Util\PostType;
-use \Plugin_Name\Util\Taxonomy;
+use \Plugin_Name\Src\New_Post_Type;
 use \ThoughtfulWeb\SettingsPageWP\Page;
 
 /**
@@ -35,53 +34,13 @@ class Init {
 	 */
 	public function __construct() {
 
-		// Load the assets.
+		// Register the assets that load on every page.
 		new Assets();
 
 		// Load the settings page.
 		new \ThoughtfulWeb\SettingsPageWP\Page();
 
-		// Register a custom post type.
-		new PostType( 'new_post_type', 'New Post Type', 'New Post Types', array( 'taxonomy' => 'new_taxonomy' ) );
-
-		// Register Advanced Custom Fields.
-		add_action('acf/init', array( $this, 'acf_files' ) );
-
-		// Register a custom taxonomy.
-		$taxonomy_meta = array(
-			array(
-				'slug' => 'text_field',
-				'name' => 'Text Field',
-				'type' => 'text',
-			),
-			array(
-				'slug' => 'checkbox_field',
-				'name' => 'Checkbox Field',
-				'type' => 'checkbox',
-			),
-			array(
-				'slug' => 'link_field',
-				'name' => 'Link Field',
-				'type' => 'link',
-			),
-			array(
-				'slug' => 'editor_field',
-				'name' => 'Editor Field',
-				'type' => 'editor',
-			),
-		);
-		new Taxonomy( 'new_taxonomy', 'New Taxonomy', 'New Taxonomies', 'new_post_type', array(), $taxonomy_meta, true, true );
-
-	}
-
-	/**
-	 * Register ACF files.
-	 *
-	 * @return void
-	 */
-	public function acf_files() {
-
-		require PLUGIN_NAME_DIR_PATH . '/advanced-custom-fields/new-post-type.php';
+		new New_Post_Type();
 
 	}
 }
