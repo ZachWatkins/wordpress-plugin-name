@@ -137,6 +137,12 @@ class PostType {
 			}
 		}
 
+		// Add an activation hook for flushing rewrite rules.
+		// Checks to ensure it is not yet hooked.
+		if ( false === has_action( 'activate_' . PLUGIN_NAME_DIR_FILE, 'flush_rewrite_rules' ) ) {
+			register_activation_hook( PLUGIN_NAME_DIR_FILE, 'flush_rewrite_rules' );
+		}
+
 	}
 
 	/**
