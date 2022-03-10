@@ -1,17 +1,13 @@
 # WordPress Plugin Boilerplate
 
-
-
 ## Features
 
-1. Plugin compatibility headers
-2. Well documented code using [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/) and links to official PHP and WordPress documentation websites that can help beginners learn the code more quickly.
-3. Visual Studio Code settings and Composer modules for PHP and WordPress Coding Standards and core documentation preconfigured for an improved in-editor learning experience.
-4. Essential WordPress features that beginners are likely to want to learn:
-   a. A plugin activation class that ensures Advanced Custom Fields lite or pro is activated before allowing this plugin to activate.
-   b. A page template registration class that throws exceptions if misconfigured during development.
-   c. A page template file that loads and extends a site's `page.php` template and adds content with action hooks for maximum theme compatibility.
-   d. A demo template with Advanced Custom Fields, CSS, jQuery, and a JS file.
+1. Custom post type using Advanced Custom Fields and a custom taxonomy
+2. Settings page which loads the "unique_text_field" setting in the custom post type templates
+3. Plugin activation requirement notification to check for Advanced Custom Fields
+4. Registers CSS and JS files (with jQuery) for all pages of the site and the single or archive page template for the custom post type.
+5. Well documented code using [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/) and links to official PHP and WordPress documentation websites that can help beginners learn the code more quickly.
+6. Visual Studio Code settings and Composer modules for PHP and WordPress Coding Standards and core documentation preconfigured for an improved in-editor learning experience.
 
 ## Installation
 
@@ -28,6 +24,11 @@ Before you get started you should download and install some things:
 *Repository*
 1. Run `$ composer install` from this directory on the command line.
 2. Restart VS Code if you have it open.
+3. Run `$ composer run checkwp` to check your files against WordPress Coding Standards.
+4. Run `$ composer run fixwp` to automatically fix indentation or spacing issues flagged by WordPress Coding Standards.
+5. Search through the files for "wordpress-plugin-name", "WordPress Plugin Name", and "PLUGIN_NAME" and replace these strings with the name of your plugin, maintaining the capitalization and special characters.
+6. Search through the files for "new-post-type", "new_post_type", and "New Post Type" and replace them with the name of your custom post type.
+6. Search through the files for "new_taxonomy", "New Taxonomy", and "New Taxonomies" and replace them with the name of your custom taxonomy.
 
 ## Introduction
 
@@ -39,7 +40,7 @@ This plugin was created by Zachary Watkins <watkinza@gmail.com> with the hope th
 
 ## Code Standards, Guidelines, and Conventions
 
-There are many ways to learn programming and rigid documentation requirements can seem daunting for beginners. If you are a beginner, I am excited that you are here and I hope you learn something from what you find here. While not a requirement to write functional code, the additional steps required to learn and implement best practices for documentation is worthwhile for both personal and professional projects.
+There are many ways to learn programming and rigid documentation requirements can seem daunting for beginners. If you are a beginner, I am excited that you are here and I hope you learn something from what you find. While not a requirement to write functional code, learning and implementing best practices for coding and documentation is worthwhile for both personal and professional projects.
 
 "WordPress is a big project with thousands of contributors. It’s important that best practices are followed so that the codebase is consistent and readable, and changes are easy to find and read, whether the code is five days old or five years old. What follows are a series of best practices to help keep WordPress code clean and well documented for years to come." View more: <https://developer.wordpress.org/coding-standards/>
 
@@ -47,7 +48,7 @@ There are many ways to learn programming and rigid documentation requirements ca
 
 PHPDoc's Tag Reference: <https://docs.phpdoc.org/3.0/guide/references/phpdoc/tags/index.html#tag-reference>
 
-I use the Composer module for [PHP CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer/) to automate code compliance with [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/). However, this repository is not yet fully compliant with those standards. A pre-commit hook file is included in this repository to enforce code commits to meet this standard but can be disabled when a situation warrants it, such as backing up unfinished work via a commit.
+I use the Composer module for [PHP CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer/) to automate code compliance with [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/). A pre-commit hook file is included in this repository to enforce code commits to meet this standard but can be disabled when a situation warrants it, such as backing up unfinished work via a commit.
 
 Git, NPM, and Visual Studio Code files in this repository help improve compatibility between Mac (terminal) and Windows (powershell) environments for improved collaboration between developers.
 

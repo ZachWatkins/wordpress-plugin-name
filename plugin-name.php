@@ -45,9 +45,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @see https://developer.wordpress.org/reference/functions/plugin_dir_url/
  * @see https://www.php.net/manual/en/function.dirname.php
  */
-define( 'PLUGIN_NAME_DIR_URL', plugin_dir_url( __FILE__ ) . '/' );
+define( 'PLUGIN_NAME_DIR_URL', plugin_dir_url( __FILE__ ) );
 define( 'PLUGIN_NAME_DIR_FILE', __FILE__ );
-define( 'PLUGIN_NAME_DIR_PATH', __DIR__ . '/' );
+define( 'PLUGIN_NAME_DIR_PATH', __DIR__ );
 
 /**
  * The core plugin class is used to initialize the plugin.

@@ -2,8 +2,8 @@
 /**
  * The file that registers the plugin's publicly available CSS and/or JS files.
  *
- * @package    WordPress_Plugin_Name
- * @subpackage Core
+ * @package    WordPress Plugin Name
+ * @subpackage Source
  * @copyright  Zachary Watkins 2022
  * @author     Zachary Watkins <watkinza@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
@@ -20,6 +20,20 @@ namespace Plugin_Name\Src;
  * @since 0.1.0
  */
 class Assets {
+
+	/**
+	 * The plugin directory.
+	 *
+	 * @var string
+	 */
+	private $plugin_dir = PLUGIN_NAME_DIR_PATH;
+
+	/**
+	 * The plugin directory URL.
+	 *
+	 * @var string
+	 */
+	private $plugin_dir_url = PLUGIN_NAME_DIR_URL;
 
 	/**
 	 * Initialize the class
@@ -56,9 +70,9 @@ class Assets {
 
 		wp_register_style(
 			'wordpress-plugin-name-admin',
-			PLUGIN_NAME_DIR_URL . 'css/admin.css',
+			"{$this->plugin_dir_url}/css/admin.css",
 			false,
-			filemtime( PLUGIN_NAME_DIR_PATH . 'css/admin.css' ),
+			filemtime( "{$this->plugin_dir}/css/admin.css" ),
 			'screen'
 		);
 
@@ -91,18 +105,18 @@ class Assets {
 		// Register public styles.
 		wp_register_style(
 			'wordpress-plugin-name-public',
-			PLUGIN_NAME_DIR_URL . 'css/style.css',
+			"{$this->plugin_dir_url}/css/public.css",
 			false,
-			filemtime( PLUGIN_NAME_DIR_PATH . 'css/style.css' ),
+			filemtime( "{$this->plugin_dir}/css/public.css" ),
 			'screen'
 		);
 
 		// Register public JavaScript in the site footer with jQuery pre-loaded.
 		wp_register_script(
 			'wordpress-plugin-name-public-script',
-			PLUGIN_NAME_DIR_URL . 'js/public.js',
+			"{$this->plugin_dir_url}/js/public.js",
 			array( 'jquery' ),
-			filemtime( PLUGIN_NAME_DIR_PATH . 'js/public.js' ),
+			filemtime( "{$this->plugin_dir}/js/public.js" ),
 			true
 		);
 

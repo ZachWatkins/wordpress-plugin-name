@@ -1,13 +1,11 @@
 <?php
 /**
- * The file that initializes custom post types
+ * The file that initializes custom post types.
  *
- * A class definition that registers custom post types with their attributes
- *
- * @link       https://github.com/zachwatkins/wordpress-plugin/blob/master/src/class-posttype.php
+ * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/util/class-posttype.php
  * @since      1.0.0
- * @package    wordpress-plugin
- * @subpackage wordpress-plugin/src
+ * @package    WordPress Plugin Name
+ * @subpackage Utilities
  */
 
 namespace Plugin_Name\Util;
@@ -16,9 +14,22 @@ namespace Plugin_Name\Util;
  * The post type registration class
  *
  * @since 1.0.0
- * @return void
  */
 class PostType {
+
+	/**
+	 * The plugin directory.
+	 *
+	 * @var string
+	 */
+	private $plugin_dir = PLUGIN_NAME_DIR_PATH;
+
+	/**
+	 * The plugin directory URL.
+	 *
+	 * @var string
+	 */
+	private $plugin_file = PLUGIN_NAME_DIR_FILE;
 
 	/**
 	 * Default post type registration arguments.
@@ -47,7 +58,7 @@ class PostType {
 			'page-attributes',
 			'thumbnail',
 		),
-		'delete_with_user' => false,
+		'delete_with_user'   => false,
 	);
 
 	/**
@@ -81,14 +92,22 @@ class PostType {
 	/**
 	 * Builds and registers the custom taxonomy.
 	 *
-	 * @param  string $slug     The post type slug.
-	 * @param  array  $singular The singular post label.
-	 * @param  array  $plural   The plural post label.
-	 * @param  array  $args     Additional user arguments which override all others for the function register_post_type.
-	 * @param  array  $templates  {
-	 *     The post type templates for archive or single views.
-	 *     @key string $single  The single post template.
-	 *     @key string $archive The archive post template.
+	 * @param  string $slug      The post type slug.
+	 * @param  array  $singular  The singular post label.
+	 * @param  array  $plural    The plural post label.
+	 * @param  array  $args      Additional user arguments which override all others for the function register_post_type.
+	 * @param  array  $templates {
+	 *                           The
+	 *                           post
+	 *                           type
+	 *                           templates
+	 *                           for
+	 *                           archive
+	 *                           or
+	 *                           single
+	 *                           views.
+	 * @key    string $single  The single post template.
+	 * @key    string $archive The archive post template.
 	 * }
 	 * @return void
 	 */
@@ -139,8 +158,8 @@ class PostType {
 
 		// Add an activation hook for flushing rewrite rules.
 		// Checks to ensure it is not yet hooked.
-		if ( false === has_action( 'activate_' . PLUGIN_NAME_DIR_FILE, 'flush_rewrite_rules' ) ) {
-			register_activation_hook( PLUGIN_NAME_DIR_FILE, 'flush_rewrite_rules' );
+		if ( false === has_action( "activate_{$this->plugin_file}", 'flush_rewrite_rules' ) ) {
+			register_activation_hook( $this->plugin_file, 'flush_rewrite_rules' );
 		}
 
 	}
@@ -165,9 +184,9 @@ class PostType {
 	 */
 	public function get_single_template( $single_template ) {
 
-		if ( $this->post_type === get_query_var( 'post_type' ) ) {
+		if ( get_query_var( 'post_type' ) === $this->post_type ) {
 
-			$single_template = PLUGIN_NAME_DIR_PATH . $this->single_template;
+			$single_template = $this->plugin_dir . '/' . $this->single_template;
 
 		}
 
@@ -178,14 +197,15 @@ class PostType {
 	/**
 	 * Shows which archive template is needed
 	 *
-	 * @param  string $archive_template The default archive template.
+	 * @param  string $single_template The default archive template.
+	 *
 	 * @return string
 	 */
 	public function get_archive_template( $single_template ) {
 
-		if ( $this->post_type === get_query_var( 'post_type' ) ) {
+		if ( get_query_var( 'post_type' ) === $this->post_type ) {
 
-			$archive_template = PLUGIN_NAME_DIR_PATH . $this->archive_template;
+			$archive_template = $this->plugin_dir . '/' . $this->archive_template;
 
 		}
 

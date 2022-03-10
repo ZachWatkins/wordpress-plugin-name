@@ -2,10 +2,10 @@
 /**
  * The file that defines a custom taxonomy
  *
- * @link       https://github.com/zachwatkins/wordpress-plugin/blob/master/src/class-taxonomy.php
+ * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/util/class-taxonomy.php
  * @since      1.0.0
- * @package    wordpress-plugin`
- * @subpackage wordpress-plugin/src
+ * @package    WordPress Plugin Name
+ * @subpackage Utilities
  */
 
 namespace Plugin_Name\Util;
@@ -14,9 +14,16 @@ namespace Plugin_Name\Util;
  * Builds and registers a custom taxonomy.
  *
  * @package wordpress-plugin
- * @since 1.0.0
+ * @since   1.0.0
  */
 class Taxonomy {
+
+	/**
+	 * The plugin directory URL.
+	 *
+	 * @var string
+	 */
+	private $plugin_file = PLUGIN_NAME_DIR_FILE;
 
 	/**
 	 * Taxonomy slug
@@ -31,7 +38,7 @@ class Taxonomy {
 	 * Taxonomy default arguments.
 	 *
 	 * @access private
-	 * @var array
+	 * @var    array
 	 */
 	private $default_args = array(
 		'show_ui'            => true,
@@ -75,20 +82,20 @@ class Taxonomy {
 	/**
 	 * Builds and registers the custom taxonomy.
 	 *
-	 * @param string          $taxonomy     The taxonomy slug.
-	 * @param string          $singular     The label in singular form.
-	 * @param string          $plural       The label in plural form.
-	 * @param string|string[] $post_slug    The slug of the post type where the taxonomy will be added.
-	 * @param array           $args         The arguments for taxonomy registration. Accepts    $args for
-	 *                                   the WordPress core register_taxonomy function.
-	 * @param array           $meta         Array (single or multidimensional) of custom fields to add to a
-	 *                                   taxonomy item edit page. Requires 'name', 'slug', and 'type'.
-	 * @param boolean         $sortable     Whether the taxonomy should be sortable from the admin dashboard.
-	 * @param boolean         $admin_filter Whether the taxonomy has a filter drop-down menu in the admin post list interface.
-	 * @param string          $template     The template file path for the taxonomy archive page.
+	 * @param  string          $taxonomy     The taxonomy slug.
+	 * @param  string          $singular     The label in singular form.
+	 * @param  string          $plural       The label in plural form.
+	 * @param  string|string[] $post_slug    The slug of the post type where the taxonomy will be added.
+	 * @param  array           $args         The arguments for taxonomy registration. Accepts    $args for
+	 *                                       the WordPress core register_taxonomy function.
+	 * @param  array           $meta         Array (single or multidimensional) of custom fields to add to a
+	 *                                       taxonomy item edit page. Requires 'name', 'slug', and 'type'.
+	 * @param  boolean         $admin_filter Whether the taxonomy has a filter drop-down menu in the admin post list interface.
+	 * @param  boolean         $sortable     Whether the taxonomy should be sortable from the admin dashboard.
+	 * @param  string          $template     The template file path for the taxonomy archive page.
 	 * @return void
 	 */
-	public function __construct( $taxonomy, $singular, $plural, $post_slug, $args = array(), $meta = array(), $sortable = false, $admin_filter = false, $template = null ) {
+	public function __construct( $taxonomy, $singular, $plural, $post_slug, $args = array(), $meta = array(), $admin_filter = false, $sortable = false, $template = null ) {
 
 		// Validate the taxonomy slug before proceeding.
 		$this->validate_taxonomy( $taxonomy );
@@ -143,8 +150,8 @@ class Taxonomy {
 
 		// Add an activation hook for flushing rewrite rules.
 		// Checks to ensure it is not yet hooked.
-		if ( false === has_action( 'activate_' . PLUGIN_NAME_DIR_FILE, 'flush_rewrite_rules' ) ) {
-			register_activation_hook( PLUGIN_NAME_DIR_FILE, 'flush_rewrite_rules' );
+		if ( false === has_action( "activate_{$this->plugin_file}", 'flush_rewrite_rules' ) ) {
+			register_activation_hook( $this->plugin_file, 'flush_rewrite_rules' );
 		}
 
 	}
@@ -164,6 +171,10 @@ class Taxonomy {
 
 	/**
 	 * Add actions to render and save custom fields
+	 *
+	 * @param string $taxonomy The taxonomy slug.
+	 * @param array  $meta     Array (single or multidimensional) of custom fields to add to a
+	 *                         taxonomy item edit page. Requires 'name', 'slug', and 'type'.
 	 *
 	 * @return void
 	 */
@@ -210,8 +221,8 @@ class Taxonomy {
 	/**
 	 * Render custom fields
 	 *
-	 * @param object $tag      Current taxonomy term object.
-	 * @param string $taxonomy Current taxonomy slug.
+	 * @param  object $tag      Current taxonomy term object.
+	 * @param  string $taxonomy Current taxonomy slug.
 	 * @return void
 	 */
 	public function taxonomy_edit_meta_field( $tag, $taxonomy ) {
@@ -230,77 +241,77 @@ class Taxonomy {
 			?><tr class="form-field term-<?php echo esc_attr( $taxonomy ); ?>-wrap">
 				<th scope="row" valign="top"><label for="term_meta_<?php echo esc_attr( $taxonomy ); ?>"><?php echo esc_html( $meta['name'] ); ?></label></th>
 				<td>
-					<?php
+			<?php
 
-					// Output the form field.
-					switch ( $meta['type'] ) {
-						case 'editor':
-							$value = $term_meta ? wp_kses_post( $term_meta ) : '';
-							wp_editor(
-								$value,
-								"term_meta_{$taxonomy}",
-								array( 'textarea_name' => "term_meta_{$taxonomy}" )
-							);
-							break;
+			// Output the form field.
+			switch ( $meta['type'] ) {
+				case 'editor':
+					$value = $term_meta ? wp_kses_post( $term_meta ) : '';
+					wp_editor(
+						$value,
+						"term_meta_{$taxonomy}",
+						array( 'textarea_name' => "term_meta_{$taxonomy}" )
+					);
+					break;
 
-						case 'link':
-							$value  = $term_meta ? sanitize_text_field( $term_meta ) : '';
-							$output = "<input type=\"url\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\" placeholder=\"https://example.com\" pattern=\"http[s]?://.*\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-name' ) . '</p>';
-							echo wp_kses(
-								$output,
-								array(
-									'input' => array(
-										'type'        => array(),
-										'name'        => array(),
-										'id'          => array(),
-										'value'       => array(),
-										'placeholder' => array(),
-										'pattern'     => array(),
-									),
-									'p'     => array(
-										'class' => array(),
-									),
-								)
-							);
-							break;
+				case 'link':
+					$value  = $term_meta ? sanitize_text_field( $term_meta ) : '';
+					$output = "<input type=\"url\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\" placeholder=\"https://example.com\" pattern=\"http[s]?://.*\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-name' ) . '</p>';
+					echo wp_kses(
+						$output,
+						array(
+							'input' => array(
+								'type'        => array(),
+								'name'        => array(),
+								'id'          => array(),
+								'value'       => array(),
+								'placeholder' => array(),
+								'pattern'     => array(),
+							),
+							'p'     => array(
+								'class' => array(),
+							),
+						)
+					);
+					break;
 
-						case 'checkbox':
-							$value  = ! empty( $term_meta ) && 'on' === $term_meta[0] ? 'checked' : '';
-							$output = "<input type=\"checkbox\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" {$value}>";
-							echo wp_kses(
-								$output,
-								array(
-									'input' => array(
-										'type'    => array(),
-										'name'    => array(),
-										'id'      => array(),
-										'checked' => array(),
-									),
-								)
-							);
-							break;
+				case 'checkbox':
+					$value  = ! empty( $term_meta ) && 'on' === $term_meta[0] ? 'checked' : '';
+					$output = "<input type=\"checkbox\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" {$value}>";
+					echo wp_kses(
+						$output,
+						array(
+							'input' => array(
+								'type'    => array(),
+								'name'    => array(),
+								'id'      => array(),
+								'checked' => array(),
+							),
+						)
+					);
+					break;
 
-						default:
-							$value  = $term_meta ? sanitize_text_field( $term_meta ) : '';
-							$output = "<input type=\"text\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-name' ) . '</p>';
-							echo wp_kses(
-								$output,
-								array(
-									'input' => array(
-										'type'  => array(),
-										'name'  => array(),
-										'id'    => array(),
-										'value' => array(),
-									),
-									'p'     => array(
-										'class' => array(),
-									),
-								)
-							);
-							break;
-					}
+				default:
+					$value  = $term_meta ? sanitize_text_field( $term_meta ) : '';
+					$output = "<input type=\"text\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-name' ) . '</p>';
+					echo wp_kses(
+						$output,
+						array(
+							'input' => array(
+								'type'  => array(),
+								'name'  => array(),
+								'id'    => array(),
+								'value' => array(),
+							),
+							'p'     => array(
+								'class' => array(),
+							),
+						)
+					);
+					break;
+			}
 
-					?>
+			?>
 				</td>
 			</tr>
 			<?php
@@ -310,8 +321,8 @@ class Taxonomy {
 	/**
 	 * Save custom fields with sanitization measures.
 	 *
-	 * @param int $term_id The term ID.
-	 * @param int $tt_id   The term taxonomy ID.
+	 * @param  int $term_id The term ID.
+	 * @param  int $tt_id   The term taxonomy ID.
 	 * @return void
 	 */
 	public function save_taxonomy_custom_meta( $term_id, $tt_id ) {
@@ -332,11 +343,11 @@ class Taxonomy {
 
 			} elseif ( 'editor' === $meta['type'] ) {
 
-				$value = wp_kses_post( $_POST[ $key ] );
+				$value = wp_kses_post( wp_unslash( $_POST[ $key ] ) );
 
 			} else {
 
-				$value = sanitize_text_field( $_POST[ $key ] );
+				$value = sanitize_text_field( wp_unslash( $_POST[ $key ] ) );
 
 			}
 
@@ -348,9 +359,11 @@ class Taxonomy {
 	}
 
 	/**
-	 * Use custom template file if on the taxonomy archive page
+	 * Use a custom template file if on the taxonomy archive page.
+	 * The content of such a template file may depend on your theme's structure.
 	 *
 	 * @param string $template The path of the template to include.
+	 *
 	 * @return string
 	 */
 	public function template( $template ) {
@@ -367,7 +380,7 @@ class Taxonomy {
 	/**
 	 * Make this taxonomy sortable from the post type dashboard list page.
 	 *
-	 * @param array $columns The list of taxonomy columns sortable on this post type's list page.
+	 * @param  array $columns The list of taxonomy columns sortable on this post type's list page.
 	 * @return array
 	 */
 	public function register_sortable_columns( $columns ) {
@@ -381,8 +394,8 @@ class Taxonomy {
 	/**
 	 * Sort this taxonomy in the dashboard by the taxonomy text value.
 	 *
-	 * @param string $orderby The SQL query which orders posts.
-	 * @param object $wp_query The query object.
+	 * @param  string $orderby  The SQL query which orders posts.
+	 * @param  object $wp_query The query object.
 	 * @return array
 	 */
 	public function taxonomy_orderby( $orderby, $wp_query ) {
@@ -414,7 +427,7 @@ class Taxonomy {
 	 *
 	 * @param string $taxonomy The taxonomy slug.
 	 *
-	 * @return true|string
+	 * @return true
 	 */
 	private function validate_taxonomy( $taxonomy ) {
 
@@ -517,8 +530,10 @@ class Taxonomy {
 		}
 
 		if ( is_string( $valid ) ) {
-			wp_die( "The taxonomy \"{$taxonomy}\" encountered the following validation error and was not registered: {$valid}" );
+			wp_die( esc_html( "The taxonomy \"{$taxonomy}\" encountered the following validation error and was not registered: {$valid}" ) );
 		}
+
+		return $valid;
 
 	}
 
@@ -539,12 +554,12 @@ class Taxonomy {
 			$taxonomy     = $this->taxonomy;
 			$taxonomy_obj = get_taxonomy( $taxonomy );
 			$args         = array(
-				'show_option_all' =>  __( "Show All {$taxonomy_obj->label}" ),
+				'show_option_all' => "Show All {$taxonomy_obj->label}",
 				'value_field'     => 'slug',
-				'taxonomy'        =>  $taxonomy,
-				'name'            =>  $taxonomy,
-				'orderby'         =>  'name',
-				'hide_empty'      =>  false,
+				'taxonomy'        => $taxonomy,
+				'name'            => $taxonomy,
+				'orderby'         => 'name',
+				'hide_empty'      => false,
 			);
 			$query_args   = $wp_query->query;
 			if ( isset( $query_args[ $taxonomy ] ) ) {
@@ -567,15 +582,14 @@ class Taxonomy {
 
 		global $pagenow;
 
-		if ( $pagenow === 'edit.php' ) {
+		if ( 'edit.php' === $pagenow ) {
 			$query_vars = &$query->query_vars;
-			if (
-				isset( $query_vars['taxonomy'] )
+			if ( isset( $query_vars['taxonomy'] )
 				&& $query_vars['taxonomy'] === $this->taxonomy
 				&& isset( $query_vars['term'] )
 				&& is_numeric( $query_vars['term'] )
 			) {
-				$term = get_term_by( 'id', $query_vars['term'], $this->taxonomy );
+				$term                      = get_term_by( 'id', $query_vars['term'], $this->taxonomy );
 				$query->query_vars['term'] = $term->slug;
 			}
 		}

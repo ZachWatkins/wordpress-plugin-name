@@ -1,13 +1,13 @@
 <?php
 /**
- * The file that defines the core plugin class.
+ * The file that defines the initial plugin class.
  *
- * @package    WordPress_Plugin_Name
- * @subpackage Core
+ * @package    WordPress Plugin Name
+ * @subpackage Source
  * @copyright  Zachary Watkins 2022
  * @author     Zachary Watkins <watkinza@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
- * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/src/class-wordpress-plugin-name.php
+ * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/src/class-init.php
  * @since      0.1.0
  */
 
@@ -15,7 +15,7 @@ namespace Plugin_Name\Src;
 
 use \Plugin_Name\Src\Assets;
 use \Plugin_Name\Src\New_Post_Type;
-use \ThoughtfulWeb\SettingsPageWP\Page;
+use \ThoughtfulWeb\SettingsPageWP\Page as SettingsPage;
 
 /**
  * The core plugin Class.
@@ -25,6 +25,7 @@ use \ThoughtfulWeb\SettingsPageWP\Page;
  * @return void
  */
 class Init {
+
 
 	/**
 	 * Initialize the class.
@@ -38,8 +39,9 @@ class Init {
 		new Assets();
 
 		// Load the settings page.
-		new \ThoughtfulWeb\SettingsPageWP\Page();
+		new SettingsPage();
 
+		// Create the custom post type with its custom taxonomy.
 		new New_Post_Type();
 
 	}
