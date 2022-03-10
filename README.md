@@ -49,23 +49,16 @@ There are many ways to learn programming and rigid documentation requirements ca
 
 PHPDoc's Tag Reference: <https://docs.phpdoc.org/3.0/guide/references/phpdoc/tags/index.html#tag-reference>
 
-I use the Composer module for [PHP CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer/) to automate code compliance with [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/). A pre-commit hook file is included in this repository to enforce code commits to meet this standard but can be disabled when a situation warrants it, such as backing up unfinished work via a commit.
+I use the Composer module for [PHP CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer/) to automate code compliance checking with [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/). A pre-commit hook file ensures code meets this standard before it is added to the repository, but this can be disabled by commenting out the file's contents - only do this when a situation warrants it such as backing up unfinished work via a commit.
 
-Git, NPM, and Visual Studio Code files in this repository help improve compatibility between Mac (terminal) and Windows (powershell) environments for improved collaboration between developers.
-
-Line endings are converted to Linux-style LF "\n" when committed to the repository using the `.gitattributes` file. This is what WordPress requires for its Subversion version control system, and Subversion is how developers submit WordPress plugins and themes to the official WordPress.org library. This is an important feature because Windows computers add "\r\n" characters to the end of text lines when a line is broken. View more: http://git-scm.com/docs/gitattributes#_end_of_line_conversion
+Line endings are converted to Linux-style LF "\n" when committed to the repository using the `.gitattributes` file. This is what WordPress requires for its Subversion version control system, and Subversion is how developers submit WordPress plugins and themes to the official WordPress.org library. This is an important feature because Windows adds "\r\n" characters to the end of text lines when a line is broken. View more: http://git-scm.com/docs/gitattributes#_end_of_line_conversion
 
 Links to resources:
 
 * WordPress Coding Standards - <https://developer.wordpress.org/coding-standards/>
-* WordPress Codex - File Header - <https://codex.wordpress.org/File_Header>
 * PHPDoc Reference - <https://docs.phpdoc.org/3.0/guide/references/phpdoc/index.html>
-* Sass Lint Reference - <https://github.com/sasstools/sass-lint> (abandoned but stable)
 * PHP CodeSniffer Wiki - <https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage>
-* NPM package schema - <https://docs.npmjs.com/cli/v7/configuring-npm/package-json>
 * Composer package schema - <https://getcomposer.org/doc/04-schema.md>
-* The Software Package Data Exchange:reg: - <https://spdx.dev/>
-* PHP Framework Interop Group - <https://www.php-fig.org/>
 
 ## Advice
 
