@@ -3,7 +3,8 @@
 ## Features
 
 1. Custom post type using Advanced Custom Fields and a custom taxonomy
-2. Settings page which loads the "unique_text_field" setting in the custom post type templates
+2. Settings page which provides the "unique_text_field" setting in the custom post type templates
+   a. https://your-website.com/wp-admin/options-general.php?page=wordpress-plugin-name-settings
 3. Plugin activation requirement notification to check for Advanced Custom Fields
 4. Registers CSS and JS files (with jQuery) for all pages of the site and the single or archive page template for the custom post type.
 5. Well documented code using [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/) and links to official PHP and WordPress documentation websites that can help beginners learn the code more quickly.
