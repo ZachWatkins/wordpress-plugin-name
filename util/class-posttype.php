@@ -197,11 +197,11 @@ class PostType {
 	/**
 	 * Shows which archive template is needed
 	 *
-	 * @param  string $single_template The default archive template.
+	 * @param  string $archive_template The default archive template.
 	 *
 	 * @return string
 	 */
-	public function get_archive_template( $single_template ) {
+	public function get_archive_template( $archive_template ) {
 
 		if ( get_query_var( 'post_type' ) === $this->post_type ) {
 
