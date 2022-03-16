@@ -15,6 +15,7 @@ namespace Plugin_Name\Src;
 
 use \Plugin_Name\Util\PostType;
 use \Plugin_Name\Util\Taxonomy;
+use \Plugin_Name\Util\PostType_SearchForm;
 
 /**
  * The new post type plugin Class.
@@ -54,6 +55,13 @@ class New_Post_Type {
 	private $post_type_filename = 'new-post-type';
 
 	/**
+	 * The post search form.
+	 *
+	 * @var object
+	 */
+	private $post_search_form;
+
+	/**
 	 * Initialize the class.
 	 *
 	 * @since  0.1.0
@@ -90,6 +98,18 @@ class New_Post_Type {
 		// Register a custom post type.
 		new PostType( $this->post_type, 'New Post Type', 'New Post Types', array( 'taxonomies' => array( 'new_taxonomy' ) ) );
 
+		// Add a search form for the new post type.
+		$this->post_search_form = new PostType_SearchForm(
+			$this->post_type,
+			array( 'new_taxonomy' ),
+			array(
+				'Field 1' => 'post_field_1',
+				'Field 2' => 'post_field_2',
+				'Field 3' => 'post_field_3',
+			)
+		);
+		add_action( 'loop_start', array( $this, 'do_search_form' ), 1 );
+
 		// Register Advanced Custom Fields for the post type.
 		add_action( 'acf/init', array( $this, 'acf_files' ) );
 
@@ -104,6 +124,17 @@ class New_Post_Type {
 
 		// Archive page template file.
 		add_filter( 'the_excerpt', array( $this, 'excerpt_template' ) );
+
+	}
+
+	/**
+	 * Output the post type search form.
+	 *
+	 * @return void
+	 */
+	public function do_search_form() {
+
+		$this->post_search_form->render();
 
 	}
 
@@ -205,7 +236,7 @@ class New_Post_Type {
 		if ( get_post_type() === $this->post_type ) {
 			// Get the template file contents.
 			ob_start();
-			include "{$this->plugin_dir}/templates/content-new-post-type.php";
+			include "{$this->plugin_dir}/includes/content-new-post-type.php";
 			$template = ob_get_clean();
 			// Append the template to the editor content.
 			$content .= $template;
@@ -226,7 +257,7 @@ class New_Post_Type {
 
 		if ( get_post_type() === $this->post_type ) {
 			ob_start();
-			include "{$this->plugin_dir}/templates/excerpt-new-post-type.php";
+			include "{$this->plugin_dir}/includes/excerpt-new-post-type.php";
 			$template = ob_get_clean();
 			$excerpt .= $template;
 		}
