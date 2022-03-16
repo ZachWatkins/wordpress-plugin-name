@@ -160,7 +160,7 @@ class PostType_SearchForm {
 					$dropdown = wp_dropdown_categories( $args );
 
 					$search_filters[ $key ] = sprintf(
-						'<div class="filter"><label for="taxonomy-%s" class="taxonomy-label">%s</label>%s</div>',
+						'<div class="filter"><label for="taxonomy-%s" class="taxonomy-label">%s</label> %s</div>',
 						$taxonomy->name,
 						$taxonomy->label,
 						$dropdown
@@ -190,7 +190,7 @@ class PostType_SearchForm {
 					$dropdown .= "<option value=\"{$meta_value}\"{$selected}>{$meta_value}</option>";
 				}
 				$dropdown                            .= '</select>';
-				$search_filters[ "meta_{$meta_key}" ] = "<div class=\"filter\"><label for=\"meta-{$meta_key}\" class=\"meta-label\">{$meta_label}</label>{$dropdown}</div>";
+				$search_filters[ "meta_{$meta_key}" ] = "<div class=\"filter\"><label for=\"meta-{$meta_key}\" class=\"meta-label\">{$meta_label}</label> {$dropdown}</div>";
 			}
 		}
 
