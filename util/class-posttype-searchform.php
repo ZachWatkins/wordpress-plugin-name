@@ -140,13 +140,15 @@ class PostType_SearchForm {
 
 					// Show dropdown with values selected if present in URL parameter.
 					$args = array(
-						'echo'        => 0,
-						'id'          => "taxonomy-{$taxonomy->name}",
-						'taxonomy'    => $key,
-						'name'        => $key,
-						'value_field' => 'slug',
-						'orderby'     => 'name',
-						'multiple'    => true,
+						'echo'              => 0,
+						'id'                => "taxonomy-{$taxonomy->name}",
+						'taxonomy'          => $key,
+						'name'              => $key,
+						'value_field'       => 'slug',
+						'orderby'           => 'name',
+						'multiple'          => true,
+						'show_option_none'  => 'Select',
+						'option_none_value' => '',
 					);
 
 					// If the taxonomy URL parameter value is not an array then we can set it here.
@@ -160,7 +162,7 @@ class PostType_SearchForm {
 					$dropdown = wp_dropdown_categories( $args );
 
 					$search_filters[ $key ] = sprintf(
-						'<div class="filter"><label for="taxonomy-%s" class="taxonomy-label">%s</label> %s</div>',
+						'<div class="filter"><label for="taxonomy-%s" class="taxonomy-label">%s</label>%s</div>',
 						$taxonomy->name,
 						$taxonomy->label,
 						$dropdown
@@ -190,7 +192,7 @@ class PostType_SearchForm {
 					$dropdown .= "<option value=\"{$meta_value}\"{$selected}>{$meta_value}</option>";
 				}
 				$dropdown                            .= '</select>';
-				$search_filters[ "meta_{$meta_key}" ] = "<div class=\"filter\"><label for=\"meta-{$meta_key}\" class=\"meta-label\">{$meta_label}</label> {$dropdown}</div>";
+				$search_filters[ "meta_{$meta_key}" ] = "<div class=\"filter\"><label for=\"meta-{$meta_key}\" class=\"meta-label\">{$meta_label}</label>{$dropdown}</div>";
 			}
 		}
 
@@ -198,6 +200,7 @@ class PostType_SearchForm {
 		$search_fields = implode( '', $search_filters );
 		preg_match( '/^\s*<form[^>]*>/', $form, $matches );
 		$form = str_replace( $matches[0], $matches[0] . $search_fields, $form );
+		$form = "<div class=\"wordpress-plugin-name new-post-type-search-form alignwide\">{$form}</div>";
 
 		// Output the form.
 		echo wp_kses(
