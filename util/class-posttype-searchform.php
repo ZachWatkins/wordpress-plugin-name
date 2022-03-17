@@ -173,7 +173,7 @@ class PostType_SearchForm {
 			foreach ( $this->meta_keys as $meta_label => $meta_key ) {
 				// Get all unique values of the meta key and store them in a transient.
 				global $wpdb;
-				$unique_values = get_transient( "distinct_meta_{$meta_key}_new_post_type" );
+				$unique_values = get_transient( "distinct_meta_{$meta_key}_wordpress_plugin_name" );
 				if ( ! $unique_values ) {
 					// @codingStandardsIgnoreStart
 					$unique_values = $wpdb->get_results( $wpdb->prepare( "SELECT DISTINCT pm.meta_value FROM {$wpdb->postmeta} pm LEFT JOIN {$wpdb->posts} p ON p.ID = pm.post_id WHERE pm.meta_key = %s and p.post_type = %s AND p.post_status = 'publish' ORDER BY pm.meta_value", array( $meta_key, $this->post_type ) ), ARRAY_N );
