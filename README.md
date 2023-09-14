@@ -28,7 +28,7 @@ Before you get started you should download and install some things:
 3. Run `$ composer run checkwp` to check your files against WordPress Coding Standards.
 4. Run `$ composer run fixwp` to automatically fix indentation or spacing issues flagged by WordPress Coding Standards.
 5. Search through the files for "wordpress-plugin-name", "WordPress Plugin Name", and "PLUGIN_NAME" and replace these strings with the name of your plugin, maintaining the capitalization and special characters.
-6. Search through the files for "new-post-type", "new_post_type", and "New Post Type" and replace them with the name of your custom post type.
+6. Search through the files for "new-post-type", "NewPostType", and "New Post Type" and replace them with the name of your custom post type.
 6. Search through the files for "new_taxonomy", "New Taxonomy", and "New Taxonomies" and replace them with the name of your custom taxonomy.
 
 ## Introduction
@@ -37,7 +37,7 @@ Before you get started you should download and install some things:
 
 "The Plugin Developer Handbook is a resource for all things WordPress plugins. Whether you’re new to WordPress plugin development, or you’re an experienced plugin developer, you should be able to find the answer to many of your plugin-related questions right here." View more: <https://developer.wordpress.org/plugins/>
 
-This plugin was created by Zachary Watkins <watkinza@gmail.com> with the hope that it could be someone's first step into WordPress development.
+This plugin was created by Zachary Watkins <zwatkins.it@gmail.com> with the hope that it could be someone's first step into WordPress development.
 
 ## Code Standards, Guidelines, and Conventions
 

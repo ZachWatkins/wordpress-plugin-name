@@ -1,14 +1,15 @@
 <?php
+
 /**
  * The file that initializes custom post types.
  *
- * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/util/class-posttype.php
+ * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/main/common/class-posttype.php
  * @since      1.0.0
  * @package    WordPress Plugin Name
- * @subpackage Utilities
+ * @subpackage Common
  */
 
-namespace Plugin_Name\Util;
+namespace PluginName\Common;
 
 /**
  * The post type registration class
@@ -16,6 +17,7 @@ namespace Plugin_Name\Util;
  * @since 1.0.0
  */
 class PostType {
+
 
 	/**
 	 * The plugin directory.
@@ -161,7 +163,6 @@ class PostType {
 		if ( false === has_action( "activate_{$this->plugin_file}", 'flush_rewrite_rules' ) ) {
 			register_activation_hook( $this->plugin_file, 'flush_rewrite_rules' );
 		}
-
 	}
 
 	/**
@@ -173,7 +174,6 @@ class PostType {
 
 		$args = array_merge( $this->default_args, $this->args );
 		register_post_type( $this->post_type, $args );
-
 	}
 
 	/**
@@ -185,13 +185,10 @@ class PostType {
 	public function get_single_template( $single_template ) {
 
 		if ( get_query_var( 'post_type' ) === $this->post_type ) {
-
 			$single_template = $this->plugin_dir . '/' . $this->single_template;
-
 		}
 
 		return $single_template;
-
 	}
 
 	/**
@@ -204,13 +201,9 @@ class PostType {
 	public function get_archive_template( $archive_template ) {
 
 		if ( get_query_var( 'post_type' ) === $this->post_type ) {
-
 			$archive_template = $this->plugin_dir . '/' . $this->archive_template;
-
 		}
 
 		return $archive_template;
-
 	}
-
 }

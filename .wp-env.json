@@ -1,0 +1,16 @@
+{
+	"core": null,
+	"phpVersion": "8.1",
+	"themes": [ "." ],
+	"mappings": {
+		"wp-content/uploads/2023/06": "./.wp-env/uploads/2023/06",
+		"database.sql": "./.wp-env/database.sql",
+		"database.php": "./.wp-env/database.php"
+	},
+	"config": {
+		"DB_NAME": "wp_phpunit_tests",
+		"DB_USER": "root",
+		"DB_PASSWORD": "",
+		"DB_HOST": "localhost"
+	}
+}

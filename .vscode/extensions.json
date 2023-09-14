@@ -1,8 +1,11 @@
 {
-    "recommendations": [
-		"felixfbecker.php-pack",
-		"ikappas.phpcs",
-		"wordpresstoolbox.wordpress-toolbox",
-		"neilbrayfield.php-docblocker"
-	]
+  "recommendations": [
+    "bmewburn.vscode-intelephense-client",
+    "dbaeumer.vscode-eslint",
+    "ms-playwright.playwright",
+    "johnbillion.vscode-wordpress-hooks",
+    "esbenp.prettier-vscode",
+    "obliviousharmony.vscode-php-codesniffer",
+    "xdebug.php-debug"
+  ]
 }

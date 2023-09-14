@@ -3,34 +3,25 @@
  * WordPress Plugin Name
  *
  * @package   WordPress_Plugin_Name
- * @copyright Zachary Watkins 2022
- * @author    Zachary Watkins <watkinza@gmail.com>
+ * @copyright Zachary Watkins 2023
+ * @author    Zachary Watkins <zwatkins.it@gmail.com>
  * @license   http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
  *
  * @wordpress-plugin-name
  * Plugin Name:       WordPress Plugin Name
  * Plugin URI:        https://github.com/zachwatkins/wordpress-plugin-name
  * Description:       An introduction to WordPress plugin development.
- * Version:           0.1.0
+ * Version:           1.0.0
  * Requires at least: 5.2
- * Requires PHP:      7.3.5
+ * Requires PHP:      8.1
  * Author:            Zachary Watkins
  * Author URI:        https://github.com/zachwatkins
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       wordpress-plugin-name
- * Domain Path:       /languages
  * Update URI:        https://github.com/zachwatkins/wordpress-plugin-name
  */
 
-/**
- * Notes on what is above.
- * - The Domain Path header can be omitted if the plugin is in the official
- *   WordPress Plugin Directory. To be in the official directory, you must use
- *   Subversion instead of Git.
- */
-
-// If this file is called directly, abort.
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
@@ -49,13 +40,11 @@ define( 'PLUGIN_NAME_DIR_URL', plugin_dir_url( __FILE__ ) );
 define( 'PLUGIN_NAME_DIR_FILE', __FILE__ );
 define( 'PLUGIN_NAME_DIR_PATH', __DIR__ );
 
-/**
- * The core plugin class is used to initialize the plugin.
- */
+// Register PHP class names for autoloading.
 require __DIR__ . '/vendor/autoload.php';
 
 // Apply plugin activation requirements.
 new \ThoughtfulWeb\ActivationRequirementsWP\Plugin();
 
 // Load the main class file.
-new \Plugin_Name\Src\Init();
+new \PluginName\Init();

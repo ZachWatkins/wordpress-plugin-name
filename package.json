@@ -1,0 +1,99 @@
+{
+	"name": "wordpress-theme",
+	"version": "1.0.0",
+	"private": true,
+	"description": "An example WordPress theme repository which simplifies development.",
+	"author": "Zachary K. Watkins",
+	"license": "GPL-2.0-or-later",
+	"keywords": [
+		"wordpress",
+		"wordpress-theme"
+	],
+	"homepage": "https://github.com/zachwatkins/wordpress-theme#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/zachwatkins/wordpress-theme.git"
+	},
+	"bugs": {
+		"url": "https://github.com/zachwatkins/wordpress-theme/issues"
+	},
+	"engines": {
+		"node": ">=18.16.1 <20.0.0",
+		"npm": ">=9.5.1"
+	},
+	"type": "module",
+	"main": "index.js",
+	"devDependencies": {
+		"@axe-core/playwright": "4.7.3",
+		"@playwright/test": "1.36.1",
+		"@types/eslint": "8.44.0",
+		"@wordpress/browserslist-config": "5.20.0",
+		"@wordpress/env": "^8.2.0",
+		"@wordpress/eslint-plugin": "14.10.0",
+		"@wordpress/jest-preset-default": "11.8.0",
+		"@wordpress/prettier-config": "^2.19.0",
+		"@wordpress/scripts": "26.8.0",
+		"chalk": "5.3.0",
+		"concurrently": "8.2.0",
+		"eslint-import-resolver-node": "0.3.7",
+		"eslint-plugin-eslint-comments": "3.2.0",
+		"eslint-plugin-import": "2.27.5",
+		"eslint-plugin-jest": "27.2.3",
+		"eslint-plugin-jest-dom": "5.0.1",
+		"eslint-plugin-playwright": "0.15.3",
+		"eslint-plugin-ssr-friendly": "1.2.0",
+		"eslint-plugin-testing-library": "5.11.0",
+		"husky": "^8.0.3",
+		"jest": "^29.6.0",
+		"lint-staged": "13.2.3",
+		"prettier": "npm:wp-prettier@^2.8.5",
+		"semver": "7.5.4"
+	},
+	"scripts": {
+		"start": "wp-env start",
+		"start:debug": "wp-env start --xdebug=profile,trace,debug",
+		"start:update": "wp-env start --update",
+		"stop": "wp-env stop",
+		"clean": "wp-env clean all && wp-env start",
+		"destroy": "wp-env destroy",
+		"lint": "concurrently \"npm run lint:lockfile\" \"npm run lint:js\" \"npm run lint:pkg-json\" \"npm run lint:css\"",
+		"lint:css": "wp-scripts lint-style \"**/*.scss\" --ignore-path=.config/.prettierignore",
+		"lint:js": "wp-scripts lint-js --ignore-path=.config/.prettierignore",
+		"lint:js:fix": "npm run lint:js -- --fix",
+		"lint:lockfile": "node ./bin/validate-package-lock.js",
+		"lint:php": "npm run composer run lint",
+		"lint:php:fix": "npm run composer run lint:fix",
+		"lint:pkg-json": "wp-scripts lint-pkg-json .",
+		"prettier": "prettier --check --config package.json --ignore-path .config/.prettierignore .",
+		"logs": "wp-env logs",
+		"test": "jest && npm run test-unit-php",
+		"test:e2e": "playwright test --project=\"Google Chrome\" --config test/e2e/playwright.config.js",
+		"test:e2e:ui": "playwright test --ui --project=\"Google Chrome\" --config test/e2e/playwright.config.js",
+		"test:js": "jest",
+		"test:php": "wp-env run tests-cli 'bash -c \"cd wp-content/themes/wordpress-theme && vendor/bin/phpunit\"'",
+		"wp": "wp-env run cli wp",
+		"db:query": "wp-env run cli wp db query",
+		"db:seed-php": "wp-env run cli wp eval-file database.php",
+		"db:seed-sql": "wp-env run cli wp db import database.sql",
+		"composer": "wp-env run wordpress --env-cwd=wp-content/themes/wordpress-theme composer",
+		"wp-env": "wp-env",
+		"wp-scripts": "wp-scripts",
+		"prepare": "husky install .config/.husky"
+	},
+	"lint-staged": {
+		"*.{js,json,ts,tsx,yml,yaml}": [
+			"wp-scripts format"
+		],
+		"*.{js,ts,tsx}": [
+			"wp-scripts lint-js"
+		],
+		"*.scss": [
+			"wp-scripts lint-style"
+		],
+		"package-lock.json": [
+			"npm run lint:lockfile",
+			"node ./bin/check-latest-npm.js"
+		]
+	},
+	"prettier": "@wordpress/prettier-config"
+}

@@ -1,14 +1,15 @@
 <?php
+
 /**
  * The file that defines a custom taxonomy
  *
- * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/util/class-taxonomy.php
+ * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/main/common/class-taxonomy.php
  * @since      1.0.0
  * @package    WordPress Plugin Name
- * @subpackage Utilities
+ * @subpackage Common
  */
 
-namespace Plugin_Name\Util;
+namespace PluginName\Common;
 
 /**
  * Builds and registers a custom taxonomy.
@@ -17,6 +18,7 @@ namespace Plugin_Name\Util;
  * @since   1.0.0
  */
 class Taxonomy {
+
 
 	/**
 	 * The plugin directory URL.
@@ -153,7 +155,6 @@ class Taxonomy {
 		if ( false === has_action( "activate_{$this->plugin_file}", 'flush_rewrite_rules' ) ) {
 			register_activation_hook( $this->plugin_file, 'flush_rewrite_rules' );
 		}
-
 	}
 
 	/**
@@ -166,7 +167,6 @@ class Taxonomy {
 		$args = array_merge( $this->default_args, $this->args );
 		register_taxonomy( $this->taxonomy, $this->post_types, $args );
 		register_taxonomy_for_object_type( $this->taxonomy, $this->post_types );
-
 	}
 
 	/**
@@ -241,77 +241,77 @@ class Taxonomy {
 			?><tr class="form-field term-<?php echo esc_attr( $taxonomy ); ?>-wrap">
 				<th scope="row" valign="top"><label for="term_meta_<?php echo esc_attr( $taxonomy ); ?>"><?php echo esc_html( $meta['name'] ); ?></label></th>
 				<td>
-			<?php
+					<?php
 
-			// Output the form field.
-			switch ( $meta['type'] ) {
-				case 'editor':
-					$value = $term_meta ? wp_kses_post( $term_meta ) : '';
-					wp_editor(
-						$value,
-						"term_meta_{$taxonomy}",
-						array( 'textarea_name' => "term_meta_{$taxonomy}" )
-					);
-					break;
+					// Output the form field.
+					switch ( $meta['type'] ) {
+						case 'editor':
+							$value = $term_meta ? wp_kses_post( $term_meta ) : '';
+							wp_editor(
+								$value,
+								"term_meta_{$taxonomy}",
+								array( 'textarea_name' => "term_meta_{$taxonomy}" )
+							);
+							break;
 
-				case 'link':
-					$value  = $term_meta ? sanitize_text_field( $term_meta ) : '';
-					$output = "<input type=\"url\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\" placeholder=\"https://example.com\" pattern=\"http[s]?://.*\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-name' ) . '</p>';
-					echo wp_kses(
-						$output,
-						array(
-							'input' => array(
-								'type'        => array(),
-								'name'        => array(),
-								'id'          => array(),
-								'value'       => array(),
-								'placeholder' => array(),
-								'pattern'     => array(),
-							),
-							'p'     => array(
-								'class' => array(),
-							),
-						)
-					);
-					break;
+						case 'link':
+							$value  = $term_meta ? sanitize_text_field( $term_meta ) : '';
+							$output = "<input type=\"url\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\" placeholder=\"https://example.com\" pattern=\"http[s]?://.*\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-name' ) . '</p>';
+							echo wp_kses(
+								$output,
+								array(
+									'input' => array(
+										'type'        => array(),
+										'name'        => array(),
+										'id'          => array(),
+										'value'       => array(),
+										'placeholder' => array(),
+										'pattern'     => array(),
+									),
+									'p'     => array(
+										'class' => array(),
+									),
+								)
+							);
+							break;
 
-				case 'checkbox':
-					$value  = ! empty( $term_meta ) && 'on' === $term_meta[0] ? 'checked' : '';
-					$output = "<input type=\"checkbox\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" {$value}>";
-					echo wp_kses(
-						$output,
-						array(
-							'input' => array(
-								'type'    => array(),
-								'name'    => array(),
-								'id'      => array(),
-								'checked' => array(),
-							),
-						)
-					);
-					break;
+						case 'checkbox':
+							$value  = ! empty( $term_meta ) && 'on' === $term_meta[0] ? 'checked' : '';
+							$output = "<input type=\"checkbox\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" {$value}>";
+							echo wp_kses(
+								$output,
+								array(
+									'input' => array(
+										'type'    => array(),
+										'name'    => array(),
+										'id'      => array(),
+										'checked' => array(),
+									),
+								)
+							);
+							break;
 
-				default:
-					$value  = $term_meta ? sanitize_text_field( $term_meta ) : '';
-					$output = "<input type=\"text\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-name' ) . '</p>';
-					echo wp_kses(
-						$output,
-						array(
-							'input' => array(
-								'type'  => array(),
-								'name'  => array(),
-								'id'    => array(),
-								'value' => array(),
-							),
-							'p'     => array(
-								'class' => array(),
-							),
-						)
-					);
-					break;
-			}
+						default:
+							$value  = $term_meta ? sanitize_text_field( $term_meta ) : '';
+							$output = "<input type=\"text\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-name' ) . '</p>';
+							echo wp_kses(
+								$output,
+								array(
+									'input' => array(
+										'type'  => array(),
+										'name'  => array(),
+										'id'    => array(),
+										'value' => array(),
+									),
+									'p'     => array(
+										'class' => array(),
+									),
+								)
+							);
+							break;
+					}
 
-			?>
+					?>
 				</td>
 			</tr>
 			<?php
@@ -334,28 +334,19 @@ class Taxonomy {
 		}
 
 		foreach ( $this->meta_boxes as $key => $meta ) {
-
 			$key = sanitize_key( "term_meta_{$meta['slug']}" );
 
 			if ( 'checkbox' === $meta['type'] ) {
-
 				$value = isset( $_POST[ $key ] ) ? sanitize_key( wp_unslash( $_POST[ $key ] ) ) : '';
-
 			} elseif ( 'editor' === $meta['type'] ) {
-
 				$value = wp_kses_post( wp_unslash( $_POST[ $key ] ) );
-
 			} else {
-
 				$value = sanitize_text_field( wp_unslash( $_POST[ $key ] ) );
-
 			}
 
 			// Save the option array.
 			update_term_meta( $term_id, $key, $value );
-
 		}
-
 	}
 
 	/**
@@ -369,9 +360,7 @@ class Taxonomy {
 	public function template( $template ) {
 
 		if ( is_tax( $this->taxonomy ) ) {
-
 			return $this->template;
-
 		}
 
 		return $template;
@@ -404,7 +393,6 @@ class Taxonomy {
 
 		// If this taxonomy is the orderby parameter, then update the SQL query.
 		if ( isset( $wp_query->query['orderby'] ) && "taxonomy-{$this->taxonomy}" === $wp_query->query['orderby'] ) {
-
 			$orderby  = "(
 	      SELECT GROUP_CONCAT(name ORDER BY name ASC)
 	      FROM $wpdb->term_relationships
@@ -415,11 +403,9 @@ class Taxonomy {
 	      GROUP BY object_id
 	    ) ";
 			$orderby .= ( 'ASC' === strtoupper( $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
-
 		}
 
 		return $orderby;
-
 	}
 
 	/**
@@ -534,7 +520,6 @@ class Taxonomy {
 		}
 
 		return $valid;
-
 	}
 
 	/**
@@ -550,7 +535,6 @@ class Taxonomy {
 		$is_post_type_page = ! is_array( $this->post_types ) ? $typenow === $this->post_types : in_array( $typenow, $this->post_types, true );
 
 		if ( $is_post_type_page ) {
-
 			$taxonomy     = $this->taxonomy;
 			$taxonomy_obj = get_taxonomy( $taxonomy );
 			$args         = array(
@@ -566,9 +550,7 @@ class Taxonomy {
 				$args['selected'] = $query_args[ $taxonomy ];
 			}
 			wp_dropdown_categories( $args );
-
 		}
-
 	}
 
 	/**
@@ -584,7 +566,8 @@ class Taxonomy {
 
 		if ( 'edit.php' === $pagenow ) {
 			$query_vars = &$query->query_vars;
-			if ( isset( $query_vars['taxonomy'] )
+			if (
+				isset( $query_vars['taxonomy'] )
 				&& $query_vars['taxonomy'] === $this->taxonomy
 				&& isset( $query_vars['term'] )
 				&& is_numeric( $query_vars['term'] )
@@ -594,5 +577,4 @@ class Taxonomy {
 			}
 		}
 	}
-
 }

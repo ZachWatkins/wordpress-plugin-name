@@ -79,7 +79,7 @@
                 {
                     "param": "post_type",
                     "operator": "==",
-                    "value": "new_post_type"
+                    "value": "NewPostType"
                 }
             ]
         ],

@@ -4,20 +4,20 @@
  *
  * @package    WordPress Plugin Name
  * @subpackage Source
- * @copyright  Zachary Watkins 2022
- * @author     Zachary Watkins <watkinza@gmail.com>
+ * @copyright  Zachary Watkins 2023
+ * @author     Zachary Watkins <zwatkins.it@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
- * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/src/class-assets.php
- * @since      0.1.0
+ * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/main/src/class-assets.php
+ * @since      1.0.0
  */
 
-namespace Plugin_Name\Src;
+namespace PluginName;
 
 /**
  * The class that registers public web assets.
  *
  * @see   https://www.php.net/manual/en/language.oop5.basic.php
- * @since 0.1.0
+ * @since 1.0.0
  */
 class Assets {
 
@@ -39,7 +39,7 @@ class Assets {
 	 * Initialize the class
 	 *
 	 * @see    https://developer.wordpress.org/reference/functions/add_action/
-	 * @since  0.1.0
+	 * @since  1.0.0
 	 * @return void
 	 */
 	public function __construct() {
@@ -55,7 +55,6 @@ class Assets {
 
 		// Enqueue extension styles.
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_public_scripts' ) );
-
 	}
 
 	/**
@@ -63,7 +62,7 @@ class Assets {
 	 *
 	 * @see    https://developer.wordpress.org/reference/functions/wp_register_style/
 	 * @see    https://www.php.net/manual/en/function.filemtime.php
-	 * @since  0.1.0
+	 * @since  1.0.0
 	 * @return void
 	 */
 	public function register_admin_scripts() {
@@ -75,20 +74,18 @@ class Assets {
 			filemtime( "{$this->plugin_dir}/css/admin.css" ),
 			'screen'
 		);
-
 	}
 
 	/**
 	 * Enqueues admin scripts.
 	 *
 	 * @see    https://developer.wordpress.org/reference/functions/wp_enqueue_style/
-	 * @since  0.1.0
+	 * @since  1.0.0
 	 * @return void
 	 */
 	public function enqueue_admin_scripts() {
 
 		wp_enqueue_style( 'wordpress-plugin-name-admin' );
-
 	}
 
 	/**
@@ -97,7 +94,7 @@ class Assets {
 	 * @see    https://developer.wordpress.org/reference/functions/wp_register_style/
 	 * @see    https://developer.wordpress.org/reference/functions/wp_register_script/
 	 * @see    https://www.php.net/manual/en/function.filemtime.php
-	 * @since  0.1.0
+	 * @since  1.0.0
 	 * @return void
 	 */
 	public function register_public_scripts() {
@@ -119,7 +116,6 @@ class Assets {
 			filemtime( "{$this->plugin_dir}/js/public.js" ),
 			true
 		);
-
 	}
 
 	/**
@@ -127,13 +123,12 @@ class Assets {
 	 *
 	 * @see    https://developer.wordpress.org/reference/functions/wp_enqueue_style/
 	 * @see    https://developer.wordpress.org/reference/functions/wp_enqueue_script/
-	 * @since  0.1.0
+	 * @since  1.0.0
 	 * @return void
 	 */
 	public function enqueue_public_scripts() {
 
 		wp_enqueue_style( 'wordpress-plugin-name-public' );
 		wp_enqueue_script( 'wordpress-plugin-name-public-script' );
-
 	}
 }

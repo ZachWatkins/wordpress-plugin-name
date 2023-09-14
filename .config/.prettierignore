@@ -1,0 +1,8 @@
+.cache
+vendor
+package-lock.json
+composer.lock
+LICENSE.md
+docs
+*.html
+wordpress

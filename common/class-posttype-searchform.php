@@ -1,23 +1,25 @@
 <?php
+
 /**
  * The file that initializes custom post types.
  *
- * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/util/class-posttype-search.php
+ * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/main/common/class-posttype-search.php
  * @since      1.0.0
  * @package    WordPress Plugin Name
- * @subpackage Utilities
+ * @subpackage Common
  *
  * @todo Allow custom ordering of the taxonomy and meta fields by combining the two parameters into one and requiring a prefix to identify a meta or a term.
  */
 
-namespace Plugin_Name\Util;
+namespace PluginName\Common;
 
 /**
  * The post type registration class
  *
  * @since 1.0.0
  */
-class PostType_SearchForm {
+class PostTypeSearchForm {
+
 
 	/**
 	 * The post type slug.
@@ -60,7 +62,6 @@ class PostType_SearchForm {
 
 		add_filter( 'query_vars', array( $this, 'add_query_vars' ) );
 		add_filter( 'wp_dropdown_cats', array( $this, 'multi_selected' ), 11, 2 );
-
 	}
 
 	/**
@@ -83,7 +84,6 @@ class PostType_SearchForm {
 		}
 
 		return $public_query_vars;
-
 	}
 
 	/**
@@ -109,7 +109,6 @@ class PostType_SearchForm {
 		}
 
 		return $output;
-
 	}
 
 	/**
@@ -178,9 +177,9 @@ class PostType_SearchForm {
 				$unique_values = get_transient( "distinct_meta_{$meta_key}_wordpress_plugin_name" );
 				if ( ! $unique_values ) {
 					// @codingStandardsIgnoreStart
-					$unique_values = $wpdb->get_results( $wpdb->prepare( "SELECT DISTINCT pm.meta_value FROM {$wpdb->postmeta} pm LEFT JOIN {$wpdb->posts} p ON p.ID = pm.post_id WHERE pm.meta_key = %s and p.post_type = %s AND p.post_status = 'publish' ORDER BY pm.meta_value", array( $meta_key, $this->post_type ) ), ARRAY_N );
+					$unique_values = $wpdb->get_results($wpdb->prepare("SELECT DISTINCT pm.meta_value FROM {$wpdb->postmeta} pm LEFT JOIN {$wpdb->posts} p ON p.ID = pm.post_id WHERE pm.meta_key = %s and p.post_type = %s AND p.post_status = 'publish' ORDER BY pm.meta_value", array($meta_key, $this->post_type)), ARRAY_N);
 					$unique_values = $unique_values[0];
-					set_transient( "distinct_meta_{$meta_key}_wordpress_plugin_name", $unique_values, DAY_IN_SECONDS );
+					set_transient("distinct_meta_{$meta_key}_wordpress_plugin_name", $unique_values, DAY_IN_SECONDS);
 					// @codingStandardsIgnoreEnd
 				}
 
@@ -234,7 +233,5 @@ class PostType_SearchForm {
 				),
 			)
 		);
-
 	}
-
 }

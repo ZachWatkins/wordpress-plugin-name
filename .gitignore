@@ -6,4 +6,6 @@ node_modules/
 *.sql
 *.sqlite
 
+/wordpress/
 /vendor/
+*.code-workspace

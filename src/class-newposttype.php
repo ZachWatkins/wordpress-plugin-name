@@ -7,24 +7,25 @@
  * @copyright  Zachary Watkins 2022
  * @author     Zachary Watkins <zwatkins.it@gmail.com>
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
- * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/master/src/class-wordpress-plugin-name.php
- * @since      0.1.0
+ * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/main/src/class-wordpress-plugin-name.php
+ * @since      1.0.0
  */
 
-namespace Plugin_Name\Src;
+namespace PluginName;
 
-use \Plugin_Name\Util\PostType;
-use \Plugin_Name\Util\Taxonomy;
-use \Plugin_Name\Util\PostType_SearchForm;
+use PluginName\Common\PostType;
+use PluginName\Common\Taxonomy;
+use PluginName\Common\PostTypeSearchForm;
 
 /**
  * The new post type plugin Class.
  *
  * @see    https://www.php.net/manual/en/language.oop5.basic.php
- * @since  0.1.0
+ * @since  1.0.0
  * @return void
  */
-class New_Post_Type {
+class NewPostType {
+
 
 	/**
 	 * The plugin directory.
@@ -45,7 +46,7 @@ class New_Post_Type {
 	 *
 	 * @var string
 	 */
-	private $post_type = 'new_post_type';
+	private $post_type = 'NewPostType';
 
 	/**
 	 * The post type file name slug.
@@ -64,7 +65,7 @@ class New_Post_Type {
 	/**
 	 * Initialize the class.
 	 *
-	 * @since  0.1.0
+	 * @since  1.0.0
 	 * @return void
 	 */
 	public function __construct() {
@@ -99,7 +100,7 @@ class New_Post_Type {
 		new PostType( $this->post_type, 'New Post Type', 'New Post Types', array( 'taxonomies' => array( 'new_taxonomy' ) ) );
 
 		// Add a search form for the new post type.
-		$this->post_search_form = new PostType_SearchForm(
+		$this->post_search_form = new PostTypeSearchForm(
 			$this->post_type,
 			array( 'new_taxonomy' ),
 			array(
@@ -124,7 +125,6 @@ class New_Post_Type {
 
 		// Archive page template file.
 		add_filter( 'the_excerpt', array( $this, 'excerpt_template' ) );
-
 	}
 
 	/**
@@ -135,7 +135,6 @@ class New_Post_Type {
 	public function do_search_form() {
 
 		$this->post_search_form->render();
-
 	}
 
 	/**
@@ -146,7 +145,6 @@ class New_Post_Type {
 	public function acf_files() {
 
 		include "{$this->plugin_dir}/advanced-custom-fields/new-post-type.php";
-
 	}
 
 	/**
@@ -155,13 +153,12 @@ class New_Post_Type {
 	 * @see    https://developer.wordpress.org/reference/functions/wp_register_style/
 	 * @see    https://developer.wordpress.org/reference/functions/wp_register_script/
 	 * @see    https://www.php.net/manual/en/function.filemtime.php
-	 * @since  0.1.0
+	 * @since  1.0.0
 	 * @return void
 	 */
 	public function register_public_scripts() {
 
 		if ( get_post_type() === $this->post_type ) {
-
 			if ( is_singular( $this->post_type ) ) {
 
 				// Register public styles.
@@ -181,7 +178,6 @@ class New_Post_Type {
 					filemtime( "{$this->plugin_dir}/js/single-{$this->post_type_filename}.js" ),
 					true
 				);
-
 			} elseif ( is_archive( $this->post_type ) ) {
 
 				// Register public styles.
@@ -192,10 +188,8 @@ class New_Post_Type {
 					filemtime( "{$this->plugin_dir}/css/archive-{$this->post_type_filename}.css" ),
 					'screen'
 				);
-
 			}
 		}
-
 	}
 
 	/**
@@ -203,25 +197,19 @@ class New_Post_Type {
 	 *
 	 * @see    https://developer.wordpress.org/reference/functions/wp_enqueue_style/
 	 * @see    https://developer.wordpress.org/reference/functions/wp_enqueue_script/
-	 * @since  0.1.0
+	 * @since  1.0.0
 	 * @return void
 	 */
 	public function enqueue_public_scripts() {
 
 		if ( get_post_type() === $this->post_type ) {
-
 			if ( is_singular( $this->post_type ) ) {
-
 				wp_enqueue_style( "single-{$this->post_type_filename}" );
 				wp_enqueue_script( "single-{$this->post_type_filename}-script" );
-
 			} elseif ( is_archive( $this->post_type ) ) {
-
 				wp_enqueue_style( "archive-{$this->post_type_filename}" );
-
 			}
 		}
-
 	}
 
 	/**
@@ -243,7 +231,6 @@ class New_Post_Type {
 		}
 
 		return $content;
-
 	}
 
 	/**
@@ -263,7 +250,6 @@ class New_Post_Type {
 		}
 
 		return $excerpt;
-
 	}
 
 	/**
@@ -279,7 +265,6 @@ class New_Post_Type {
 			remove_filter( 'the_content', array( $this, 'content_template' ) );
 		}
 		return $excerpt;
-
 	}
 
 	/**
@@ -295,6 +280,5 @@ class New_Post_Type {
 			add_filter( 'the_content', array( $this, 'content_template' ) );
 		}
 		return $excerpt;
-
 	}
 }

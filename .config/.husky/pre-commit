@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+npx lint-staged
+
+staged_files=$(git diff --name-only --cached --diff-filter=ACMRT)
+
+# Checking PHP files.
+staged_php_files=()
+for file in $staged_files; do
+    if [[ "$file" == *.php ]]; then
+        staged_php_files+=("$file")
+    fi
+done
+
+if [ ${#staged_php_files[@]} -eq 0 ]; then
+    exit 0
+fi
+
+# Detect if composer is installed.
+if ! command -v composer &> /dev/null; then
+    # Detect if Docker is running.
+    if ! docker info > /dev/null 2>&1; then
+        echo "Docker is not running and Composer is not installed. Either start Docker, or install PHP and Composer, and then try again."
+        exit 1
+    fi
+    echo "${staged_php_files[@]}" | xargs npm run lint:php --
+fi
+echo "${staged_php_files[@]}" | xargs composer run lint

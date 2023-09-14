@@ -1,0 +1,52 @@
+name: Playwright Tests
+on:
+    push:
+        branches:
+            - main
+            - 'release/**'
+    pull_request:
+        branches: [main]
+        paths:
+            - '**.php'
+            - '**.js'
+            - '**.css'
+            - '**.scss'
+            - 'package-lock.json'
+            - .github/workflows/test_e2e.yml
+
+# Cancels all previous workflow runs for pull requests that have not completed.
+concurrency:
+    # The concurrency group contains the workflow name and the branch name for pull requests
+    # or the commit hash for any other events.
+    group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.head_ref || github.sha }}
+    cancel-in-progress: true
+
+jobs:
+    e2e-playwright:
+        name: End-to-End Playwright Tests
+        runs-on: ubuntu-latest
+        timeout-minutes: 30
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Setup Node.js and install dependencies
+              uses: ./.github/actions/setup-node
+
+            - name: Install Playwright Browsers
+              run: npx playwright install chromium firefox webkit --with-deps
+
+            - name: Install WordPress and start the server
+              run: npm run wp-env start
+
+            - name: Run Playwright tests
+              run: npx playwright test --config test/e2e/playwright.config.js
+
+            - name: Archive debug artifacts (screenshots, traces)
+              uses: actions/upload-artifact@v3
+              if: always()
+              with:
+                  name: failures-artifacts
+                  path: artifacts/test-results
+                  retention-days: 30
+                  if-no-files-found: ignore
