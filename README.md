@@ -1,65 +1,142 @@
-# WordPress Plugin Boilerplate
+# WordPress Plugin Template
 
-## Features
+This plugin is a template for creating a WordPress plugin. It is a fully working plugin itself, but it has very limited functionality. It only includes a starting point for features that you may want to implement in your own plugin. Remove features that you will not need and then extend the features you keep or add your own.
 
-1. Custom post type using Advanced Custom Fields and a custom taxonomy
-2. Settings page which provides the "unique_text_field" setting in the custom post type templates
-   a. https://your-website.com/wp-admin/options-general.php?page=wordpress-plugin-name-settings
-3. Plugin activation requirement notification to check for Advanced Custom Fields
-4. Registers CSS and JS files (with jQuery) for all pages of the site and the single or archive page template for the custom post type.
-5. Well documented code using [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/) and links to official PHP and WordPress documentation websites that can help beginners learn the code more quickly.
-6. Visual Studio Code settings and Composer modules for PHP and WordPress Coding Standards and core documentation preconfigured for an improved in-editor learning experience.
+The goal is to provide a reliable, portable codebase with well-defined dependencies and minimal time for someone to make their first contribution even if they have never seen this code before.
 
-## Installation
+**Table of Contents**
 
-Before you get started you should download and install some things:
+- [Getting Started](#getting-started)
+- [Directory Structure](#directory-structure)
+- [Commands](#commands)
+- [Tests](#tests)
+- [wp-env](#wp-env)
+- [Installing System Requirements for Development](#system-requirements-for-development)
 
-*Windows*
-1. Install Microsoft Visual Studio Code: <https://code.visualstudio.com/>.
-2. Install PHP 7.4 using the Microsoft Web Platform Installer: <https://www.microsoft.com/web/downloads/platform.aspx>.
-3. Install Composer for PHP using Composer-Setup.exe*: <https://getcomposer.org/doc/00-intro.md#installation-windows>.
-4. Install Sourcetree <https://www.sourcetreeapp.com/>.
-5. Clone this repository to your computer using Sourcetree.
-6. Open the "workspace" in Microsoft Visual Studio Code and install the workspace's recommended Extensions.
+## Getting Started
 
-*Repository*
-1. Run `$ composer install` from this directory on the command line.
-2. Restart VS Code if you have it open.
-3. Run `$ composer run checkwp` to check your files against WordPress Coding Standards.
-4. Run `$ composer run fixwp` to automatically fix indentation or spacing issues flagged by WordPress Coding Standards.
-5. Search through the files for "wordpress-plugin-name", "WordPress Plugin Name", and "PLUGIN_NAME" and replace these strings with the name of your plugin, maintaining the capitalization and special characters.
-6. Search through the files for "new-post-type", "NewPostType", and "New Post Type" and replace them with the name of your custom post type.
-6. Search through the files for "new_taxonomy", "New Taxonomy", and "New Taxonomies" and replace them with the name of your custom taxonomy.
+**First**, either clone this repository to your computer or use this template repository to create a new repository on your GitHub account.
 
-## Introduction
+`git clone https://github.com/zachwatkins/wordpress-plugin-name.git your-plugin-slug`
 
-"Welcome to the WordPress Plugin Developer Handbook; are you ready to jump right in to the world of WordPress plugins?
+**Then**, replace all instances of the default plugin name with your plugin name. This ensures your plugin has a unique signature in the WordPress database and runtime. You can use the following search and replace terms to find and replace all instances of the default plugin name:
 
-"The Plugin Developer Handbook is a resource for all things WordPress plugins. Whether you’re new to WordPress plugin development, or you’re an experienced plugin developer, you should be able to find the answer to many of your plugin-related questions right here." View more: <https://developer.wordpress.org/plugins/>
+1. `wordpress-plugin-name` - The plugin slug. This is the name of your plugin folder and root plugin file. Rename the root plugin file and replace the text in every file that uses it. Use this format: `<your-plugin-slug>`.
+2. `wordpress_plugin_name` - The global prefix for your plugin. Defined in `.config/.phpcs.xml.dist`. Use this format: `your_plugin_slug`.
+3. `WordPress_Plugin_Name` - This is the namespace of your plugin's PHP files. Use this format: `Your_Plugin_Name`.
+4. `@package WordPress Plugin Name` - Used in PHP comments as a WordPress documentation requirement. Use this format: `@package Your Plugin Name`.
+5. `wordpress-plugin-textdomain` - The plugin textdomain. Defined in `.config/.phpcs.xml.dist`. This is used for translations when your plugin supports them. Use this format: `<your-plugin-slug>`.
 
-This plugin was created by Zachary Watkins <zwatkins.it@gmail.com> with the hope that it could be someone's first step into WordPress development.
+**Finally**, set up your local development environment using these command line commands from the root of your plugin:
 
-## Code Standards, Guidelines, and Conventions
+```
+npm install
+npm start
+npm run composer install
+```
 
-There are many ways to learn programming and rigid documentation requirements can seem daunting for beginners. If you are a beginner, I am excited that you are here and I hope you learn something from what you find. While not a requirement to write functional code, learning and implementing best practices for coding and documentation is worthwhile for both personal and professional projects.
+## Directory Structure
 
-"WordPress is a big project with thousands of contributors. It’s important that best practices are followed so that the codebase is consistent and readable, and changes are easy to find and read, whether the code is five days old or five years old. What follows are a series of best practices to help keep WordPress code clean and well documented for years to come." View more: <https://developer.wordpress.org/coding-standards/>
+1. **.bin** - Custom scripts for local development.
+2. **.github** - GitHub integration files such as Actions workflows.
+3. **.vscode** - Visual Studio Code integration files.
+4. **.wp-env** - WordPress development environment default content.
+5. **advanced-custom-fields** - Advanced Custom Fields field registration and import files.
+6. **assets** - JavaScript, CSS, images, fonts, and other static files.
+7. **common** - Common WordPress feature implementations that you can copy and modify for your plugin.
+8. **docs** - Documentation files going in depth on different aspects of this project or WordPress development.
+9. **includes** - File content output to the browser by the plugin. This is where you should put most or all of the HTML output from your plugin, to make that content easier to find and change.
+10. **src** - PHP classes that hook into WordPress and implement plugin features.
+11. **test** - Plugin code tests.
+    a. **e2e** - Browser tests using Playwright.
+    b. **jest** - JavaScript tests using Jest.
+    c. **phpunit** - WordPress PHP code tests using PHPUnit.
 
-"WordPress uses a customized documentation schema that draws inspiration from PHPDoc, an evolving standard for providing documentation to PHP code, which is maintained by [phpDocumentor](http://phpdoc.org/)." View more: <https://developer.wordpress.org/coding-standards/inline-documentation-standards/php/>
+## Commands
 
-PHPDoc's Tag Reference: <https://docs.phpdoc.org/3.0/guide/references/phpdoc/tags/index.html#tag-reference>
+The commands you will use the most frequently for developing a plugin with this repository are listed below.
 
-I use the Composer module for [PHP CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer/) to automate code compliance checking with [WordPress Coding Standards](https://developer.wordpress.org/coding-standards/wordpress-coding-standards/). A pre-commit hook file ensures code meets this standard before it is added to the repository, but this can be disabled by commenting out the file's contents - only do this when a situation warrants it such as backing up unfinished work via a commit.
+For a complete list of commands, refer to [package.json](package.json) and [composer.json](composer.json). For descriptions of what these commands do, see here: [docs/commands.md](docs/commands.md)
 
-Line endings are converted to Linux-style LF "\n" when committed to the repository using the `.gitattributes` file. This is what WordPress requires for its Subversion version control system, and Subversion is how developers submit WordPress plugins and themes to the official WordPress.org library. This is an important feature because Windows adds "\r\n" characters to the end of text lines when a line is broken. View more: http://git-scm.com/docs/gitattributes#_end_of_line_conversion
+|-------------------------------------------------------------------------------------|
+| Command                    | Description                                            |
+| -------------------------- | -------------------------------------------------------|
+| `npm install`              | Install your project dependencies for the first time.   |
+| `npm start`                | Start the development environment                      |
+| `npm run composer install` | Install Composer dependencies for the first time.       |
+| `npm run lint`             | Check code style using WordPress coding standards      |
+| `npm run test`             | Test JavaScript and PHP                                |
+| `npm run stop`             | Stop the development environment                       |
+|-------------------------------------------------------------------------------------|
 
-Links to resources:
+## Tests
 
-* WordPress Coding Standards - <https://developer.wordpress.org/coding-standards/>
-* PHPDoc Reference - <https://docs.phpdoc.org/3.0/guide/references/phpdoc/index.html>
-* PHP CodeSniffer Wiki - <https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage>
-* Composer package schema - <https://getcomposer.org/doc/04-schema.md>
+This plugin has a small set of tests to show you how to create your own. Core WordPress code is tested, so only test the code you write.
 
-## Advice
+Categories of test included in this theme:
 
-"Great things are not done by impulse, but by a series of small things brought together." - Letter to Theo (October 1882) *Vincent Van Gogh*
+1. **Unit** tests examine the behavior of a small unit of code.
+2. **End to end** tests examine what the end user sees.
+3. **Integration** tests examine compatibility between separate systems.
+
+## wp-env
+
+Ensure that Docker is running, then:
+
+```shell
+$ cd /path/to/a/wordpress/plugin-or-theme
+$ npm -g i @wordpress/env
+$ wp-env start
+```
+
+The local environment will be available at http://localhost:8888 (Username: `admin`, Password: `password`).
+
+The database credentials are: user `root`, password `password`. For a comprehensive guide on connecting directly to the database, refer to [Accessing the MySQL Database](https://github.com/WordPress/gutenberg/blob/trunk/docs/contributors/code/getting-started-with-code-contribution.md#accessing-the-mysql-database).
+
+For documentation on .wp-env.json options see here: https://github.com/WordPress/gutenberg/tree/trunk/packages/env#wp-envjson
+
+## System Requirements for Development
+
+You will need the following tools installed on your computer:
+
+-   [Docker](https://www.docker.com/products/docker-desktop)
+-   [Node.js](https://nodejs.org/en/download/)
+-   [git](https://git-scm.com/downloads)
+
+**Docker**
+
+Windows: `winget install -e --id Docker.DockerDesktop`
+Linux: `sudo apt install docker.io`
+Mac with Homebrew: `brew install --cask docker`
+
+**Node.js**
+
+Windows: `winget install -e --id OpenJS.Nodejs`
+Linux: `sudo apt install nodejs`
+Mac with Homebrew: `brew install node`
+
+**git**
+
+Windows: `winget install -e --id Git.Git`
+Linux: `sudo apt install git`
+Mac with Homebrew: `brew install git`
+
+**PHP and Composer**
+
+PHP is not required for development, but it is useful for running Composer and other PHP scripts more quickly in your command line than in the Docker container.
+
+I include a script for installing PHP 8.1 on Windows and Linux. You can run the script from the root of this project:
+
+`.bin/install/php-8-1`
+
+**WSL2 with Ubuntu**
+
+This is optional and not needed, but I wanted to include it here because it is a great way to run Linux on Windows.
+
+```powershell
+wsl --update
+wsl --install -d Ubuntu
+wsl --set-version Ubuntu 2
+wsl --set-default-version 2
+wsl --set-default Ubuntu
+```
