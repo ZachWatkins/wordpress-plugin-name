@@ -50,11 +50,12 @@
 		"semver": "7.5.4"
 	},
 	"scripts": {
-		"start": "wp-env start",
-		"start:debug": "wp-env start --xdebug=profile,trace,debug",
-		"start:update": "wp-env start --update",
+		"prepare": "husky install .config/.husky",
+		"start": "wp-env start --scripts",
+		"start:debug": "wp-env start --scripts --xdebug=profile,trace,debug",
+		"start:update": "wp-env start --scripts --update",
 		"stop": "wp-env stop",
-		"clean": "wp-env clean all && wp-env start",
+		"clean": "wp-env clean all && wp-env start --scripts",
 		"destroy": "wp-env destroy",
 		"lint": "concurrently \"npm run lint:lockfile\" \"npm run lint:js\" \"npm run lint:pkg-json\" \"npm run lint:css\"",
 		"lint:css": "wp-scripts lint-style \"**/*.scss\" --ignore-path=.config/.prettierignore",
@@ -77,17 +78,16 @@
 		"db:seed-sql": "wp-env run cli wp db import database.sql",
 		"composer": "wp-env run wordpress --env-cwd=wp-content/themes/wordpress-theme composer",
 		"wp-env": "wp-env",
-		"wp-scripts": "wp-scripts",
-		"prepare": "husky install .config/.husky"
+		"wp-scripts": "wp-scripts"
 	},
 	"lint-staged": {
-		"*.{js,json,ts,tsx,yml,yaml}": [
+		"assets/**/*.{js,json,ts,tsx,yml,yaml}": [
 			"wp-scripts format"
 		],
-		"*.{js,ts,tsx}": [
+		"assets/**/*.{js,ts,tsx}": [
 			"wp-scripts lint-js"
 		],
-		"*.scss": [
+		"assets/**/*.{css,scss}": [
 			"wp-scripts lint-style"
 		],
 		"package-lock.json": [
