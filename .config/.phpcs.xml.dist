@@ -9,6 +9,7 @@
 	<exclude-pattern>../vendor/</exclude-pattern>
 	<exclude-pattern>../node_modules/</exclude-pattern>
 	<exclude-pattern>../wordpress/</exclude-pattern>
+	<exclude-pattern>../.wp-env/</exclude-pattern>
 
 	<!-- How to scan -->
 	<!-- Usage instructions: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage -->
@@ -28,14 +29,14 @@
 		<properties>
 			<!-- Value: replace the function, class, and variable prefixes used. Separate multiple prefixes with a comma. -->
 			<property name="prefixes" type="array">
-                <element value="plugin_name"/>
+                <element value="wordpress_plugin_name"/>
 			</property>
 		</properties>
 	</rule>
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<!-- Value: replace the text domain used. -->
-			<property name="text_domain" type="array" value="wordpress-theme"/>
+			<property name="text_domain" type="array" value="wordpress-plugin-textdomain"/>
 		</properties>
 	</rule>
 	<rule ref="WordPress.WhiteSpace.ControlStructureSpacing">
