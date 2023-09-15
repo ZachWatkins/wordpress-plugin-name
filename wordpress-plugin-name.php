@@ -36,9 +36,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @see https://developer.wordpress.org/reference/functions/plugin_dir_url/
  * @see https://www.php.net/manual/en/function.dirname.php
  */
-define( 'PLUGIN_NAME_DIR_URL', plugin_dir_url( __FILE__ ) );
-define( 'PLUGIN_NAME_DIR_FILE', __FILE__ );
-define( 'PLUGIN_NAME_DIR_PATH', __DIR__ );
+define( 'WORDPRESS_PLUGIN_NAME_DIR_URL', plugin_dir_url( __FILE__ ) );
+define( 'WORDPRESS_PLUGIN_NAME_DIR_FILE', __FILE__ );
+define( 'WORDPRESS_PLUGIN_NAME_DIR_PATH', __DIR__ );
 
 // Register PHP class names for autoloading.
 require __DIR__ . '/vendor/autoload.php';
@@ -47,4 +47,4 @@ require __DIR__ . '/vendor/autoload.php';
 new \ThoughtfulWeb\ActivationRequirementsWP\Plugin();
 
 // Load the main class file.
-new \PluginName\Init();
+new \WordPress_Plugin_Name\Init();

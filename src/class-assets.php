@@ -11,7 +11,7 @@
  * @since      1.0.0
  */
 
-namespace PluginName;
+namespace WordPress_Plugin_Name;
 
 /**
  * The class that registers public web assets.
@@ -26,14 +26,14 @@ class Assets {
 	 *
 	 * @var string
 	 */
-	private $plugin_dir = PLUGIN_NAME_DIR_PATH;
+	private $plugin_dir = WORDPRESS_PLUGIN_NAME_DIR_PATH;
 
 	/**
 	 * The plugin directory URL.
 	 *
 	 * @var string
 	 */
-	private $plugin_dir_url = PLUGIN_NAME_DIR_URL;
+	private $plugin_dir_url = WORDPRESS_PLUGIN_NAME_DIR_URL;
 
 	/**
 	 * Initialize the class

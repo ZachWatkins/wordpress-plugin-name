@@ -12,10 +12,10 @@
  * @since      1.0.0
  */
 
-namespace PluginName;
+namespace WordPress_Plugin_Name;
 
-use PluginName\Assets;
-use PluginName\NewPostType;
+use WordPress_Plugin_Name\Assets;
+use WordPress_Plugin_Name\NewPostType;
 use ThoughtfulWeb\SettingsPageWP\Page as SettingsPage;
 
 /**

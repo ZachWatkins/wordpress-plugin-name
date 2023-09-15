@@ -11,11 +11,11 @@
  * @since      1.0.0
  */
 
-namespace PluginName;
+namespace WordPress_Plugin_Name;
 
-use PluginName\Common\PostType;
-use PluginName\Common\Taxonomy;
-use PluginName\Common\PostTypeSearchForm;
+use WordPress_Plugin_Name\Common\PostType;
+use WordPress_Plugin_Name\Common\Taxonomy;
+use WordPress_Plugin_Name\Common\PostTypeSearchForm;
 
 /**
  * The new post type plugin Class.
@@ -32,14 +32,14 @@ class NewPostType {
 	 *
 	 * @var string
 	 */
-	private $plugin_dir = PLUGIN_NAME_DIR_PATH;
+	private $plugin_dir = WORDPRESS_PLUGIN_NAME_DIR_PATH;
 
 	/**
 	 * The plugin directory URL.
 	 *
 	 * @var string
 	 */
-	private $plugin_dir_url = PLUGIN_NAME_DIR_URL;
+	private $plugin_dir_url = WORDPRESS_PLUGIN_NAME_DIR_URL;
 
 	/**
 	 * The post type slug.

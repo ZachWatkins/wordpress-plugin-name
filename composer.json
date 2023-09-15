@@ -1,6 +1,6 @@
 {
 	"name": "zachwatkins/wordpress-plugin-name",
-	"description": "A GPL-2.0+ WordPress Plugin to serve as an introduction to WordPress plugin development.",
+	"description": "A WordPress plugin to serve as an introduction to WordPress plugin development.",
 	"type": "project",
 	"scripts": {
 		"test": [

@@ -1,21 +1,21 @@
 {
-	"name": "wordpress-theme",
+	"name": "wordpress-plugin-name",
 	"version": "1.0.0",
 	"private": true,
-	"description": "An example WordPress theme repository which simplifies development.",
+	"description": "A WordPress plugin to serve as an introduction to WordPress plugin development.",
 	"author": "Zachary K. Watkins",
 	"license": "GPL-2.0-or-later",
 	"keywords": [
 		"wordpress",
-		"wordpress-theme"
+		"wordpress-plugin"
 	],
-	"homepage": "https://github.com/zachwatkins/wordpress-theme#readme",
+	"homepage": "https://github.com/zachwatkins/wordpress-plugin-name#readme",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/zachwatkins/wordpress-theme.git"
+		"url": "git+https://github.com/zachwatkins/wordpress-plugin-name.git"
 	},
 	"bugs": {
-		"url": "https://github.com/zachwatkins/wordpress-theme/issues"
+		"url": "https://github.com/zachwatkins/wordpress-plugin-name/issues"
 	},
 	"engines": {
 		"node": ">=18.16.1 <20.0.0",
@@ -71,12 +71,12 @@
 		"test:e2e": "playwright test --project=\"Google Chrome\" --config test/e2e/playwright.config.js",
 		"test:e2e:ui": "playwright test --ui --project=\"Google Chrome\" --config test/e2e/playwright.config.js",
 		"test:js": "jest",
-		"test:php": "wp-env run tests-cli 'bash -c \"cd wp-content/themes/wordpress-theme && vendor/bin/phpunit\"'",
+		"test:php": "wp-env run tests-cli 'bash -c \"cd wp-content/plugins/wordpress-plugin-name && vendor/bin/phpunit\"'",
 		"wp": "wp-env run cli wp",
 		"db:query": "wp-env run cli wp db query",
 		"db:seed-php": "wp-env run cli wp eval-file database.php",
 		"db:seed-sql": "wp-env run cli wp db import database.sql",
-		"composer": "wp-env run wordpress --env-cwd=wp-content/themes/wordpress-theme composer",
+		"composer": "wp-env run wordpress --env-cwd=wp-content/plugins/wordpress-plugin-name composer",
 		"wp-env": "wp-env",
 		"wp-scripts": "wp-scripts"
 	},

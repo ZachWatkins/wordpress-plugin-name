@@ -11,7 +11,7 @@
  * @todo Allow custom ordering of the taxonomy and meta fields by combining the two parameters into one and requiring a prefix to identify a meta or a term.
  */
 
-namespace PluginName\Common;
+namespace Common;
 
 /**
  * The post type registration class

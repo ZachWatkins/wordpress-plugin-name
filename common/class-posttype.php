@@ -9,7 +9,7 @@
  * @subpackage Common
  */
 
-namespace PluginName\Common;
+namespace Common;
 
 /**
  * The post type registration class
@@ -24,14 +24,14 @@ class PostType {
 	 *
 	 * @var string
 	 */
-	private $plugin_dir = PLUGIN_NAME_DIR_PATH;
+	private $plugin_dir = WORDPRESS_PLUGIN_NAME_DIR_PATH;
 
 	/**
 	 * The plugin directory URL.
 	 *
 	 * @var string
 	 */
-	private $plugin_file = PLUGIN_NAME_DIR_FILE;
+	private $plugin_file = WORDPRESS_PLUGIN_NAME_DIR_FILE;
 
 	/**
 	 * Default post type registration arguments.

@@ -9,7 +9,7 @@
  * @subpackage Common
  */
 
-namespace PluginName\Common;
+namespace Common;
 
 /**
  * Builds and registers a custom taxonomy.
@@ -25,7 +25,7 @@ class Taxonomy {
 	 *
 	 * @var string
 	 */
-	private $plugin_file = PLUGIN_NAME_DIR_FILE;
+	private $plugin_file = WORDPRESS_PLUGIN_NAME_DIR_FILE;
 
 	/**
 	 * Taxonomy slug
