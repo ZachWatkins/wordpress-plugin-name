@@ -94,6 +94,9 @@
 		"package-lock.json": [
 			"npm run lint:lockfile",
 			"node ./bin/check-latest-npm.js"
+		],
+		"**/*.php": [
+			"echo \"Running PHP linter inside Docker container\""
 		]
 	},
 	"browserslist": [
