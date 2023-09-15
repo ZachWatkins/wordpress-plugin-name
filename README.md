@@ -24,8 +24,9 @@ The goal is to provide a reliable, portable codebase with well-defined dependenc
 1. `wordpress-plugin-name` - The plugin slug. This is the name of your plugin folder and root plugin file. Rename the root plugin file and replace the text in every file that uses it. Use this format: `<your-plugin-slug>`.
 2. `wordpress_plugin_name` - The global prefix for your plugin. Defined in `.config/.phpcs.xml.dist`. Use this format: `your_plugin_slug`.
 3. `WordPress_Plugin_Name` - This is the namespace of your plugin's PHP files. Use this format: `Your_Plugin_Name`.
-4. `@package WordPress Plugin Name` - Used in PHP comments as a WordPress documentation requirement. Use this format: `@package Your Plugin Name`.
-5. `wordpress-plugin-textdomain` - The plugin textdomain. Defined in `.config/.phpcs.xml.dist`. This is used for translations when your plugin supports them. Use this format: `<your-plugin-slug>`.
+4. `WORDPRESS_PLUGIN_NAME_[...]` - This is the prefix for your plugin's global constants in PHP. Use this format: `YOUR_PLUGIN_SLUG_[...]`.
+5. `@package WordPress Plugin Name` - Used in PHP comments as a WordPress documentation requirement. Use this format: `@package Your Plugin Name`.
+6. `wordpress-plugin-textdomain` - The plugin textdomain. Defined in `.config/.phpcs.xml.dist`. This is used for translations when your plugin supports them. Use this format: `<your-plugin-slug>`.
 
 **Finally**, set up your local development environment using these command line commands from the root of your plugin:
 
