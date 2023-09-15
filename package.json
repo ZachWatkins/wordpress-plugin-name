@@ -25,6 +25,7 @@
 	"main": "index.js",
 	"devDependencies": {
 		"@axe-core/playwright": "4.7.3",
+		"@babel/plugin-transform-modules-commonjs": "^7.22.15",
 		"@playwright/test": "1.36.1",
 		"@types/eslint": "8.44.0",
 		"@wordpress/browserslist-config": "5.20.0",
