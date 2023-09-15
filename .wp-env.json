@@ -7,10 +7,7 @@
 		"database.sql": "./.wp-env/database.sql",
 		"database.php": "./.wp-env/database.php"
 	},
-	"config": {
-		"DB_NAME": "wp_phpunit_tests",
-		"DB_USER": "root",
-		"DB_PASSWORD": "",
-		"DB_HOST": "localhost"
+	"lifecycleScripts": {
+		"postStart": "cd wp-content/plugins/wordpress-plugin-name && -d 'vendor' || composer install"
 	}
 }
