@@ -8,6 +8,6 @@
 		"database.php": "./.wp-env/database.php"
 	},
 	"lifecycleScripts": {
-		"postStart": "cd wp-content/plugins/wordpress-plugin-name && -d 'vendor' || composer install"
+		"afterStart": "cd wp-content/plugins/wordpress-plugin-name && -d vendor || composer install"
 	}
 }
