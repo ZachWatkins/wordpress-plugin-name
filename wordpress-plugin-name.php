@@ -32,19 +32,19 @@ if ( ! defined( 'ABSPATH' ) ) {
  * or words specific to your plugin to associate them with your plugin in the global
  * constant space. Other plugins and themes can use them after the 'after_setup_theme'
  * action hook.
- *
- * @see https://developer.wordpress.org/reference/functions/plugin_dir_url/
- * @see https://www.php.net/manual/en/function.dirname.php
  */
 define( 'WORDPRESS_PLUGIN_NAME_DIR_URL', plugin_dir_url( __FILE__ ) );
 define( 'WORDPRESS_PLUGIN_NAME_DIR_FILE', __FILE__ );
 define( 'WORDPRESS_PLUGIN_NAME_DIR_PATH', __DIR__ );
 
-// Register PHP class names for autoloading.
-require __DIR__ . '/vendor/autoload.php';
+// For local development, we detect whether Composer has installed dependencies before loading the autoload file.
+if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	// Register PHP class names for autoloading.
+	require __DIR__ . '/vendor/autoload.php';
 
-// Apply plugin activation requirements.
-new \ThoughtfulWeb\ActivationRequirementsWP\Plugin();
+	// Apply plugin activation requirements.
+	new \ThoughtfulWeb\ActivationRequirementsWP\Plugin();
 
-// Load the main class file.
-new \WordPress_Plugin_Name\Init();
+	// Load the main class file.
+	new \WordPress_Plugin_Name\Init();
+}
