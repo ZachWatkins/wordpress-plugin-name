@@ -6,13 +6,13 @@ The goal is to provide a reliable, portable codebase with well-defined dependenc
 
 **Table of Contents**
 
-- [Getting Started](#getting-started)
-- [Directory Structure](#directory-structure)
-- [Commands](#commands)
-- [wp-env](#wp-env)
-- [Tests](#tests)
-- [Installing System Requirements for Development](#system-requirements-for-development)
-- [Further Reading](#further-reading)
+-   [Getting Started](#getting-started)
+-   [Directory Structure](#directory-structure)
+-   [Commands](#commands)
+-   [wp-env](#wp-env)
+-   [Tests](#tests)
+-   [Installing System Requirements for Development](#system-requirements-for-development)
+-   [Further Reading](#further-reading)
 
 ## Getting Started
 
@@ -43,8 +43,8 @@ npm run composer install
 
 The links below describe key WordPress code concepts you will need to know in order to develop your WordPress plugin.
 
-- [Action Hooks](https://developer.wordpress.org/plugins/hooks/actions/)
-- [Filter Hooks](https://developer.wordpress.org/plugins/hooks/filters/)
+-   [Action Hooks](https://developer.wordpress.org/plugins/hooks/actions/)
+-   [Filter Hooks](https://developer.wordpress.org/plugins/hooks/filters/)
 
 ## Directory Structure
 
@@ -61,7 +61,7 @@ The links below describe key WordPress code concepts you will need to know in or
 11. **test** - Plugin code tests.  
     a. **e2e** - Browser tests using Playwright.  
     b. **jest** - JavaScript tests using Jest.  
-    c. **phpunit** - WordPress PHP code tests using PHPUnit.  
+    c. **phpunit** - WordPress PHP code tests using PHPUnit.
 
 ## Commands
 
@@ -70,14 +70,14 @@ The commands you will use the most frequently for developing a plugin with this 
 For a complete list of commands, refer to [package.json](package.json) and [composer.json](composer.json). For descriptions of what these commands do, see here: [docs/commands.md](docs/commands.md)
 
 |-------------------------------------------------------------------------------------|
-| Command                    | Description                                            |
+| Command | Description |
 | -------------------------- | -------------------------------------------------------|
-| `npm install`              | Install your project dependencies for the first time.   |
-| `npm start`                | Start the development environment                      |
-| `npm run composer install` | Install Composer dependencies for the first time.       |
-| `npm run lint`             | Check code style using WordPress coding standards      |
-| `npm run test`             | Test JavaScript and PHP                                |
-| `npm run stop`             | Stop the development environment                       |
+| `npm install` | Install your project dependencies for the first time. |
+| `npm start` | Start the development environment |
+| `npm run composer install` | Install Composer dependencies for the first time. |
+| `npm run lint` | Check code style using WordPress coding standards |
+| `npm run test` | Test JavaScript and PHP |
+| `npm run stop` | Stop the development environment |
 |-------------------------------------------------------------------------------------|
 
 ## Tests
