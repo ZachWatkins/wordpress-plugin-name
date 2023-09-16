@@ -1,18 +1,16 @@
 {
-	"editor.formatOnPaste": false,
-	"editor.formatOnSave": true,
-	"editor.formatOnSaveMode": "modifications",
 	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.detectIndentation": false,
+	"editor.formatOnPaste": true,
+	"editor.formatOnSave": true,
+	"editor.formatOnSaveMode": "file",
+	"editor.wordWrap": "on",
 	"[php]": {
 		"editor.defaultFormatter": "obliviousharmony.vscode-php-codesniffer"
 	},
 	"prettier.configPath": ".config/.prettierrc.json",
 	"prettier.ignorePath": ".config/.prettierignore",
-	"prettier.useEditorConfig": false,
 	"phpCodeSniffer.autoExecutable": true,
-	"editor.wordWrap": "on",
-	"editor.detectIndentation": false,
-	"editor.insertSpaces": false,
 	"files.eol": "\n",
 	"files.insertFinalNewline": true,
 	"files.trimTrailingWhitespace": true,
@@ -102,5 +100,6 @@
 		"zip",
 		"zlib",
 		"wordpress"
-	]
+	],
+	"prettier.enableDebugLogs": true
 }
