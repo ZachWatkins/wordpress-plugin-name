@@ -37,9 +37,9 @@ define( 'WORDPRESS_PLUGIN_NAME_DIR_URL', plugin_dir_url( __FILE__ ) );
 define( 'WORDPRESS_PLUGIN_NAME_DIR_FILE', __FILE__ );
 define( 'WORDPRESS_PLUGIN_NAME_DIR_PATH', __DIR__ );
 
-if ( 'local' === wp_get_environment_type() && file_exists( __DIR__ . '/common/local.php' ) ) {
+if ( 'local' === wp_get_environment_type() && file_exists( __DIR__ . '/src/local-only.php' ) ) {
 	// Local development helpers.
-	require __DIR__ . '/local.php';
+	require __DIR__ . '/src/local-only.php';
 }
 
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {

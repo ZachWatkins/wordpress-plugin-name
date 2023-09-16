@@ -1,6 +1,6 @@
 <?php
 /**
- * Local development helper features.
+ * LOCAL ONLY development helper features which should never, ever be used in production.
  *
  * @package    WordPress_Plugin_Name
  * @subpackage Common
@@ -9,11 +9,14 @@
  * @license    GPL-2.0-or-later
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) || 'local' !== wp_get_environment_type() ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
-// Show the action hook tags on the page.
+/**
+ * Output action hook names to the public page in the order they are called.
+ * This is a great way to learn how the WordPress action hook system works.
+ */
 add_action( 'all', 'wordpress_plugin_name_show_all_hooks' );
 $wordpress_plugin_name_debug_tags = array();
 /**
