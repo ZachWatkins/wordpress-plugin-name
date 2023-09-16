@@ -150,6 +150,12 @@ class PostType {
 		if ( false === has_action( "activate_{$this->plugin_file}", 'flush_rewrite_rules' ) ) {
 			register_activation_hook( $this->plugin_file, 'flush_rewrite_rules' );
 		}
+
+		// Add a deactivation hook for unregistering the post type and flushing rewrite rules.
+		// Checks to ensure it is not yet hooked.
+		if ( false === has_action( "deactivate_{$this->plugin_file}", array( $this, 'unregister' ) ) ) {
+			register_deactivation_hook( $this->plugin_file, array( $this, 'unregister' ) );
+		}
 	}
 
 	/**
@@ -161,6 +167,17 @@ class PostType {
 
 		$args = array_merge( $this->default_args, $this->args );
 		register_post_type( $this->post_type, $args );
+	}
+
+	/**
+	 * Unregister the post type.
+	 *
+	 * @return void
+	 */
+	public function unregister() {
+
+		unregister_post_type( $this->post_type );
+		flush_rewrite_rules();
 	}
 
 	/**
