@@ -1,8 +1,8 @@
 .cache
+node_modules
 vendor
+wordpress
 package-lock.json
 composer.lock
-LICENSE.md
-docs
+LICENSE
 *.html
-wordpress
