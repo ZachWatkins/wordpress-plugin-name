@@ -57,24 +57,24 @@
 		"clean": "wp-env clean all && wp-env start --scripts",
 		"destroy": "wp-env destroy",
 		"lint": "npm run lint:js && npm run lint:css",
-		"lint:css": "wp-scripts lint-style \"assets/**/*.{scss,css}\" --ignore-path=.config/.prettierignore",
-		"lint:js": "wp-scripts lint-js --ignore-path=.config/.prettierignore",
-		"lint:php": "npm run composer run lint",
-		"format:css": "npm run lint:css -- --fix",
-		"format:js": "npm run lint:js -- --fix",
-		"format:php": "npm run composer run format",
+		"lint:css": "wp-scripts lint-style assets/css --ignore-path=.config/.prettierignore",
+		"lint:js": "wp-scripts lint-js assets/js --ignore-path=.config/.prettierignore",
+		"lint:php": "wp-env run --env-cwd='wp-content/plugins/wordpress-plugin-name' wordpress composer run lint",
+		"format:css": "wp-scripts lint-style assets/css --fix --ignore-path=.config/.prettierignore",
+		"format:js": "wp-scripts lint-js assets/js --fix --ignore-path=.config/.prettierignore",
+		"format:php": "wp-env run --env-cwd='wp-content/plugins/wordpress-plugin-name' wordpress ./vendor/bin/phpcbf --standard=.config/.phpcs.xml.dist --report-summary",
 		"prettier": "prettier --check --config .config/.prettierrc.json --ignore-path .config/.prettierignore .",
 		"logs": "wp-env logs",
-		"test": "jest && npm run test-unit-php",
+		"test": "npm run test:js && npm run test:php",
 		"test:e2e": "playwright test --project=\"Google Chrome\" --config test/e2e/playwright.config.js",
 		"test:e2e:ui": "playwright test --ui --project=\"Google Chrome\" --config test/e2e/playwright.config.js",
-		"test:js": "jest",
+		"test:js": "jest --config test/jest/jest.config.js",
 		"test:php": "wp-env run tests-cli 'bash -c \"cd wp-content/plugins/wordpress-plugin-name && ./vendor/bin/phpunit\"'",
 		"wp": "wp-env run cli wp",
 		"db:query": "wp-env run cli wp db query",
 		"db:seed-php": "wp-env run cli wp eval-file database.php",
 		"db:seed-sql": "wp-env run cli wp db import database.sql",
-		"composer": "wp-env run wordpress --env-cwd=wp-content/plugins/wordpress-plugin-name composer",
+		"composer": "wp-env run --env-cwd='wp-content/plugins/wordpress-plugin-name' wordpress composer",
 		"wp-env": "wp-env",
 		"wp-scripts": "wp-scripts"
 	},
@@ -83,13 +83,13 @@
 			"wp-scripts format"
 		],
 		"assets/**/*.{js,ts,tsx}": [
-			"wp-scripts lint-js"
+			"npm run format:js"
 		],
 		"assets/**/*.{css,scss}": [
 			"npm run format:css"
 		],
-		"**/*.php": [
-			"echo \"Running PHP linter from file: .config/.husky/pre-commit\""
+		"*.php": [
+			"npm run format:php"
 		]
 	},
 	"browserslist": [
