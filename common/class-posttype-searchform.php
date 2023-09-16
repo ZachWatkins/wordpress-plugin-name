@@ -170,8 +170,10 @@ class PostType_SearchForm {
 				if ( ! $unique_values ) {
 					// @codingStandardsIgnoreStart
 					$unique_values = $wpdb->get_results($wpdb->prepare("SELECT DISTINCT pm.meta_value FROM {$wpdb->postmeta} pm LEFT JOIN {$wpdb->posts} p ON p.ID = pm.post_id WHERE pm.meta_key = %s and p.post_type = %s AND p.post_status = 'publish' ORDER BY pm.meta_value", array($meta_key, $this->post_type)), ARRAY_N);
-					$unique_values = $unique_values[0];
-					set_transient("distinct_meta_{$meta_key}_wordpress_plugin_name", $unique_values, DAY_IN_SECONDS);
+					if ($unique_values) {
+						$unique_values = $unique_values[0];
+						set_transient("distinct_meta_{$meta_key}_wordpress_plugin_name", $unique_values, DAY_IN_SECONDS);
+					}
 					// @codingStandardsIgnoreEnd
 				}
 
