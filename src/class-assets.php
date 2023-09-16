@@ -63,9 +63,9 @@ class Assets {
 
 		wp_register_style(
 			'wordpress-plugin-name-admin',
-			"{$this->plugin_dir_url}/css/admin.css",
+			"{$this->plugin_dir_url}/assets/css/admin.css",
 			false,
-			filemtime( "{$this->plugin_dir}/css/admin.css" ),
+			filemtime( "{$this->plugin_dir}/assets/css/admin.css" ),
 			'screen'
 		);
 	}
@@ -96,18 +96,18 @@ class Assets {
 		// Register public styles.
 		wp_register_style(
 			'wordpress-plugin-name-public',
-			"{$this->plugin_dir_url}/css/public.css",
+			"{$this->plugin_dir_url}/assets/css/public.css",
 			false,
-			filemtime( "{$this->plugin_dir}/css/public.css" ),
+			filemtime( "{$this->plugin_dir}/assets/css/public.css" ),
 			'screen'
 		);
 
 		// Register public JavaScript in the site footer with jQuery pre-loaded.
 		wp_register_script(
 			'wordpress-plugin-name-public-script',
-			"{$this->plugin_dir_url}/js/public.js",
+			"{$this->plugin_dir_url}/assets/js/public.js",
 			array( 'jquery' ),
-			filemtime( "{$this->plugin_dir}/js/public.js" ),
+			filemtime( "{$this->plugin_dir}/assets/js/public.js" ),
 			true
 		);
 	}

@@ -15,7 +15,7 @@ namespace WordPress_Plugin_Name;
 
 use Common\PostType;
 use Common\Taxonomy;
-use Common\PostTypeSearchForm;
+use Common\PostType_SearchForm;
 
 /**
  * The new post type plugin Class.
@@ -99,7 +99,7 @@ class NewPostType {
 		new PostType( $this->post_type, 'New Post Type', 'New Post Types', array( 'taxonomies' => array( 'new_taxonomy' ) ) );
 
 		// Add a search form for the new post type.
-		$this->post_search_form = new PostTypeSearchForm(
+		$this->post_search_form = new PostType_SearchForm(
 			$this->post_type,
 			array( 'new_taxonomy' ),
 			array(
@@ -163,18 +163,18 @@ class NewPostType {
 				// Register public styles.
 				wp_register_style(
 					"single-{$this->post_type_filename}",
-					"{$this->plugin_dir_url}/css/single-{$this->post_type_filename}.css",
+					"{$this->plugin_dir_url}/assets/css/single-{$this->post_type_filename}.css",
 					false,
-					filemtime( "{$this->plugin_dir}/css/single-{$this->post_type_filename}.css" ),
+					filemtime( "{$this->plugin_dir}/assets/css/single-{$this->post_type_filename}.css" ),
 					'screen'
 				);
 
 				// Register public JavaScript in the site footer with jQuery pre-loaded.
 				wp_register_script(
 					"single-{$this->post_type_filename}-script",
-					"{$this->plugin_dir_url}/js/single-{$this->post_type_filename}.js",
+					"{$this->plugin_dir_url}/assets/js/single-{$this->post_type_filename}.js",
 					array( 'jquery' ),
-					filemtime( "{$this->plugin_dir}/js/single-{$this->post_type_filename}.js" ),
+					filemtime( "{$this->plugin_dir}/assets/js/single-{$this->post_type_filename}.js" ),
 					true
 				);
 			} elseif ( is_archive( $this->post_type ) ) {
@@ -182,9 +182,9 @@ class NewPostType {
 				// Register public styles.
 				wp_register_style(
 					"archive-{$this->post_type_filename}",
-					"{$this->plugin_dir_url}/css/archive-{$this->post_type_filename}.css",
+					"{$this->plugin_dir_url}/assets/css/archive-{$this->post_type_filename}.css",
 					false,
-					filemtime( "{$this->plugin_dir}/css/archive-{$this->post_type_filename}.css" ),
+					filemtime( "{$this->plugin_dir}/assets/css/archive-{$this->post_type_filename}.css" ),
 					'screen'
 				);
 			}
