@@ -62,7 +62,7 @@
 		"lint:css": "wp-scripts lint-style \"assets/**/*.scss\" --ignore-path=.config/.prettierignore",
 		"lint:js": "wp-scripts lint-js --ignore-path=.config/.prettierignore",
 		"lint:js:fix": "npm run lint:js -- --fix",
-		"lint:lockfile": "node ./bin/validate-package-lock.js",
+		"lint:lockfile": "node ./.bin/validate-package-lock.js",
 		"lint:php": "npm run composer run lint",
 		"lint:php:fix": "npm run composer run lint:fix",
 		"lint:pkg-json": "wp-scripts lint-pkg-json .",
@@ -72,7 +72,7 @@
 		"test:e2e": "playwright test --project=\"Google Chrome\" --config test/e2e/playwright.config.js",
 		"test:e2e:ui": "playwright test --ui --project=\"Google Chrome\" --config test/e2e/playwright.config.js",
 		"test:js": "jest",
-		"test:php": "wp-env run tests-cli 'bash -c \"cd wp-content/plugins/wordpress-plugin-name && vendor/bin/phpunit\"'",
+		"test:php": "wp-env run tests-cli 'bash -c \"cd wp-content/plugins/wordpress-plugin-name && ./vendor/bin/phpunit\"'",
 		"wp": "wp-env run cli wp",
 		"db:query": "wp-env run cli wp db query",
 		"db:seed-php": "wp-env run cli wp eval-file database.php",
@@ -93,7 +93,7 @@
 		],
 		"package-lock.json": [
 			"npm run lint:lockfile",
-			"node ./bin/check-latest-npm.js"
+			"node ./.bin/check-latest-npm.js"
 		],
 		"**/*.php": [
 			"echo \"Running PHP linter inside Docker container\""
