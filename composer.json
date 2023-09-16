@@ -8,7 +8,7 @@
 			"./vendor/bin/phpunit -c .config/phpunit.xml.dist"
 		],
 		"lint": "./vendor/bin/phpcs --standard=.config/.phpcs.xml.dist --report-full --report-summary",
-		"lint:fix": "./vendor/bin/phpcbf --standard=.config/.phpcs.xml.dist --report-summary",
+		"format": "./vendor/bin/phpcbf --standard=.config/.phpcs.xml.dist --report-summary",
 		"lint:errors": "./vendor/bin/phpcs -n"
 	},
 	"license": "GPL-2.0+",

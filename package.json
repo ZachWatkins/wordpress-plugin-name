@@ -34,8 +34,6 @@
 		"@wordpress/jest-preset-default": "11.8.0",
 		"@wordpress/prettier-config": "^2.19.0",
 		"@wordpress/scripts": "26.8.0",
-		"chalk": "5.3.0",
-		"concurrently": "8.2.0",
 		"eslint-import-resolver-node": "0.3.7",
 		"eslint-plugin-eslint-comments": "3.2.0",
 		"eslint-plugin-import": "2.27.5",
@@ -58,12 +56,13 @@
 		"stop": "wp-env stop",
 		"clean": "wp-env clean all && wp-env start --scripts",
 		"destroy": "wp-env destroy",
-		"lint": "concurrently \"npm run lint:js\" \"npm run lint:css\"",
-		"lint:css": "wp-scripts lint-style \"assets/**/*.scss\" --ignore-path=.config/.prettierignore",
+		"lint": "npm run lint:js && npm run lint:css",
+		"lint:css": "wp-scripts lint-style \"assets/**/*.{scss,css}\" --ignore-path=.config/.prettierignore",
 		"lint:js": "wp-scripts lint-js --ignore-path=.config/.prettierignore",
-		"lint:js:fix": "wp-scripts lint-js --ignore-path=.config/.prettierignore --fix",
 		"lint:php": "npm run composer run lint",
-		"lint:php:fix": "npm run composer run lint:fix",
+		"format:css": "npm run lint:css -- --fix",
+		"format:js": "npm run lint:js -- --fix",
+		"format:php": "npm run composer run format",
 		"prettier": "prettier --check --config .config/.prettierrc.json --ignore-path .config/.prettierignore .",
 		"logs": "wp-env logs",
 		"test": "jest && npm run test-unit-php",
@@ -87,7 +86,7 @@
 			"wp-scripts lint-js"
 		],
 		"assets/**/*.{css,scss}": [
-			"wp-scripts lint-style"
+			"npm run format:css"
 		],
 		"**/*.php": [
 			"echo \"Running PHP linter from file: .config/.husky/pre-commit\""
