@@ -1,14 +1,24 @@
 /**
  * This file is added to the single post page for the custom post type.
- *
- * @package    WordPress Plugin Name
- * @subpackage JavaScript
  */
 
-(function ($) {
+( function () {
+	// Now your JavaScript is protected from the global runtime scope.
+	const element = document.createElement( 'p' );
+	element.style.textAlign = 'center';
+	element.style.fontSize = '16px';
+	element.innerHTML =
+		'wordpress-plugin-name/js/single-new-post-type.js, line 10: You are on the single page template for the post type!';
+	const firstElement =
+		document.body.querySelector( 'p' ) || document.body.firstChild;
+	if ( firstElement && firstElement.nextSibling ) {
+		document.body.insertBefore( element, firstElement.nextSibling );
+	} else {
+		document.body.appendChild( element );
+	}
 
-	// Now you can use the $ function for the jQuery library.
-	$( 'body p' ).first().after( '<p style="text-align:center; font-size:16px;">wordpress-plugin-name/js/single-new-post-type.js, line 5: You are on the single page template for the post type!</p>' );
-	console.log( 'wordpress-plugin-name/js/single-new-post-type.js, line 6: You are on the single page template for the post type!' );
-
-})( jQuery );
+	// eslint-disable-next-line no-console
+	console.log(
+		'wordpress-plugin-name/js/single-new-post-type.js, line 6: You are on the single page template for the post type!'
+	);
+} )();

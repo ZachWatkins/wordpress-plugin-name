@@ -1,14 +1,21 @@
 /**
  * This file is added to all public pages.
- *
- * @package    WordPress Plugin Name
- * @subpackage JavaScript
  */
 
-(function ($) {
-
-	// Now you can use the $ symbol for the jQuery library.
-	$( 'body' ).prepend( '<p style="text-align:center; font-size:16px;">wordpress-plugin-name/js/public.js, line 5: Your plugin is loaded!</p>' );
-	console.log( 'wordpress-plugin-name/js/public.js, line 6: Your plugin is loaded!' );
-
-})( jQuery );
+( function () {
+	// Now your JavaScript is protected from the global runtime scope.
+	const element = document.createElement( 'p' );
+	element.style.textAlign = 'center';
+	element.style.fontSize = '16px';
+	element.innerHTML =
+		'wordpress-plugin-name/js/public.js, line 10: Your plugin is loaded!';
+	if ( document.body.firstChild ) {
+		document.body.insertBefore( element, document.body.firstChild );
+	} else {
+		document.body.appendChild( element );
+	}
+	// eslint-disable-next-line no-console
+	console.log(
+		'wordpress-plugin-name/js/public.js, line 6: Your plugin is loaded!'
+	);
+} )();
