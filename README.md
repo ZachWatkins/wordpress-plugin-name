@@ -9,9 +9,10 @@ The goal is to provide a reliable, portable codebase with well-defined dependenc
 - [Getting Started](#getting-started)
 - [Directory Structure](#directory-structure)
 - [Commands](#commands)
-- [Tests](#tests)
 - [wp-env](#wp-env)
+- [Tests](#tests)
 - [Installing System Requirements for Development](#system-requirements-for-development)
+- [Further Reading](#further-reading)
 
 ## Getting Started
 
@@ -19,7 +20,9 @@ The goal is to provide a reliable, portable codebase with well-defined dependenc
 
 `git clone https://github.com/zachwatkins/wordpress-plugin-name.git your-plugin-slug`
 
-**Then**, replace all instances of the default plugin name with your plugin name. This ensures your plugin has a unique signature in the WordPress database and runtime. You can use the following search and replace terms to find and replace all instances of the default plugin name:
+**Then**, replace all instances of the default plugin name with your plugin name. All WordPress plugins are loaded in a global scope, so we avoid global scope conflicts by using a namespace for our plugin's global constants, classes, functions, and database content.
+
+Use the following search and replace terms to find and replace all instances of the default plugin name:
 
 1. `wordpress-plugin-name` - The plugin slug. This is the name of your plugin folder and root plugin file. Rename the root plugin file and replace the text in every file that uses it. Use this format: `<your-plugin-slug>`.
 2. `wordpress_plugin_name` - The global prefix for your plugin. Defined in `.config/.phpcs.xml.dist`. Use this format: `your_plugin_slug`.
@@ -35,6 +38,13 @@ npm install
 npm start
 npm run composer install
 ```
+
+### Required Reading
+
+The links below describe key WordPress code concepts you will need to know in order to develop your WordPress plugin.
+
+- [Action Hooks](https://developer.wordpress.org/plugins/hooks/actions/)
+- [Filter Hooks](https://developer.wordpress.org/plugins/hooks/filters/)
 
 ## Directory Structure
 
