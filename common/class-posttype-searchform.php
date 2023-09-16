@@ -1,10 +1,8 @@
 <?php
-
 /**
  * The file that initializes custom post types.
  *
  * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/main/common/class-posttype-search.php
- * @since      1.0.0
  * @package    WordPress Plugin Name
  * @subpackage Common
  *
@@ -15,12 +13,8 @@ namespace Common;
 
 /**
  * The post type registration class
- *
- * @since 1.0.0
  */
-class PostTypeSearchForm {
-
-
+class PostType_SearchForm {
 	/**
 	 * The post type slug.
 	 *
@@ -113,8 +107,6 @@ class PostTypeSearchForm {
 
 	/**
 	 * Filters the HTML output of the search form.
-	 *
-	 * @since 1.0.0
 	 *
 	 * @return void
 	 */

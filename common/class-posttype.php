@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The file that initializes custom post types.
  *
@@ -17,8 +16,6 @@ namespace Common;
  * @since 1.0.0
  */
 class PostType {
-
-
 	/**
 	 * The plugin directory.
 	 *
@@ -99,17 +96,9 @@ class PostType {
 	 * @param  array  $plural    The plural post label.
 	 * @param  array  $args      Additional user arguments which override all others for the function register_post_type.
 	 * @param  array  $templates {
-	 *                           The
-	 *                           post
-	 *                           type
-	 *                           templates
-	 *                           for
-	 *                           archive
-	 *                           or
-	 *                           single
-	 *                           views.
-	 * @key    string $single  The single post template.
-	 * @key    string $archive The archive post template.
+	 *     The post type templates for archive or single views.
+	 *     @key string $single  The single post template.
+	 *     @key string $archive The archive post template.
 	 * }
 	 * @return void
 	 */
@@ -124,16 +113,16 @@ class PostType {
 			$labels                       = array(
 				'name'               => $plural,
 				'singular_name'      => $singular,
-				'add_new'            => __( 'Add New', 'wordpress-plugin-name' ),
-				'add_new_item'       => __( 'Add New', 'wordpress-plugin-name' ) . " $singular",
-				'edit_item'          => __( 'Edit', 'wordpress-plugin-name' ) . " $singular",
-				'new_item'           => __( 'New', 'wordpress-plugin-name' ) . " $singular",
-				'view_item'          => __( 'View', 'wordpress-plugin-name' ) . " $singular",
-				'search_items'       => __( 'Search', 'wordpress-plugin-name' ) . " $plural",
+				'add_new'            => __( 'Add New', 'wordpress-plugin-textdomain' ),
+				'add_new_item'       => __( 'Add New', 'wordpress-plugin-textdomain' ) . " $singular",
+				'edit_item'          => __( 'Edit', 'wordpress-plugin-textdomain' ) . " $singular",
+				'new_item'           => __( 'New', 'wordpress-plugin-textdomain' ) . " $singular",
+				'view_item'          => __( 'View', 'wordpress-plugin-textdomain' ) . " $singular",
+				'search_items'       => __( 'Search', 'wordpress-plugin-textdomain' ) . " $plural",
 				/* translators: placeholder is the plural taxonomy name */
-				'not_found'          => sprintf( esc_html__( 'No %s Found', 'wordpress-plugin-name' ), $plural ),
+				'not_found'          => sprintf( esc_html__( 'No %s Found', 'wordpress-plugin-textdomain' ), $plural ),
 				/* translators: placeholder is the plural taxonomy name */
-				'not_found_in_trash' => sprintf( esc_html__( 'No %s found in trash', 'wordpress-plugin-name' ), $plural ),
+				'not_found_in_trash' => sprintf( esc_html__( 'No %s found in trash', 'wordpress-plugin-textdomain' ), $plural ),
 				'parent_item_colon'  => '',
 				'menu_name'          => $plural,
 			);
@@ -195,7 +184,6 @@ class PostType {
 	 * Shows which archive template is needed
 	 *
 	 * @param  string $archive_template The default archive template.
-	 *
 	 * @return string
 	 */
 	public function get_archive_template( $archive_template ) {

@@ -13,14 +13,13 @@
 
 namespace WordPress_Plugin_Name;
 
-use WordPress_Plugin_Name\Common\PostType;
-use WordPress_Plugin_Name\Common\Taxonomy;
-use WordPress_Plugin_Name\Common\PostTypeSearchForm;
+use Common\PostType;
+use Common\Taxonomy;
+use Common\PostTypeSearchForm;
 
 /**
  * The new post type plugin Class.
  *
- * @see    https://www.php.net/manual/en/language.oop5.basic.php
  * @since  1.0.0
  * @return void
  */

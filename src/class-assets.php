@@ -3,21 +3,16 @@
  * The file that registers the plugin's publicly available CSS and/or JS files.
  *
  * @package    WordPress Plugin Name
- * @subpackage Source
  * @copyright  Zachary Watkins 2023
- * @author     Zachary Watkins <zwatkins.it@gmail.com>
+ * @author     Zachary Watkins <zwatkins.it@gmail.`com`>
  * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
  * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/main/src/class-assets.php
- * @since      1.0.0
  */
 
 namespace WordPress_Plugin_Name;
 
 /**
  * The class that registers public web assets.
- *
- * @see   https://www.php.net/manual/en/language.oop5.basic.php
- * @since 1.0.0
  */
 class Assets {
 
@@ -39,7 +34,6 @@ class Assets {
 	 * Initialize the class
 	 *
 	 * @see    https://developer.wordpress.org/reference/functions/add_action/
-	 * @since  1.0.0
 	 * @return void
 	 */
 	public function __construct() {

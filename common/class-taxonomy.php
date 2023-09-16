@@ -1,10 +1,8 @@
 <?php
-
 /**
  * The file that defines a custom taxonomy
  *
  * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/main/common/class-taxonomy.php
- * @since      1.0.0
  * @package    WordPress Plugin Name
  * @subpackage Common
  */
@@ -13,13 +11,8 @@ namespace Common;
 
 /**
  * Builds and registers a custom taxonomy.
- *
- * @package wordpress-plugin
- * @since   1.0.0
  */
 class Taxonomy {
-
-
 	/**
 	 * The plugin directory URL.
 	 *
@@ -30,7 +23,6 @@ class Taxonomy {
 	/**
 	 * Taxonomy slug
 	 *
-	 * @since  1.0.0
 	 * @access private
 	 * @var    array $taxonomy Stores taxonomy slug
 	 */
@@ -66,7 +58,6 @@ class Taxonomy {
 	/**
 	 * Taxonomy meta boxes
 	 *
-	 * @since  1.0.0
 	 * @access private
 	 * @var    array $meta_boxes Stores taxonomy meta boxes
 	 */
@@ -75,7 +66,6 @@ class Taxonomy {
 	/**
 	 * Taxonomy template file path for the archive page
 	 *
-	 * @since  1.0.0
 	 * @access protected
 	 * @var    file $template Stores taxonomy archive template file path
 	 */
@@ -112,15 +102,15 @@ class Taxonomy {
 			$labels                       = array(
 				'name'              => $plural,
 				'singular_name'     => $singular,
-				'search_items'      => __( 'Search', 'wordpress-plugin-name' ) . " $plural",
-				'all_items'         => __( 'All', 'wordpress-plugin-name' ) . " $plural",
-				'parent_item'       => __( 'Parent', 'wordpress-plugin-name' ) . " $singular",
-				'parent_item_colon' => __( 'Parent', 'wordpress-plugin-name' ) . " {$singular}:",
-				'edit_item'         => __( 'Edit', 'wordpress-plugin-name' ) . " $singular",
-				'update_item'       => __( 'Update', 'wordpress-plugin-name' ) . " $singular",
-				'add_new_item'      => __( 'Add New', 'wordpress-plugin-name' ) . " $singular",
+				'search_items'      => __( 'Search', 'wordpress-plugin-textdomain' ) . " $plural",
+				'all_items'         => __( 'All', 'wordpress-plugin-textdomain' ) . " $plural",
+				'parent_item'       => __( 'Parent', 'wordpress-plugin-textdomain' ) . " $singular",
+				'parent_item_colon' => __( 'Parent', 'wordpress-plugin-textdomain' ) . " {$singular}:",
+				'edit_item'         => __( 'Edit', 'wordpress-plugin-textdomain' ) . " $singular",
+				'update_item'       => __( 'Update', 'wordpress-plugin-textdomain' ) . " $singular",
+				'add_new_item'      => __( 'Add New', 'wordpress-plugin-textdomain' ) . " $singular",
 				/* translators: placeholder is the singular taxonomy name */
-				'new_item_name'     => sprintf( esc_html__( 'New %d Name', 'wordpress-plugin-name' ), $singular ),
+				'new_item_name'     => sprintf( esc_html__( 'New %d Name', 'wordpress-plugin-textdomain' ), $singular ),
 				'menu_name'         => $plural,
 			);
 			$this->default_args['labels'] = $labels;
@@ -187,7 +177,7 @@ class Taxonomy {
 		}
 		// Add action hooks.
 		add_action( "{$taxonomy}_edit_form_fields", array( $this, 'taxonomy_edit_meta_field' ), 10, 2 );
-		add_action( "edited_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ), 10, 2 );
+		add_action( "edited_{$taxonomy}", array( $this, 'save_taxonomy_custom_meta' ), 10 );
 	}
 
 	/**
@@ -256,7 +246,7 @@ class Taxonomy {
 
 						case 'link':
 							$value  = $term_meta ? sanitize_text_field( $term_meta ) : '';
-							$output = "<input type=\"url\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\" placeholder=\"https://example.com\" pattern=\"http[s]?://.*\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-name' ) . '</p>';
+							$output = "<input type=\"url\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\" placeholder=\"https://example.com\" pattern=\"http[s]?://.*\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-textdomain' ) . '</p>';
 							echo wp_kses(
 								$output,
 								array(
@@ -293,7 +283,7 @@ class Taxonomy {
 
 						default:
 							$value  = $term_meta ? sanitize_text_field( $term_meta ) : '';
-							$output = "<input type=\"text\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-name' ) . '</p>';
+							$output = "<input type=\"text\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-textdomain' ) . '</p>';
 							echo wp_kses(
 								$output,
 								array(
@@ -322,10 +312,9 @@ class Taxonomy {
 	 * Save custom fields with sanitization measures.
 	 *
 	 * @param  int $term_id The term ID.
-	 * @param  int $tt_id   The term taxonomy ID.
 	 * @return void
 	 */
-	public function save_taxonomy_custom_meta( $term_id, $tt_id ) {
+	public function save_taxonomy_custom_meta( $term_id ) {
 
 		// Ensure this request came from WordPress.
 		$nonce_key = sanitize_key( "term_meta_{$this->taxonomy}_nonce" );
@@ -412,7 +401,6 @@ class Taxonomy {
 	 * Detect if a taxonomy slug is a reserved term or too long.
 	 *
 	 * @param string $taxonomy The taxonomy slug.
-	 *
 	 * @return true
 	 */
 	private function validate_taxonomy( $taxonomy ) {
