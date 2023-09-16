@@ -2,7 +2,7 @@
 /**
  * Custom post type content added after the full content.
  *
- * @package    WordPress Plugin Name
+ * @package    WordPress_Plugin_Name
  * @subpackage Templates
  */
 

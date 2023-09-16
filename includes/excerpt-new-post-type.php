@@ -2,7 +2,7 @@
 /**
  * Custom post type content added after the excerpt.
  *
- * @package    WordPress Plugin Name
+ * @package    WordPress_Plugin_Name
  * @subpackage Templates
  */
 
