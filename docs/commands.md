@@ -12,9 +12,9 @@ Development commands available from [package.json](../package.json) are listed b
 | `npm run clean`          | Reset the database and restart the environment              |
 | `npm run destroy`        | Destroy the Docker containers                               |
 | `npm run lint`           | Check code style using Prettier                             |
-| `npm run lint:fix`        | Fix code style using Prettier                               |
+| `npm run format`         | Fix code style using Prettier                               |
 | `npm run lint:php`       | Check code style and logic using WordPress coding standards |
-| `npm run lint:php:fix`    | Fix code style and logic using WordPress coding standards   |
+| `npm run format:php`     | Fix code style and logic using WordPress coding standards   |
 | `npm run logs`           | Watch the PHP and Docker logs in real time                  |
 | `npm run test`           | Test JavaScript and PHP                                     |
 | `npm run test:js`        | Test JavaScript                                             |
