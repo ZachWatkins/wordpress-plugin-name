@@ -102,11 +102,11 @@ class Assets {
 			'screen'
 		);
 
-		// Register public JavaScript in the site footer with jQuery pre-loaded.
+		// Register public JavaScript in the site footer.
 		wp_register_script(
 			'wordpress-plugin-name-public-script',
 			"{$this->plugin_dir_url}/assets/js/public.js",
-			array( 'jquery' ),
+			array(),
 			filemtime( "{$this->plugin_dir}/assets/js/public.js" ),
 			true
 		);

@@ -155,16 +155,16 @@ class NewPostType {
 				wp_register_style(
 					"single-{$this->post_type_filename}",
 					"{$this->plugin_dir_url}/assets/css/single-{$this->post_type_filename}.css",
-					false,
+					array(),
 					filemtime( "{$this->plugin_dir}/assets/css/single-{$this->post_type_filename}.css" ),
 					'screen'
 				);
 
-				// Register public JavaScript in the site footer with jQuery pre-loaded.
+				// Register public JavaScript in the site footer.
 				wp_register_script(
 					"single-{$this->post_type_filename}-script",
 					"{$this->plugin_dir_url}/assets/js/single-{$this->post_type_filename}.js",
-					array( 'jquery' ),
+					array(),
 					filemtime( "{$this->plugin_dir}/assets/js/single-{$this->post_type_filename}.js" ),
 					true
 				);
@@ -174,7 +174,7 @@ class NewPostType {
 				wp_register_style(
 					"archive-{$this->post_type_filename}",
 					"{$this->plugin_dir_url}/assets/css/archive-{$this->post_type_filename}.css",
-					false,
+					array(),
 					filemtime( "{$this->plugin_dir}/assets/css/archive-{$this->post_type_filename}.css" ),
 					'screen'
 				);
