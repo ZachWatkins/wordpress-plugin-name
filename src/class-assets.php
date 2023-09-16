@@ -2,11 +2,11 @@
 /**
  * The file that registers the plugin's publicly available CSS and/or JS files.
  *
- * @package    WordPress Plugin Name
- * @copyright  Zachary Watkins 2023
- * @author     Zachary Watkins <zwatkins.it@gmail.`com`>
- * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
- * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/main/src/class-assets.php
+ * @package   WordPress_Plugin_Name
+ * @copyright Zachary Watkins 2023
+ * @author    Zachary Watkins <zwatkins.it@gmail.`com`>
+ * @license   GPL-2.0-or-later
+ * @link      https://github.com/zachwatkins/wordpress-plugin-name/blob/main/src/class-assets.php
  */
 
 namespace WordPress_Plugin_Name;

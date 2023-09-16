@@ -2,20 +2,18 @@
 /**
  * The file that initializes custom post types.
  *
- * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/main/common/class-posttype.php
- * @since      1.0.0
- * @package    WordPress Plugin Name
+ * @package    WordPress_Plugin_Name
  * @subpackage Common
+ * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/main/common/class-posttype.php
  */
 
 namespace Common;
 
 /**
  * The post type registration class
- *
- * @since 1.0.0
  */
 class PostType {
+
 	/**
 	 * The plugin directory.
 	 *

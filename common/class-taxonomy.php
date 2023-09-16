@@ -3,7 +3,7 @@
  * The file that defines a custom taxonomy
  *
  * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/main/common/class-taxonomy.php
- * @package    WordPress Plugin Name
+ * @package    WordPress_Plugin_Name
  * @subpackage Common
  */
 

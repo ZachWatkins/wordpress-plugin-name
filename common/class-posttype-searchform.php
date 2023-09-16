@@ -2,9 +2,9 @@
 /**
  * The file that initializes custom post types.
  *
- * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/main/common/class-posttype-search.php
- * @package    WordPress Plugin Name
+ * @package    WordPress_Plugin_Name
  * @subpackage Common
+ * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/main/common/class-posttype-search.php
  *
  * @todo Allow custom ordering of the taxonomy and meta fields by combining the two parameters into one and requiring a prefix to identify a meta or a term.
  */
@@ -15,6 +15,7 @@ namespace Common;
  * The post type registration class
  */
 class PostType_SearchForm {
+
 	/**
 	 * The post type slug.
 	 *
@@ -62,7 +63,6 @@ class PostType_SearchForm {
 	 * Register taxonomies and meta keys as valid URL parameters.
 	 *
 	 * @param array $public_query_vars The allowed public query URL parameters.
-	 *
 	 * @return array
 	 */
 	public function add_query_vars( $public_query_vars ) {
@@ -83,10 +83,9 @@ class PostType_SearchForm {
 	/**
 	 * If selected taxonomies are an array, add selected property elements.
 	 *
-	 * @since 1.0.0
-	 *
 	 * @param string $output      HTML output.
 	 * @param array  $parsed_args Arguments used to build the drop-down.
+	 * @return string
 	 */
 	public function multi_selected( $output, $parsed_args ) {
 

@@ -2,13 +2,11 @@
 /**
  * The file that defines the new post type class.
  *
- * @package    WordPress Plugin Name
- * @subpackage Source
- * @copyright  Zachary Watkins 2022
- * @author     Zachary Watkins <zwatkins.it@gmail.com>
- * @license    http://www.gnu.org/licenses/gpl-2.0.txt GPL-2.0-or-later
- * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/main/src/class-wordpress-plugin-name.php
- * @since      1.0.0
+ * @package   WordPress_Plugin_Name
+ * @copyright Zachary Watkins 2023
+ * @author    Zachary Watkins <zwatkins.it@gmail.com>
+ * @license   GPL-2.0-or-later
+ * @link      https://github.com/zachwatkins/wordpress-plugin-name/blob/main/src/class-wordpress-plugin-name.php
  */
 
 namespace WordPress_Plugin_Name;
@@ -20,11 +18,9 @@ use Common\PostType_SearchForm;
 /**
  * The new post type plugin Class.
  *
- * @since  1.0.0
  * @return void
  */
 class NewPostType {
-
 
 	/**
 	 * The plugin directory.
@@ -64,7 +60,6 @@ class NewPostType {
 	/**
 	 * Initialize the class.
 	 *
-	 * @since  1.0.0
 	 * @return void
 	 */
 	public function __construct() {
@@ -149,10 +144,6 @@ class NewPostType {
 	/**
 	 * Registers public scripts.
 	 *
-	 * @see    https://developer.wordpress.org/reference/functions/wp_register_style/
-	 * @see    https://developer.wordpress.org/reference/functions/wp_register_script/
-	 * @see    https://www.php.net/manual/en/function.filemtime.php
-	 * @since  1.0.0
 	 * @return void
 	 */
 	public function register_public_scripts() {
@@ -194,9 +185,6 @@ class NewPostType {
 	/**
 	 * Enqueues public scripts.
 	 *
-	 * @see    https://developer.wordpress.org/reference/functions/wp_enqueue_style/
-	 * @see    https://developer.wordpress.org/reference/functions/wp_enqueue_script/
-	 * @since  1.0.0
 	 * @return void
 	 */
 	public function enqueue_public_scripts() {
@@ -215,7 +203,6 @@ class NewPostType {
 	 * Load template files.
 	 *
 	 * @param string $content The existing page content, originally from the page content editor screen.
-	 *
 	 * @return string
 	 */
 	public function content_template( $content ) {
@@ -236,7 +223,6 @@ class NewPostType {
 	 * Add custom fields to the post excerpt
 	 *
 	 * @param string $excerpt The post excerpt.
-	 *
 	 * @return string
 	 */
 	public function excerpt_template( $excerpt ) {
@@ -255,7 +241,6 @@ class NewPostType {
 	 * Unhook the content template when it would be used to generate the post excerpt.
 	 *
 	 * @param string $excerpt The post excerpt.
-	 *
 	 * @return string
 	 */
 	public function disable_content_template( $excerpt ) {
@@ -270,7 +255,6 @@ class NewPostType {
 	 * Rehook the content template after it would be used to generate the post excerpt.
 	 *
 	 * @param string $excerpt The post excerpt.
-	 *
 	 * @return string
 	 */
 	public function enable_content_template( $excerpt ) {
