@@ -58,10 +58,10 @@ The links below describe key WordPress code concepts you will need to know in or
 8. **docs** - Documentation files going in depth on different aspects of this project or WordPress development.
 9. **includes** - File content output to the browser by the plugin. This is where you should put most or all of the HTML output from your plugin, to make that content easier to find and change.
 10. **src** - PHP classes that hook into WordPress and implement plugin features.
-11. **test** - Plugin code tests.
-    a. **e2e** - Browser tests using Playwright.
-    b. **jest** - JavaScript tests using Jest.
-    c. **phpunit** - WordPress PHP code tests using PHPUnit.
+11. **test** - Plugin code tests.  
+    a. **e2e** - Browser tests using Playwright.  
+    b. **jest** - JavaScript tests using Jest.  
+    c. **phpunit** - WordPress PHP code tests using PHPUnit.  
 
 ## Commands
 
