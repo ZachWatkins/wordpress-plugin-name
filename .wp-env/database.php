@@ -2,6 +2,9 @@
 /**
  * Seed the database.
  */
+if ( ! defined( 'ABSPATH' ) || 'local' !== wp_get_environment_type() ) {
+	die( 'We\'re sorry, but you can not directly access this file nor run it in production.' );
+}
 
 global $wpdb;
 
