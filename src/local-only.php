@@ -26,10 +26,9 @@ $wordpress_plugin_name_debug_tags = array();
  * @return void
  */
 function wordpress_plugin_name_show_all_hooks( $tag ) {
-	// Display Hooks in front end pages only.
-	if ( ! ( is_admin() ) ) {
-		global $wordpress_plugin_name_debug_tags;
-		if ( in_array( $tag, $wordpress_plugin_name_debug_tags, true ) ) {
+    global $wordpress_plugin_name_debug_tags;
+	if ( ! is_admin() ) {
+		if ( is_array( $wordpress_plugin_name_debug_tags ) && $wordpress_plugin_name_debug_tags && in_array( $tag, $wordpress_plugin_name_debug_tags, true ) ) {
 			return;
 		}
 		echo wp_kses_post( '<pre>' . $tag . '</pre>' );
