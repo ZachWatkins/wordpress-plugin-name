@@ -25,12 +25,22 @@ class Init {
 	/**
 	 * Initialize the class.
 	 *
+	 * @param string $plugin_file The root plugin file.
+	 * @param string $plugin_dir The root plugin directory.
 	 * @return void
 	 */
-	public function __construct() {
+	public function __construct(
+		protected string $plugin_file,
+		protected string $plugin_dir
+	) {
 
 		// Register the assets that load on every page.
-		new Assets();
+		new Assets(
+			$this->plugin_file,
+			$this->plugin_dir,
+			array( '/assets/js/public.js' ),
+			array( '/assets/css/public.css' )
+		);
 
 		// Load the settings page.
 		new SettingsPage();
