@@ -27,7 +27,7 @@ class NewPostType {
 	 *
 	 * @var string
 	 */
-	private $post_type = 'NewPostType';
+	private $post_type = 'new-post-type';
 
 	/**
 	 * Initialize the class.
@@ -54,32 +54,7 @@ class NewPostType {
 			fn () => is_archive( 'new-post-type' ),
 		);
 
-		// Register a custom taxonomy.
-		$taxonomy_meta = array(
-			array(
-				'slug' => 'text_field',
-				'name' => 'Text Field',
-				'type' => 'text',
-			),
-			array(
-				'slug' => 'checkbox_field',
-				'name' => 'Checkbox Field',
-				'type' => 'checkbox',
-			),
-			array(
-				'slug' => 'link_field',
-				'name' => 'Link Field',
-				'type' => 'link',
-			),
-			array(
-				'slug' => 'editor_field',
-				'name' => 'Editor Field',
-				'type' => 'editor',
-			),
-		);
-
-		new Taxonomy( 'new_taxonomy', 'New Taxonomy', 'New Taxonomies', $this->post_type, array(), $taxonomy_meta, true, true );
-		new PostType( $this->post_type, 'New Post Type', 'New Post Types', array( 'taxonomies' => array( 'new_taxonomy' ) ) );
+		new PostType( $this->post_type, 'New Post Type', 'New Post Types' );
 
 		// Register Advanced Custom Fields for the post type.
 		add_action(
