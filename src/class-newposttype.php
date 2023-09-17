@@ -32,18 +32,18 @@ class NewPostType {
 	 * @param string $plugin_file The root plugin file.
 	 * @return void
 	 */
-	public function __construct( protected string $plugin_file ) {
+	public function __construct( string $plugin_file ) {
 		new PostType( $this->post_type, 'New Post Type', 'New Post Types' );
 
 		new Assets(
-			$this->plugin_file,
+			$plugin_file,
 			array( "single-{$this->post_type}" => 'assets/js/single-new-post-type.js' ),
 			array( "single-{$this->post_type}" => 'assets/css/single-new-post-type.css' ),
 			fn () => is_singular( $this->post_type ),
 		);
 
 		new Assets(
-			$this->plugin_file,
+			$plugin_file,
 			array(),
 			array( "archive-{$this->post_type}" => 'assets/css/archive-new-post-type.css' ),
 			fn () => is_archive( $this->post_type ),
