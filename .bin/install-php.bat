@@ -62,13 +62,11 @@ powershell -Command "(gc %PHP_DIR%\php.ini) -replace ';opcache.enable=1', 'opcac
 powershell -Command "(gc %PHP_DIR%\php.ini) -replace ';opcache.enable_cli=0', 'opcache.enable_cli=On' | Out-File -encoding ASCII %PHP_DIR%\php.ini"
 
 ECHO PHP %PHP_VERSION% %PHP_ARCH% installed to %PHP_DIR%
+DEL /q /s /f "%PHP_ZIP%"
+ECHO Installer package removed: %PHP_ZIP%
 
 @REM Install Composer package manager for PHP.
 SET COMPOSER_EXE=%PHP_DIR%\composer.phar
-IF EXIST "%COMPOSER_EXE%" (
-    ECHO Composer already installed at %COMPOSER_EXE%
-    EXIT /B 0
-)
 
 SET "EXPECTED_CHECKSUM="
 FOR /f "usebackq delims=" %%a IN (`php -r "copy('https://composer.github.io/installer.sig', 'php://stdout');"`) DO SET "EXPECTED_CHECKSUM=%%a"
@@ -88,5 +86,6 @@ if not "%EXPECTED_CHECKSUM%" == "%ACTUAL_CHECKSUM%" (
 php composer-setup.php --quiet
 SET "RESULT=%errorlevel%"
 DEL composer-setup.php
+MOVE composer.phar "%COMPOSER_EXE%"
 ECHO Composer installed to %COMPOSER_EXE%
 EXIT /b %RESULT%
