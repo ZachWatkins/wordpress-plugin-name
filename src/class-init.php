@@ -37,15 +37,16 @@ class Init {
 		// Register the assets that load on every page.
 		new Assets(
 			$this->plugin_file,
-			$this->plugin_dir,
-			array( '/assets/js/public.js' ),
-			array( '/assets/css/public.css' )
+			array( 'assets/js/public.js' ),
+			array( 'assets/css/public.css' )
 		);
 
 		// Load the settings page.
 		new SettingsPage();
 
 		// Create the custom post type with its custom taxonomy.
-		new NewPostType();
+		new NewPostType(
+			$this->plugin_file,
+		);
 	}
 }

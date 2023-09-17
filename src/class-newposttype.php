@@ -11,9 +11,9 @@
 
 namespace WordPress_Plugin_Name;
 
+use WordPress_Plugin_Name\Assets;
 use Common\PostType;
 use Common\Taxonomy;
-use Common\PostType_SearchForm;
 
 /**
  * The new post type plugin Class.
@@ -23,20 +23,6 @@ use Common\PostType_SearchForm;
 class NewPostType {
 
 	/**
-	 * The plugin directory.
-	 *
-	 * @var string
-	 */
-	private $plugin_dir = WORDPRESS_PLUGIN_NAME_DIR_PATH;
-
-	/**
-	 * The plugin directory URL.
-	 *
-	 * @var string
-	 */
-	private $plugin_dir_url = WORDPRESS_PLUGIN_NAME_DIR_URL;
-
-	/**
 	 * The post type slug.
 	 *
 	 * @var string
@@ -44,25 +30,29 @@ class NewPostType {
 	private $post_type = 'NewPostType';
 
 	/**
-	 * The post type file name slug.
-	 *
-	 * @var string
-	 */
-	private $post_type_filename = 'new-post-type';
-
-	/**
-	 * The post search form.
-	 *
-	 * @var object
-	 */
-	private $post_search_form;
-
-	/**
 	 * Initialize the class.
 	 *
+	 * @param string $plugin_file The root plugin file.
 	 * @return void
 	 */
-	public function __construct() {
+	public function __construct(
+		protected string $plugin_file,
+	) {
+
+		// Register styles and scripts.
+		new Assets(
+			$this->plugin_file,
+			array( 'single-new-post-type' => 'assets/js/single-new-post-type.js' ),
+			array( 'single-new-post-type' => 'assets/css/single-new-post-type.css' ),
+			fn () => is_singular( 'new-post-type' ),
+		);
+
+		new Assets(
+			$this->plugin_file,
+			array(),
+			array( 'archive-new-post-type' => 'assets/css/archive-new-post-type.css' ),
+			fn () => is_archive( 'new-post-type' ),
+		);
 
 		// Register a custom taxonomy.
 		$taxonomy_meta = array(
@@ -89,28 +79,13 @@ class NewPostType {
 		);
 
 		new Taxonomy( 'new_taxonomy', 'New Taxonomy', 'New Taxonomies', $this->post_type, array(), $taxonomy_meta, true, true );
-
-		// Register a custom post type.
 		new PostType( $this->post_type, 'New Post Type', 'New Post Types', array( 'taxonomies' => array( 'new_taxonomy' ) ) );
 
-		// Add a search form for the new post type.
-		$this->post_search_form = new PostType_SearchForm(
-			$this->post_type,
-			array( 'new_taxonomy' ),
-			array(
-				'Field 1' => 'post_field_1',
-				'Field 2' => 'post_field_2',
-				'Field 3' => 'post_field_3',
-			)
-		);
-		add_action( 'loop_start', array( $this, 'do_search_form' ), 1 );
-
 		// Register Advanced Custom Fields for the post type.
-		add_action( 'acf/init', array( $this, 'acf_files' ) );
-
-		// Register styles and scripts.
-		add_action( 'wp_enqueue_scripts', array( $this, 'register_public_scripts' ), 10 );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_public_scripts' ), 10 );
+		add_action(
+			'acf/init',
+			fn () => include __DIR__ . '/../advanced-custom-fields/new-post-type.php'
+		);
 
 		// Single page template file.
 		add_filter( 'the_content', array( $this, 'content_template' ) );
@@ -122,84 +97,6 @@ class NewPostType {
 	}
 
 	/**
-	 * Output the post type search form.
-	 *
-	 * @return void
-	 */
-	public function do_search_form() {
-
-		$this->post_search_form->render();
-	}
-
-	/**
-	 * Register ACF files.
-	 *
-	 * @return void
-	 */
-	public function acf_files() {
-
-		include "{$this->plugin_dir}/advanced-custom-fields/new-post-type.php";
-	}
-
-	/**
-	 * Registers public scripts.
-	 *
-	 * @return void
-	 */
-	public function register_public_scripts() {
-
-		if ( get_post_type() === $this->post_type ) {
-			if ( is_singular( $this->post_type ) ) {
-
-				// Register public styles.
-				wp_register_style(
-					"single-{$this->post_type_filename}",
-					"{$this->plugin_dir_url}/assets/css/single-{$this->post_type_filename}.css",
-					array(),
-					filemtime( "{$this->plugin_dir}/assets/css/single-{$this->post_type_filename}.css" ),
-					'screen'
-				);
-
-				// Register public JavaScript in the site footer.
-				wp_register_script(
-					"single-{$this->post_type_filename}-script",
-					"{$this->plugin_dir_url}/assets/js/single-{$this->post_type_filename}.js",
-					array(),
-					filemtime( "{$this->plugin_dir}/assets/js/single-{$this->post_type_filename}.js" ),
-					true
-				);
-			} elseif ( is_archive( $this->post_type ) ) {
-
-				// Register public styles.
-				wp_register_style(
-					"archive-{$this->post_type_filename}",
-					"{$this->plugin_dir_url}/assets/css/archive-{$this->post_type_filename}.css",
-					array(),
-					filemtime( "{$this->plugin_dir}/assets/css/archive-{$this->post_type_filename}.css" ),
-					'screen'
-				);
-			}
-		}
-	}
-
-	/**
-	 * Enqueues public scripts.
-	 *
-	 * @return void
-	 */
-	public function enqueue_public_scripts() {
-
-		if ( get_post_type() === $this->post_type ) {
-			if ( is_singular( $this->post_type ) ) {
-				wp_enqueue_style( "single-{$this->post_type_filename}" );
-				wp_enqueue_script( "single-{$this->post_type_filename}-script" );
-			} elseif ( is_archive( $this->post_type ) ) {
-				wp_enqueue_style( "archive-{$this->post_type_filename}" );
-			}
-		}
-	}
-
-	/**
 	 * Load template files.
 	 *
 	 * @param string $content The existing page content, originally from the page content editor screen.
@@ -208,11 +105,9 @@ class NewPostType {
 	public function content_template( $content ) {
 
 		if ( get_post_type() === $this->post_type ) {
-			// Get the template file contents.
 			ob_start();
-			include "{$this->plugin_dir}/includes/content-new-post-type.php";
+			include __DIR__ . '/../includes/content-new-post-type.php';
 			$template = ob_get_clean();
-			// Append the template to the editor content.
 			$content .= $template;
 		}
 
@@ -229,7 +124,7 @@ class NewPostType {
 
 		if ( get_post_type() === $this->post_type ) {
 			ob_start();
-			include "{$this->plugin_dir}/includes/excerpt-new-post-type.php";
+			include __DIR__ . '/../includes/excerpt-new-post-type.php';
 			$template = ob_get_clean();
 			$excerpt .= $template;
 		}
