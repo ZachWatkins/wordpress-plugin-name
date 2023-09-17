@@ -13,12 +13,9 @@ namespace WordPress_Plugin_Name;
 
 use WordPress_Plugin_Name\Assets;
 use Common\PostType;
-use Common\Taxonomy;
 
 /**
- * The new post type plugin Class.
- *
- * @return void
+ * Provide a custom WordPress post type named "New Post Type".
  */
 class NewPostType {
 
@@ -35,28 +32,23 @@ class NewPostType {
 	 * @param string $plugin_file The root plugin file.
 	 * @return void
 	 */
-	public function __construct(
-		protected string $plugin_file,
-	) {
+	public function __construct( protected string $plugin_file ) {
+		new PostType( $this->post_type, 'New Post Type', 'New Post Types' );
 
-		// Register styles and scripts.
 		new Assets(
 			$this->plugin_file,
-			array( 'single-new-post-type' => 'assets/js/single-new-post-type.js' ),
-			array( 'single-new-post-type' => 'assets/css/single-new-post-type.css' ),
-			fn () => is_singular( 'new-post-type' ),
+			array( "single-{$this->post_type}" => 'assets/js/single-new-post-type.js' ),
+			array( "single-{$this->post_type}" => 'assets/css/single-new-post-type.css' ),
+			fn () => is_singular( $this->post_type ),
 		);
 
 		new Assets(
 			$this->plugin_file,
 			array(),
-			array( 'archive-new-post-type' => 'assets/css/archive-new-post-type.css' ),
-			fn () => is_archive( 'new-post-type' ),
+			array( "archive-{$this->post_type}" => 'assets/css/archive-new-post-type.css' ),
+			fn () => is_archive( $this->post_type ),
 		);
 
-		new PostType( $this->post_type, 'New Post Type', 'New Post Types' );
-
-		// Register Advanced Custom Fields for the post type.
 		add_action(
 			'acf/init',
 			fn () => include __DIR__ . '/../advanced-custom-fields/new-post-type.php'
