@@ -138,7 +138,7 @@ PHP is not required for development, but it is useful for running Composer and o
 
 I include a script for installing PHP 8.1 on Windows and Linux. You can run the script from the root of this project:
 
-`.bin/install/php-8-1`
+`.bin/install-php`
 
 **WSL2 with Ubuntu**
 
