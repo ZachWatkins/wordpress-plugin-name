@@ -12,7 +12,7 @@
 namespace WordPress_Plugin_Name;
 
 /**
- * Create shortcode to display the faculty search form.
+ * Create shortcode to display a static file in the `includes` folder.
  */
 class Shortcode {
 
@@ -24,15 +24,20 @@ class Shortcode {
 	/**
 	 * Initialize the class
 	 *
-	 * @param string $name The name of the shortcode used in markup.
-	 * @param array  $attributes The allowed shortcode attributes.
-	 * @param string $file The file that renders the shortcode content.
+	 * @param string       $name         The name of the shortcode used in markup.
+	 * @param array        $attributes   The allowed shortcode attributes.
+	 * @param string       $file         The file that renders the shortcode content.
+	 * @param array|string $allowed_html An array of allowed HTML elements and attributes, or a
+	 *                                   context name such as 'post'. Default value 'post'. For
+	 *                                   the list of accepted context names, see
+	 *                                   https://developer.wordpress.org/reference/functions/wp_kses_allowed_html/.
 	 * @return void
 	 */
 	public function __construct(
 		protected string $name = 'my-shortcode',
 		protected array $attributes = array(),
-		protected string $file = 'my-shortcode.php'
+		protected string $file = 'my-shortcode.php',
+		protected $allowed_html = 'post'
 	) {
 		add_shortcode( $name, array( $this, 'render' ) );
 	}
@@ -52,21 +57,10 @@ class Shortcode {
 		$atts['class'] = esc_attr( $atts['class'] );
 
 		ob_start();
-		// The shortcode.php file has access to the $atts variable.
+		// Included file can use $atts variable.
 		include __DIR__ . '/../includes/' . $this->file;
 		$output = ob_get_clean();
 
-		return wp_kses(
-			$output,
-			array(
-				'div'    => array(
-					'id'    => array(),
-					'class' => array(),
-				),
-				'script' => array(
-					'src' => array(),
-				),
-			)
-		);
+		return wp_kses( $output, $this->allowed_html );
 	}
 }
