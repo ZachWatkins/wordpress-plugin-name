@@ -4,18 +4,31 @@
 
 ( function () {
 	// Now your JavaScript is protected from the global runtime scope.
-	const element = document.createElement( 'p' );
-	element.style.textAlign = 'center';
-	element.style.fontSize = '16px';
-	element.innerHTML =
-		'wordpress-plugin-name/js/public.js, line 10: Your plugin is loaded!';
-	if ( document.body.firstChild ) {
-		document.body.insertBefore( element, document.body.firstChild );
-	} else {
-		document.body.appendChild( element );
+	const message =
+		'Your plugin is loaded!<br>Click to dismiss.<div class="wordpress-plugin-name-file-list">Files:<ol><li>wordpress-plugin-name/assets/js/public.js</li><li>wordpress-plugin-name/assets/css/public.css</li><li>wordpress-plugin-name/src/class-init.php:39</li></ol></div>';
+
+	// Parent element.
+	const hidden = localStorage.getItem( 'wordpress-plugin-name-hidden' );
+	const element = document.createElement( 'div' );
+	if ( hidden ) {
+		element.style.display = 'none';
+		localStorage.removeItem( 'wordpress-plugin-name-hidden' );
 	}
-	// eslint-disable-next-line no-console
-	console.log(
-		'wordpress-plugin-name/js/public.js, line 6: Your plugin is loaded!'
-	);
+	element.id = 'wordpress-plugin-name';
+	element.addEventListener( 'click', function () {
+		element.style.display = 'none';
+		localStorage.setItem( 'wordpress-plugin-name-hidden', true );
+	} );
+
+	// Child element.
+	const content = document.createElement( 'div' );
+	content.innerHTML = message;
+	content.classList.add( 'wordpress-plugin-name-message' );
+	content.addEventListener( 'click', function () {
+		element.style.display = 'none';
+	} );
+
+	// Add elements to page.
+	element.appendChild( content );
+	document.body.appendChild( element );
 } )();
