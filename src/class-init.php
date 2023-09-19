@@ -35,9 +35,6 @@ class Init {
 		protected string $plugin_dir
 	) {
 
-		// Register a shortcode.
-		new Shortcode( 'my-shortcode' );
-
 		// Register the assets that load on every page.
 		new Assets(
 			$this->plugin_file,
@@ -45,12 +42,13 @@ class Init {
 			array( 'assets/css/public.css' )
 		);
 
-		// Load the settings page.
-		new SettingsPage();
+		// Register a shortcode.
+		new Shortcode( 'my-shortcode' );
 
 		// Create the custom post type with its custom taxonomy.
-		new NewPostType(
-			$this->plugin_file,
-		);
+		new NewPostType( $this->plugin_file );
+
+		// Load the settings page.
+		new SettingsPage();
 	}
 }
