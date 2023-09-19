@@ -1,0 +1,10 @@
+/**
+ * Styles for the shortcode content.
+ * Your use case may not require it.
+ * @author Zachary K. Watkins <zwatkins.it@gmail.com>
+ */
+
+#my-shortcode .my-shortcode-counter {
+	font: 700 1.2em monospace;
+	text-decoration: underline;
+}
