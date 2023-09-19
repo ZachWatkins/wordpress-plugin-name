@@ -8,6 +8,8 @@ node_modules/
 *.sqlite
 
 playwright-report/
+test-results/
+artifacts/
 /wordpress/
 /vendor/
 *.code-workspace
