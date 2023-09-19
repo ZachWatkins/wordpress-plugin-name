@@ -58,7 +58,7 @@ class Assets {
 				"{$this->prefix}-{$key}-style",
 				plugin_dir_url( $this->plugin_file ) . $path,
 				array(),
-				filemtime( dirname( $this->plugin_file ) . $path ),
+				filemtime( dirname( $this->plugin_file ) . '/' . $path ),
 				'screen'
 			);
 		}
@@ -68,7 +68,7 @@ class Assets {
 				"{$this->prefix}-{$key}-script",
 				plugin_dir_url( $this->plugin_file ) . $path,
 				array(),
-				filemtime( dirname( $this->plugin_file ) . $path ),
+				filemtime( dirname( $this->plugin_file ) . '/' . $path ),
 				true
 			);
 		}
