@@ -11,6 +11,7 @@
 
 namespace WordPress_Plugin_Name;
 
+use WordPress_Plugin_Name\Shortcode;
 use WordPress_Plugin_Name\Assets;
 use WordPress_Plugin_Name\NewPostType;
 use ThoughtfulWeb\SettingsPageWP\Page as SettingsPage;
@@ -33,6 +34,9 @@ class Init {
 		protected string $plugin_file,
 		protected string $plugin_dir
 	) {
+
+		// Register a shortcode.
+		new Shortcode( 'my-shortcode' );
 
 		// Register the assets that load on every page.
 		new Assets(

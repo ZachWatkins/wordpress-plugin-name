@@ -4,7 +4,7 @@
  *
  * @package   WordPress_Plugin_Name
  * @copyright Zachary Watkins 2023
- * @author    Zachary Watkins <zwatkins.it@gmail.`com`>
+ * @author    Zachary Watkins <zwatkins.it@gmail.com>
  * @license   GPL-2.0-or-later
  * @link      https://github.com/zachwatkins/wordpress-plugin-name/blob/main/src/class-shortcode.php
  */
@@ -16,17 +16,12 @@ namespace WordPress_Plugin_Name;
  */
 class Shortcode {
 
-	protected const DEFAULT_ATTRIBUTE_VALUES = array(
-		'id'    => 'shortcode-id',
-		'class' => 'shortcode-class',
-	);
-
 	/**
 	 * Initialize the class
 	 *
 	 * @param string       $name         The name of the shortcode used in markup.
-	 * @param array        $attributes   The allowed shortcode attributes.
 	 * @param string       $file         The file that renders the shortcode content.
+	 * @param array        $attributes   The allowed shortcode attributes.
 	 * @param array|string $allowed_html An array of allowed HTML elements and attributes, or a
 	 *                                   context name such as 'post'. Default value 'post'. For
 	 *                                   the list of accepted context names, see
@@ -35,8 +30,8 @@ class Shortcode {
 	 */
 	public function __construct(
 		protected string $name = 'my-shortcode',
-		protected array $attributes = array(),
 		protected string $file = 'my-shortcode.php',
+		protected array $attributes = array(),
 		protected $allowed_html = 'post'
 	) {
 		add_shortcode( $name, array( $this, 'render' ) );
@@ -50,11 +45,7 @@ class Shortcode {
 	 */
 	public function render( $atts ) {
 
-		$atts = shortcode_atts( self::DEFAULT_ATTRIBUTE_VALUES, $atts );
-
-		// Sanitize shortcode parameters for security.
-		$atts['id']    = esc_attr( $atts['id'] );
-		$atts['class'] = esc_attr( $atts['class'] );
+		$atts = shortcode_atts( $this->attributes, $atts );
 
 		ob_start();
 		// Included file can use $atts variable.
