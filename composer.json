@@ -3,6 +3,7 @@
 	"description": "A WordPress plugin to serve as an introduction to WordPress plugin development.",
 	"type": "project",
 	"scripts": {
+		"prepare": "@php .bin/prepare-local-wp.php",
 		"test": [
 			"@putenv WP_SQLITE_MODE=enabled",
 			"./vendor/bin/phpunit -c .config/phpunit.xml.dist"
