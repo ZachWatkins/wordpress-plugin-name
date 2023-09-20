@@ -27,6 +27,7 @@
 	<rule ref="WordPress"/>
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<exclude-pattern>../common/</exclude-pattern>
+		<exclude-pattern>../.bin/</exclude-pattern>
 		<properties>
 			<!-- Value: replace the function, class, and variable prefixes used. Separate multiple prefixes with a comma. -->
 			<property name="prefixes" type="array">
@@ -55,6 +56,15 @@
 		<exclude-pattern>../.bin/</exclude-pattern>
 	</rule>
 	<rule ref="WordPress.WP.AlternativeFunctions.file_system_operations_file_put_contents">
+		<exclude-pattern>../.bin/</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound">
+		<exclude-pattern>../.bin/</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.PHP.DiscouragedPHPFunctions.system_calls_exec">
+		<exclude-pattern>../.bin/</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.WP.AlternativeFunctions.file_system_operations_rmdir">
 		<exclude-pattern>../.bin/</exclude-pattern>
 	</rule>
 
