@@ -56,3 +56,34 @@ require dirname( __FILE__, 5 ) . \'/vendor/wordpress/sqlite-database-integration
 echo "Success: SQLite database driver added.\n";
 echo "+ ./wordpress/wp-content/db.php\n";
 echo "+ ./wordpress/wp-content/mu-plugins/sqlite-database-integration/plugin.php\n";
+
+// Create a symbolic link for the plugin directory.
+if ( file_exists( dirname( __DIR__ ) . '/wordpress/wp-content/mu-plugins/wordpress-plugin-name' ) ) {
+	if ( is_file( dirname( __DIR__ ) . '/wordpress/wp-content/mu-plugins/wordpress-plugin-name' ) || is_link( dirname( __DIR__ ) . '/wordpress/wp-content/mu-plugins/wordpress-plugin-name' ) ) {
+		unlink( dirname( __DIR__ ) . '/wordpress/wp-content/mu-plugins/wordpress-plugin-name' );
+	} else {
+		rmdir( dirname( __DIR__ ) . '/wordpress/wp-content/mu-plugins/wordpress-plugin-name' );
+	}
+}
+
+symlink(
+	dirname( __DIR__ ),
+	dirname( __DIR__ ) . '/wordpress/wp-content/mu-plugins/wordpress-plugin-name'
+);
+
+echo "Success: Symbolic link created.\n";
+echo "+ ./wordpress/wp-content/mu-plugins/wordpress-plugin-name -> ./\n";
+
+if ( file_exists( dirname( __DIR__ ) . '/wordpress/wp-config-sample.php' ) ) {
+	if ( file_exists( dirname( __DIR__ ) . '/wordpress/wp-config.php' ) ) {
+		unlink( dirname( __DIR__ ) . '/wordpress/wp-config.php' );
+	}
+
+	copy(
+		dirname( __DIR__ ) . '/wordpress/wp-config-sample.php',
+		dirname( __DIR__ ) . '/wordpress/wp-config.php'
+	);
+}
+
+echo "Success: wp-config.php created.\n";
+echo "+ ./wordpress/wp-config.php\n";
