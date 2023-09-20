@@ -69,9 +69,9 @@ ECHO Installer package removed: %PHP_ZIP%
 SET COMPOSER_EXE=%PHP_DIR%\composer.phar
 
 SET "EXPECTED_CHECKSUM="
-FOR /f "usebackq delims=" %%a IN (`php -r "copy('https://composer.github.io/installer.sig', 'php://stdout');"`) DO SET "EXPECTED_CHECKSUM=%%a"
+FOR /f "usebackq delims=" %%a IN (`%PHP_DIR%\php.exe -r "copy('https://composer.github.io/installer.sig', 'php://stdout');"`) DO SET "EXPECTED_CHECKSUM=%%a"
 
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+powershell -Command "%PHP_DIR%\php.exe -r copy('https://getcomposer.org/installer', 'composer-setup.php');"
 SET "ACTUAL_CHECKSUM="
 FOR /f "usebackq delims=" %%a IN (`certutil -hashfile composer-setup.php SHA384 ^| findstr /i /v "certutil"`) DO SET "ACTUAL_CHECKSUM=%%a"
 
@@ -83,7 +83,7 @@ if not "%EXPECTED_CHECKSUM%" == "%ACTUAL_CHECKSUM%" (
     EXIT /b 1
 )
 
-php composer-setup.php --quiet
+powershell -Command "%PHP_DIR%\php.exe composer-setup.php --quiet"
 SET "RESULT=%errorlevel%"
 DEL composer-setup.php
 MOVE composer.phar "%COMPOSER_EXE%"
