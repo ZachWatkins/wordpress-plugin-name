@@ -85,76 +85,32 @@ if ( file_exists( dirname( __DIR__ ) . '/wordpress/wp-config-sample.php' ) ) {
 
 echo "+ ./wordpress/wp-config.php\n";
 
-if ( file_exists( dirname( __DIR__ ) . '/wordpress/wp-content/themes/no-theme' ) ) {
-	if ( file_exists( dirname( __DIR__ ) . '/wordpress/wp-content/themes/no-theme/style.css' ) ) {
-		unlink( dirname( __DIR__ ) . '/wordpress/wp-content/themes/no-theme/style.css' );
+if ( ! file_exists( dirname( __DIR__ ) . '/wordpress/wp-content/themes/twentytwentythree' ) ) {
+	$temp_dir     = __DIR__;
+	$zip_file     = $temp_dir . '/twentytwentythree.zip';
+	$zip_resource = fopen( $zip_file, 'w' );
+
+	$ch = curl_init();
+	curl_setopt( $ch, CURLOPT_URL, 'https://downloads.wordpress.org/theme/twentytwentythree.1.2.zip' );
+	curl_setopt( $ch, CURLOPT_FAILONERROR, true );
+	curl_setopt( $ch, CURLOPT_HEADER, 0 );
+	curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+	curl_setopt( $ch, CURLOPT_AUTOREFERER, true );
+	curl_setopt( $ch, CURLOPT_TIMEOUT, 10 );
+	curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 0 );
+	curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, 0 );
+	curl_setopt( $ch, CURLOPT_FILE, $zip_resource );
+	$results = curl_exec( $ch );
+
+	if ( ! $results ) {
+		echo 'Error :- ' . curl_error( $ch );
 	}
 
-	if ( file_exists( dirname( __DIR__ ) . '/wordpress/wp-content/themes/no-theme/index.php' ) ) {
-		unlink( dirname( __DIR__ ) . '/wordpress/wp-content/themes/no-theme/index.php' );
-	}
+	$zip = new ZipArchive();
+	$zip->open( $zip_file );
+	$zip->extractTo( dirname( __DIR__ ) . '/wordpress/wp-content/themes/' );
+	$zip->close();
+	unlink( $zip_file );
 
-	rmdir( dirname( __DIR__ ) . '/wordpress/wp-content/themes/no-theme' );
+	echo "+ ./wordpress/wp-content/themes/twentytwentythree/\n";
 }
-
-mkdir( dirname( __DIR__ ) . '/wordpress/wp-content/themes/no-theme', 0777, true );
-
-file_put_contents(
-	dirname( __DIR__ ) . '/wordpress/wp-content/themes/no-theme/style.css',
-	'/*
-!
-Theme Name: No Theme
-Description: Minimal default theme to provide a local development environment.
-*/'
-);
-
-echo "+ ./wordpress/wp-content/themes/no-theme/style.css\n";
-
-file_put_contents(
-	dirname( __DIR__ ) . '/wordpress/wp-content/themes/no-theme/index.php',
-	<<<HEREDOC
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="<?php bloginfo( 'charset' ); ?>">
-<title><?php wp_title( ' | ', true, 'right' ); ?></title>
-<link rel="stylesheet" href="<?php echo esc_url( get_stylesheet_uri() ); ?>" type="text/css" />
-<?php wp_head(); ?>
-</head>
-<body>
-<h1><?php bloginfo( 'name' ); ?></h1>
-<h2><?php bloginfo( 'description' ); ?></h2>
-
-<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
-
-<h3><?php the_title(); ?></h3>
-
-<?php the_content(); ?>
-<?php wp_link_pages(); ?>
-<?php edit_post_link(); ?>
-
-<?php endwhile; ?>
-
-<?php
-if ( get_next_posts_link() ) {
-next_posts_link();
-}
-?>
-<?php
-if ( get_previous_posts_link() ) {
-previous_posts_link();
-}
-?>
-
-<?php else: ?>
-
-<p>No posts found. :(</p>
-
-<?php endif; ?>
-<?php wp_footer(); ?>
-</body>
-</html>
-HEREDOC
-);
-
-echo "+ ./wordpress/wp-content/themes/no-theme/index.php\n";
