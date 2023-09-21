@@ -114,3 +114,33 @@ if ( ! file_exists( dirname( __DIR__ ) . '/wordpress/wp-content/themes/twentytwe
 
 	echo "+ ./wordpress/wp-content/themes/twentytwentythree/\n";
 }
+
+if ( ! file_exists( dirname( __DIR__ ) . '/wordpress/wp-content/plugins/advanced-custom-fields/' ) ) {
+	$temp_dir     = __DIR__;
+	$zip_file     = $temp_dir . '/advanced-custom-fields.zip';
+	$zip_resource = fopen( $zip_file, 'w' );
+
+	$ch = curl_init();
+	curl_setopt( $ch, CURLOPT_URL, 'https://downloads.wordpress.org/plugin/advanced-custom-fields.6.2.1.zip' );
+	curl_setopt( $ch, CURLOPT_FAILONERROR, true );
+	curl_setopt( $ch, CURLOPT_HEADER, 0 );
+	curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, true );
+	curl_setopt( $ch, CURLOPT_AUTOREFERER, true );
+	curl_setopt( $ch, CURLOPT_TIMEOUT, 10 );
+	curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 0 );
+	curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, 0 );
+	curl_setopt( $ch, CURLOPT_FILE, $zip_resource );
+	$results = curl_exec( $ch );
+
+	if ( ! $results ) {
+		echo 'Error :- ' . curl_error( $ch );
+	}
+
+	$zip = new ZipArchive();
+	$zip->open( $zip_file );
+	$zip->extractTo( dirname( __DIR__ ) . '/wordpress/wp-content/plugins/' );
+	$zip->close();
+	unlink( $zip_file );
+
+	echo "+ ./wordpress/wp-content/plugins/advanced-custom-fields/\n";
+}
