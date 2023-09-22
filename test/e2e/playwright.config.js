@@ -38,7 +38,7 @@ const config = defineConfig( {
 	/* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
 	use: {
 		/* Base URL to use in actions like `await page.goto('/')`. */
-		baseURL: process.env.WP_BASE_URL || 'http://localhost:8889',
+		baseURL: process.env.WP_BASE_URL || 'http://localhost:8000',
 
 		/* Settings used in wordpress/gutenberg */
 		headless: true,
@@ -59,8 +59,8 @@ const config = defineConfig( {
 
 	/* Run your local dev server before starting the tests */
 	webServer: {
-		command: 'npm run wp-env start',
-		port: 8889,
+		command: 'npm run serve',
+		port: 8000,
 		timeout: 120_000, // 120 seconds.
 		reuseExistingServer: true,
 	},
