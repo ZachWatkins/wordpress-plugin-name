@@ -4,64 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "25bd8e9c8598258861496b2217a98847",
+    "content-hash": "ccb60d146fdb3f50e720d889be504988",
     "packages": [
-        {
-            "name": "thoughtful-web/activation-requirements-wp",
-            "version": "v1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thoughtful-web/activation-requirements-wp.git",
-                "reference": "58c64e923cc36efe4e108a281a60f50688915b19"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thoughtful-web/activation-requirements-wp/zipball/58c64e923cc36efe4e108a281a60f50688915b19",
-                "reference": "58c64e923cc36efe4e108a281a60f50688915b19",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.3.5"
-            },
-            "require-dev": {
-                "squizlabs/php_codesniffer": "^3.6",
-                "wp-coding-standards/wpcs": "^2.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "ThoughtfulWeb\\ActivationRequirementsWP\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Zachary Kendall Watkins",
-                    "email": "watkinza@gmail.com",
-                    "homepage": "https://github.com/zachwatkins/",
-                    "role": "Creator"
-                },
-                {
-                    "name": "Contributors",
-                    "homepage": "https://github.com/thoughtful-web/activation-requirements-wp/graphs/contributors"
-                }
-            ],
-            "description": "Helpful WordPress activation requirements released as free open source software under GNU GPL-2.0+ License",
-            "keywords": [
-                "activation",
-                "plugin",
-                "wordpress"
-            ],
-            "support": {
-                "docs": "https://raw.githubusercontent.com/thoughtful-web/activation-requirements-wp/main/README.md",
-                "issues": "https://github.com/thoughtful-web/activation-requirements-wp/issues",
-                "source": "https://github.com/thoughtful-web/activation-requirements-wp/"
-            },
-            "time": "2022-02-16T13:52:43+00:00"
-        },
         {
             "name": "thoughtful-web/settings-page-wp",
             "version": "v1.0.0",
@@ -498,16 +442,16 @@
         },
         {
             "name": "phpcsstandards/phpcsextra",
-            "version": "1.1.1",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPCSStandards/PHPCSExtra.git",
-                "reference": "98bcdbacbda14b1db85f710b1853125726795bbc"
+                "reference": "746c3190ba8eb2f212087c947ba75f4f5b9a58d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPCSStandards/PHPCSExtra/zipball/98bcdbacbda14b1db85f710b1853125726795bbc",
-                "reference": "98bcdbacbda14b1db85f710b1853125726795bbc",
+                "url": "https://api.github.com/repos/PHPCSStandards/PHPCSExtra/zipball/746c3190ba8eb2f212087c947ba75f4f5b9a58d5",
+                "reference": "746c3190ba8eb2f212087c947ba75f4f5b9a58d5",
                 "shasum": ""
             },
             "require": {
@@ -557,7 +501,7 @@
                 "issues": "https://github.com/PHPCSStandards/PHPCSExtra/issues",
                 "source": "https://github.com/PHPCSStandards/PHPCSExtra"
             },
-            "time": "2023-08-26T04:46:45+00:00"
+            "time": "2023-09-20T22:06:18+00:00"
         },
         {
             "name": "phpcsstandards/phpcsutils",
@@ -634,16 +578,16 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "9.2.28",
+            "version": "9.2.29",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
-                "reference": "7134a5ccaaf0f1c92a4f5501a6c9f98ac4dcc0ef"
+                "reference": "6a3a87ac2bbe33b25042753df8195ba4aa534c76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/7134a5ccaaf0f1c92a4f5501a6c9f98ac4dcc0ef",
-                "reference": "7134a5ccaaf0f1c92a4f5501a6c9f98ac4dcc0ef",
+                "url": "https://api.github.com/repos/sebastianbergmann/php-code-coverage/zipball/6a3a87ac2bbe33b25042753df8195ba4aa534c76",
+                "reference": "6a3a87ac2bbe33b25042753df8195ba4aa534c76",
                 "shasum": ""
             },
             "require": {
@@ -700,7 +644,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/php-code-coverage/issues",
                 "security": "https://github.com/sebastianbergmann/php-code-coverage/security/policy",
-                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.28"
+                "source": "https://github.com/sebastianbergmann/php-code-coverage/tree/9.2.29"
             },
             "funding": [
                 {
@@ -708,7 +652,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-09-12T14:36:20+00:00"
+            "time": "2023-09-19T04:57:46+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -953,16 +897,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "9.6.12",
+            "version": "9.6.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "a122c2ebd469b751d774aa0f613dc0d67697653f"
+                "reference": "f3d767f7f9e191eab4189abe41ab37797e30b1be"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a122c2ebd469b751d774aa0f613dc0d67697653f",
-                "reference": "a122c2ebd469b751d774aa0f613dc0d67697653f",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/f3d767f7f9e191eab4189abe41ab37797e30b1be",
+                "reference": "f3d767f7f9e191eab4189abe41ab37797e30b1be",
                 "shasum": ""
             },
             "require": {
@@ -1036,7 +980,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.12"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/9.6.13"
             },
             "funding": [
                 {
@@ -1052,7 +996,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-09-12T14:39:31+00:00"
+            "time": "2023-09-19T05:39:22+00:00"
         },
         {
             "name": "roots/wordpress",
@@ -2345,17 +2289,51 @@
             "time": "2023-05-08T10:40:22+00:00"
         },
         {
+            "name": "wordpress/twentytwentythree",
+            "version": "dev-trunk",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wordpress/twentytwentythree.git",
+                "reference": "11440a5b38bae6882fc2c00b703d4bb95420a0f5"
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
+                "wptrt/wpthemereview": "^0.2.1"
+            },
+            "default-branch": true,
+            "type": "package",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Contributors",
+                    "homepage": "https://github.com/WordPress/twentytwentythree/contributors.md"
+                }
+            ],
+            "description": "The default WordPress theme for 2023",
+            "homepage": "https://github.com/WordPress/twentytwentythree",
+            "keywords": [
+                "Themes",
+                "WordPress"
+            ],
+            "time": "2022-10-28T14:44:29+00:00"
+        },
+        {
             "name": "wp-coding-standards/wpcs",
             "version": "dev-develop",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WordPress/WordPress-Coding-Standards.git",
-                "reference": "d0e0fd318e75e3afaa33c756a52ab0ddd174f97e"
+                "reference": "7722c0b8a6f4eb615be4ba8ebe22ed92a5fa87d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WordPress/WordPress-Coding-Standards/zipball/d0e0fd318e75e3afaa33c756a52ab0ddd174f97e",
-                "reference": "d0e0fd318e75e3afaa33c756a52ab0ddd174f97e",
+                "url": "https://api.github.com/repos/WordPress/WordPress-Coding-Standards/zipball/7722c0b8a6f4eb615be4ba8ebe22ed92a5fa87d7",
+                "reference": "7722c0b8a6f4eb615be4ba8ebe22ed92a5fa87d7",
                 "shasum": ""
             },
             "require": {
@@ -2409,7 +2387,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-09-13T08:23:00+00:00"
+            "time": "2023-09-20T23:16:50+00:00"
         },
         {
             "name": "wp-phpunit/wp-phpunit",
@@ -2523,6 +2501,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "wordpress/twentytwentythree": 20,
         "wp-coding-standards/wpcs": 20
     },
     "prefer-stable": true,
