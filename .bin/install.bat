@@ -1,5 +1,5 @@
-@REM Install Windows Subsystem for Linux, NodeJS, Docker Desktop, PHP, and
-@REM Composer on Windows.
+@REM InstallVisual Studio Code, Windows Subsystem for Linux, NodeJS, Docker
+@REM Desktop, PHP, and Composer on Windows.
 @REM Running this file as an administrator will add the paths to the user's
 @REM system path, so they can run node, php, and composer from the command
 @REM line. Otherwise, the user will need to add the paths manually.
@@ -39,11 +39,14 @@ SET PHP_URL=https://windows.php.net/downloads/releases/%PHP_ZIP%
 SET COMPOSER_URL=https://getcomposer.org/installer
 SET COMPOSER_SIG_URL=https://composer.github.io/installer.sig
 
-ECHO Installing Windows Subsystem for Linux, NodeJS, Docker Desktop, PHP, and Composer on Windows
+ECHO Installing Visual Studio Code, Windows Subsystem for Linux, NodeJS, Docker Desktop, PHP, and Composer on Windows
 
 IF NOT EXIST %TEMP_DIR% (
     MKDIR %TEMP_DIR%
 )
+
+ECHO Installing Visual Studio Code
+call winget install -e --id Microsoft.VisualStudioCode
 
 ECHO Installing Windows Subsystem for Linux Version 2 using Ubuntu.
 call wsl --install -d Ubuntu
