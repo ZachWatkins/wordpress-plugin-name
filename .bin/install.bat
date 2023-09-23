@@ -62,14 +62,24 @@ powershell -Command "(gc %PHP_DIR%\php.ini) -replace ';opcache.enable=1', 'opcac
 powershell -Command "(gc %PHP_DIR%\php.ini) -replace ';opcache.enable_cli=0', 'opcache.enable_cli=On' | Out-File -encoding ASCII %PHP_DIR%\php.ini"
 
 ECHO PHP %PHP_VERSION% %PHP_ARCH% installed to %PHP_DIR%
-DEL /q /s /f "%TEMP_DIR%\%PHP_ZIP%"
 
-powershell -Command "Invoke-WebRequest -Uri 'https://composer.github.io/installer.sig' -OutFile '%TEMP_DIR%\composer-installer.sig'"
+IF EXIST %TEMP_DIR%\composer-installer.sig (
+    ECHO composer-installer.sig already downloaded.
+) ELSE (
+    ECHO Downloading composer-installer.sig to %TEMP_DIR%\composer-installer.sig
+    powershell -Command "Invoke-WebRequest -Uri 'https://composer.github.io/installer.sig' -OutFile '%TEMP_DIR%\composer-installer.sig'"
+)
 
 SET "EXPECTED_CHECKSUM="
 FOR /f "usebackq delims=" %%a IN (`type %TEMP_DIR%\composer-installer.sig`) DO SET "EXPECTED_CHECKSUM=%%a"
 
-powershell -Command "Invoke-WebRequest -Uri 'https://getcomposer.org/installer' -OutFile '%TEMP_DIR%\composer-setup.php'"
+IF EXIST %TEMP_DIR%\composer-setup.php (
+    ECHO composer-setup.php already downloaded.
+) ELSE (
+    ECHO Downloading composer-setup.php to %TEMP_DIR%\composer-setup.php
+    powershell -Command "Invoke-WebRequest -Uri 'https://getcomposer.org/installer' -OutFile '%TEMP_DIR%\composer-setup.php'"
+)
+
 SET "ACTUAL_CHECKSUM="
 FOR /f "usebackq delims=" %%a IN (`certutil -hashfile %TEMP_DIR%\composer-setup.php SHA384 ^| findstr /i /v "certutil"`) DO SET "ACTUAL_CHECKSUM=%%a"
 
@@ -77,12 +87,12 @@ if not "%EXPECTED_CHECKSUM%" == "%ACTUAL_CHECKSUM%" (
     ECHO ERROR: Invalid installer checksum
     ECHO EXPECTED: %EXPECTED_CHECKSUM%
     ECHO ACTUAL: %ACTUAL_CHECKSUM%
+    DEL %TEMP_DIR%\composer-installer.sig
     DEL %TEMP_DIR%\composer-setup.php
     EXIT /b 1
 )
 
 powershell -Command "%PHP_DIR%\php.exe %TEMP_DIR%\composer-setup.php --quiet --install-dir=%PHP_DIR% --filename=composer.phar"
 SET "RESULT=%errorlevel%"
-DEL %TEMP_DIR%\composer-setup.php
 ECHO Composer installed to %PHP_DIR%\composer.phar
 EXIT /b %RESULT%
