@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ccb60d146fdb3f50e720d889be504988",
+    "content-hash": "a014d1752ca642feada2b8081d47bc2d",
     "packages": [
         {
             "name": "thoughtful-web/settings-page-wp",
@@ -2289,40 +2289,6 @@
             "time": "2023-05-08T10:40:22+00:00"
         },
         {
-            "name": "wordpress/twentytwentythree",
-            "version": "dev-trunk",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/wordpress/twentytwentythree.git",
-                "reference": "11440a5b38bae6882fc2c00b703d4bb95420a0f5"
-            },
-            "require": {
-                "php": ">=5.6"
-            },
-            "require-dev": {
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
-                "wptrt/wpthemereview": "^0.2.1"
-            },
-            "default-branch": true,
-            "type": "package",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Contributors",
-                    "homepage": "https://github.com/WordPress/twentytwentythree/contributors.md"
-                }
-            ],
-            "description": "The default WordPress theme for 2023",
-            "homepage": "https://github.com/WordPress/twentytwentythree",
-            "keywords": [
-                "Themes",
-                "WordPress"
-            ],
-            "time": "2022-10-28T14:44:29+00:00"
-        },
-        {
             "name": "wp-coding-standards/wpcs",
             "version": "dev-develop",
             "source": {
@@ -2501,7 +2467,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "wordpress/twentytwentythree": 20,
         "wp-coding-standards/wpcs": 20
     },
     "prefer-stable": true,
@@ -2511,5 +2476,5 @@
     "platform-overrides": {
         "php": "8.1"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }
