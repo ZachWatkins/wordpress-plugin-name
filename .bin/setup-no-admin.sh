@@ -1,4 +1,5 @@
 #!/bin/bash
+# Set up the local WordPress development environment when a user cannot use admin privileges.
 # Set up the WordPress installation to use SQLite, have a default theme, and use the plugin we're developing via a symbolic link.
 
 if [ ! -d "wordpress" ]; then
@@ -31,27 +32,7 @@ if [ ! -f "wordpress/wp-content/db.php" ]; then
 fi
 
 if [ ! -d "wordpress/wp-content/mu-plugins/sqlite-database-integration" ]; then
-    mkdir wordpress/wp-content/mu-plugins/sqlite-database-integration
-fi
-
-if [ ! -f "wordpress/wp-content/mu-plugins/sqlite-database-integration/plugin.php" ]; then
-    CONTENTS="<?php
-/**
- * Plugin Name: SQLite Database Integration
- * Description: SQLite database driver drop-in.
- * Author: WordPress Performance Team
- * Version: 2.1.1
- * Requires PHP: 5.6
- * Textdomain: sqlite-database-integration
- *
- * This feature plugin allows WordPress to use SQLite instead of MySQL as its database.
- *
- * @package wp-sqlite-integration
- */
-
-require dirname( __FILE__, 5 ) . '/vendor/wordpress/sqlite-database-integration/load.php';
-"
-    echo "$CONTENTS" > wordpress/wp-content/mu-plugins/sqlite-database-integration/plugin.php
+    ln -s "$(pwd)/vendor/wordpress/sqlite-database-integration" wordpress/wp-content/mu-plugins/sqlite-database-integration
 fi
 
 # Create a symbolic link for the working directory.
