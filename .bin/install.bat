@@ -1,4 +1,4 @@
-@REM InstallVisual Studio Code, Windows Subsystem for Linux, NodeJS, Docker
+@REM Install Visual Studio Code, Windows Subsystem for Linux, NodeJS, Docker
 @REM Desktop, PHP, and Composer on Windows.
 @REM Running this file as an administrator will add the paths to the user's
 @REM system path, so they can run node, php, and composer from the command
