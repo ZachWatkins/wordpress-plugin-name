@@ -23,6 +23,15 @@ if [ ! -f "wordpress/wp-config.php" ]; then
     cp wordpress/wp-config-sample.php wordpress/wp-config.php
 fi
 
+if [ ! -d wordpress/wp-content/plugins/wordpress-plugin-name ]; then
+    ln -s "$(pwd)" wordpress/wp-content/plugins/wordpress-plugin-name
+fi
+
+if [ ! -d "wordpress/wp-content/themes/twentytwentythree" ]; then
+    curl -L https://downloads.wordpress.org/theme/twentytwentythree.1.2.zip -o .bin/.tmp/twentytwentythree.zip
+    unzip .bin/.tmp/twentytwentythree.zip -d wordpress/wp-content/themes
+fi
+
 # Set up the SQLite database plugin.
 if [ ! -f "wordpress/wp-content/db.php" ]; then
     CONTENTS=$(cat vendor/wordpress/sqlite-database-integration/db.copy)
@@ -33,9 +42,4 @@ fi
 
 if [ ! -d "wordpress/wp-content/mu-plugins/sqlite-database-integration" ]; then
     ln -s "$(pwd)/vendor/wordpress/sqlite-database-integration" wordpress/wp-content/mu-plugins/sqlite-database-integration
-fi
-
-# Create a symbolic link for the working directory.
-if [ ! -d wordpress/wp-content/plugins/wordpress-plugin-name ]; then
-    ln -s "$(pwd)" wordpress/wp-content/plugins/wordpress-plugin-name
 fi
