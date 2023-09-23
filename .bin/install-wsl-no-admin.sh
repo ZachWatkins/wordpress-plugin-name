@@ -105,3 +105,5 @@ fi
 if [ ! -d "wordpress/wp-content/mu-plugins/sqlite-database-integration" ]; then
     ln -s "$(pwd)/vendor/wordpress/sqlite-database-integration" wordpress/wp-content/mu-plugins/sqlite-database-integration
 fi
+
+echo "Installation finished. You must restart your terminal session before changes will take effect."
