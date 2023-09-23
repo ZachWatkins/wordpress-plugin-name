@@ -49,11 +49,6 @@ class NewPostType {
 			fn () => is_archive( $this->post_type ),
 		);
 
-		add_action(
-			'acf/init',
-			fn () => include __DIR__ . '/../advanced-custom-fields/new-post-type.php'
-		);
-
 		// Single page template file.
 		add_filter( 'the_content', array( $this, 'content_template' ) );
 		add_filter( 'get_the_excerpt', array( $this, 'disable_content_template' ), 9 );
