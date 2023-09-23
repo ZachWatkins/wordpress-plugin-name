@@ -6,9 +6,8 @@ if [ "$(whoami)" != "root" ]; then
     SUDO=sudo
 fi
 
-NVM_VERSION="0.39.0"
-PHP_VERSION="8.1.2"
-NODE_VERSION="18.18.0"
+PHP_VERSION="8.1"
+NODE_VERSION="18"
 
 if ! command -v curl &> /dev/null
 then
@@ -16,28 +15,26 @@ then
     ${SUDO} apt-get -y install curl
 fi
 
-if ! command -v nvm &> /dev/null
-then
-    echo "NVM could not be found. Installing..."
-    curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh" | bash
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-    ${SUDO} chmod +x $HOME/.nvm/nvm.sh
-    echo "NVM ${NVM_VERSION} installed."
-fi
-
+INSTALL_NODE=false
 if ! command -v node &> /dev/null
 then
-    ${SUDO} ${NVM_DIR}/nvm.sh install $NODE_VERSION
-    ${SUDO} ${NVM_DIR}/nvm.sh alias default $NODE_VERSION
-    echo "NodeJS v${NODE_VERSION} installed."
+    INSTALL_NODE=true
 else
     NODE_VERSION_INSTALLED=`node -v | cut -d "v" -f 2`
     if [ "$NODE_VERSION_INSTALLED" != "$NODE_VERSION" ]; then
-        ${SUDO} ${NVM_DIR}/nvm.sh install $NODE_VERSION
-        ${SUDO} ${NVM_DIR}/nvm.sh alias default $NODE_VERSION
-        echo "NodeJS v${NODE_VERSION} installed."
+        INSTALL_NODE=true
     fi
+fi
+
+if [ "$INSTALL_NODE" = true ]; then
+    ${SUDO} apt-get update
+    ${SUDO} apt-get install -y ca-certificates gnupg
+    ${SUDO} mkdir -p /etc/apt/keyrings
+    curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | ${SUDO} gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_$NODE_VERSION.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list
+    ${SUDO} apt-get update
+    ${SUDO} apt-get install nodejs -y
+    echo "Latest version of NodeJS v${NODE_VERSION} installed."
 fi
 
 INSTALL_PHP=false
@@ -45,7 +42,7 @@ if ! command -v php &> /dev/null
 then
     INSTALL_PHP=true
 else
-    PHP_VERSION_INSTALLED=`php -v | sed -n 1p | cut -d " " -f 2 | cut -d "-" -f 1`
+    PHP_VERSION_INSTALLED=`php -v | sed -n 1p | cut -d " " -f 2 | cut -d "-" -f 1 | cut -d "." -f 1,2`
     if [ "$PHP_VERSION_INSTALLED" != "$PHP_VERSION" ]; then
         INSTALL_PHP=true
     fi
@@ -98,4 +95,4 @@ if [ ! -d "vendor" ]; then
     echo "+ vendor/"
 fi
 
-echo "Installation finished. You must restart your terminal session before using newly installed command line applications."
+echo "Installation finished. You may now use node, php, and composer from your terminal. Examples: node -v, php -v, composer --version"
