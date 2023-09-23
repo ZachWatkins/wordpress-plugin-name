@@ -1,5 +1,5 @@
 #!/bin/bash
-# Install developer tools for Linux or Windows Subsystem for Linux (WSL).
+# Install PHP and Composer for 
 if [ "$(whoami)" != "root" ]; then
     SUDO=sudo
 fi
