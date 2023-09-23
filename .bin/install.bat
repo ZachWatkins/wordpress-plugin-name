@@ -16,35 +16,36 @@
 
 @ECHO OFF
 
+SET TEMP_DIR=%~dp0\.tmp
 SET PHP_VERSION=%1
 SET PHP_ARCH=%2
 SET PHP_DIR=%3
 
-IF "%PHP_VERSION%" == "" SET PHP_VERSION=8.1.21
+IF "%PHP_VERSION%" == "" SET PHP_VERSION=8.1.23
 IF "%PHP_ARCH%" == "" SET PHP_ARCH=x64
 IF "%PHP_DIR%" == "" SET PHP_DIR=%USERPROFILE%\bin\php
 
+SET PHP_EXE=%PHP_DIR%\php.exe
 SET PHP_ZIP=php-%PHP_VERSION%-nts-Win32-vs16-%PHP_ARCH%.zip
 SET PHP_URL=https://windows.php.net/downloads/releases/%PHP_ZIP%
-SET PHP_EXE=%PHP_DIR%\php.exe
+SET COMPOSER_EXE=%PHP_DIR%\composer.phar
 
-IF EXIST %PHP_ZIP% (
+IF EXIST %TEMP_DIR%\%PHP_ZIP% (
     ECHO %PHP_ZIP% already downloaded.
 ) ELSE (
-    ECHO Downloading %PHP_URL% to %PHP_ZIP%
-    powershell -Command "Invoke-WebRequest -Uri %PHP_URL% -UserAgent WordPressDeveloper -OutFile %PHP_ZIP%"
+    ECHO Downloading %PHP_URL% to %TEMP_DIR%\%PHP_ZIP%
+    powershell -Command "Invoke-WebRequest -Uri %PHP_URL% -UserAgent WordPressDeveloper -OutFile %TEMP_DIR%\%PHP_ZIP%"
 )
 
 IF NOT EXIST "%PHP_DIR%" (
-    @ECHO Creating %PHP_DIR%
     MKDIR "%PHP_DIR%"
 ) ELSE (
     ECHO Deleting existing installation at %PHP_DIR%
     DEL /q /s /f "%PHP_DIR%\*"
 )
 
-ECHO Extracting %PHP_ZIP% to %PHP_DIR%
-powershell -Command "Expand-Archive %PHP_ZIP% -DestinationPath %PHP_DIR%"
+ECHO Extracting %TEMP_DIR%\%PHP_ZIP% to %PHP_DIR%
+powershell -Command "Expand-Archive %TEMP_DIR%\%PHP_ZIP% -DestinationPath %PHP_DIR%"
 
 ECHO Configuring PHP installation
 COPY /Y "%PHP_DIR%\php.ini-development" "%PHP_DIR%\php.ini"
@@ -62,30 +63,28 @@ powershell -Command "(gc %PHP_DIR%\php.ini) -replace ';opcache.enable=1', 'opcac
 powershell -Command "(gc %PHP_DIR%\php.ini) -replace ';opcache.enable_cli=0', 'opcache.enable_cli=On' | Out-File -encoding ASCII %PHP_DIR%\php.ini"
 
 ECHO PHP %PHP_VERSION% %PHP_ARCH% installed to %PHP_DIR%
-DEL /q /s /f "%PHP_ZIP%"
-ECHO Installer package removed: %PHP_ZIP%
+DEL /q /s /f "%TEMP_DIR%\%PHP_ZIP%"
 
-@REM Install Composer package manager for PHP.
-SET COMPOSER_EXE=%PHP_DIR%\composer.phar
+powershell -Command "Invoke-WebRequest -Uri 'https://composer.github.io/installer.sig' -OutFile '%TEMP_DIR%\composer-installer.sig'"
 
 SET "EXPECTED_CHECKSUM="
-FOR /f "usebackq delims=" %%a IN (`%PHP_DIR%\php.exe -r "copy('https://composer.github.io/installer.sig', 'php://stdout');"`) DO SET "EXPECTED_CHECKSUM=%%a"
+FOR /f "usebackq delims=" %%a IN (`type %TEMP_DIR%\composer-installer.sig`) DO SET "EXPECTED_CHECKSUM=%%a"
 
-powershell -Command "%PHP_DIR%\php.exe -r copy('https://getcomposer.org/installer', 'composer-setup.php');"
+powershell -Command "Invoke-WebRequest -Uri 'https://getcomposer.org/installer' -OutFile '%TEMP_DIR%\composer-setup.php'"
 SET "ACTUAL_CHECKSUM="
-FOR /f "usebackq delims=" %%a IN (`certutil -hashfile composer-setup.php SHA384 ^| findstr /i /v "certutil"`) DO SET "ACTUAL_CHECKSUM=%%a"
+FOR /f "usebackq delims=" %%a IN (`certutil -hashfile %TEMP_DIR%\composer-setup.php SHA384 ^| findstr /i /v "certutil"`) DO SET "ACTUAL_CHECKSUM=%%a"
 
 if not "%EXPECTED_CHECKSUM%" == "%ACTUAL_CHECKSUM%" (
     ECHO ERROR: Invalid installer checksum
     ECHO EXPECTED: %EXPECTED_CHECKSUM%
     ECHO ACTUAL: %ACTUAL_CHECKSUM%
-    DEL composer-setup.php
+    DEL %TEMP_DIR%\composer-setup.php
     EXIT /b 1
 )
 
-powershell -Command "%PHP_DIR%\php.exe composer-setup.php --quiet"
+powershell -Command "%PHP_DIR%\php.exe %TEMP_DIR%\composer-setup.php --quiet"
 SET "RESULT=%errorlevel%"
-DEL composer-setup.php
-MOVE composer.phar "%COMPOSER_EXE%"
+DEL %TEMP_DIR%\composer-setup.php
+MOVE %TEMP_DIR%\composer.phar "%COMPOSER_EXE%"
 ECHO Composer installed to %COMPOSER_EXE%
 EXIT /b %RESULT%
