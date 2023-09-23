@@ -20,7 +20,7 @@ if ! command -v node &> /dev/null
 then
     INSTALL_NODE=true
 else
-    NODE_VERSION_INSTALLED=`node -v | cut -d "v" -f 2`
+    NODE_VERSION_INSTALLED=`node -v | cut -d "v" -f 2 | cut -d "." -f 1,2`
     if [ "$NODE_VERSION_INSTALLED" != "$NODE_VERSION" ]; then
         INSTALL_NODE=true
     fi
