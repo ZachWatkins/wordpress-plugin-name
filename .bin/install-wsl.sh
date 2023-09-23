@@ -1,36 +1,45 @@
 #!/bin/bash
-# Install dependencies inside Windows Subsystem for Linux useful for development.
+# If you have administrative rights on your computer, you can develop WordPress plugins using a Docker environment.
+# This script will install NodeJS, PHP, and Composer for you and install project dependencies.
+
 if [ "$(whoami)" != "root" ]; then
     SUDO=sudo
 fi
-NVM_VERSION=0.39.0
-NODE_VERSION=18.18.0
-PHP_VERSION=8.1
 
-# Download Node Version Manager.
+NVM_VERSION="0.39.0"
+PHP_VERSION="8.1.2"
+NODE_VERSION="18.18.0"
+
+if ! command -v curl &> /dev/null
+then
+    ${SUDO} apt-get update
+    ${SUDO} apt-get -y install curl
+fi
+
 if ! command -v nvm &> /dev/null
 then
-    echo "NVM could not be found. Installing NVM..."
+    echo "NVM could not be found. Installing..."
     curl -o- "https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh" | bash
-    echo "NVM v${NVM_VERSION} installed."
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    ${SUDO} chmod +x $HOME/.nvm/nvm.sh
+    echo "NVM ${NVM_VERSION} installed."
 fi
-${SUDO} chmod +x $HOME/.nvm/nvm.sh
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# Download latest Node LTS.
-if ! ${SUDO} ${NVM_DIR}/nvm.sh ls | grep "$NODE_VERSION"
+if ! command -v node &> /dev/null
 then
-    echo "Installing Node LTS v$NODE_VERSION..."
     ${SUDO} ${NVM_DIR}/nvm.sh install $NODE_VERSION
-    echo "Node LTS v$NODE_VERSION installed."
+    ${SUDO} ${NVM_DIR}/nvm.sh alias default $NODE_VERSION
+    echo "NodeJS v${NODE_VERSION} installed."
+else
+    NODE_VERSION_INSTALLED=`node -v | cut -d "v" -f 2`
+    if [ "$NODE_VERSION_INSTALLED" != "$NODE_VERSION" ]; then
+        ${SUDO} ${NVM_DIR}/nvm.sh install $NODE_VERSION
+        ${SUDO} ${NVM_DIR}/nvm.sh alias default $NODE_VERSION
+        echo "NodeJS v${NODE_VERSION} installed."
+    fi
 fi
 
-${NVM_DIR}/nvm.sh alias default $NODE_VERSION
-echo "The default Node version is now v$NODE_VERSION."
-
-# Install PHP.
 INSTALL_PHP=false
 if ! command -v php &> /dev/null
 then
@@ -43,7 +52,6 @@ else
 fi
 
 if [ "$INSTALL_PHP" = true ]; then
-    echo "PHP version $PHP_VERSION could not be found. Installing..."
     ${SUDO} apt-get update
     ${SUDO} apt-get -y install lsb-release ca-certificates curl
     ${SUDO} curl -sSLo /usr/share/keyrings/deb.sury.org-php.gpg https://packages.sury.org/php/apt.gpg
@@ -65,8 +73,29 @@ if [ "$INSTALL_PHP" = true ]; then
     ${SUDO} apt install "php${PHP_VERSION}-sqlite3" --no-install-recommends
     ${SUDO} apt install "php${PHP_VERSION}-mysql" --no-install-recommends
     ${SUDO} apt install "php${PHP_VERSION}-bcmath" --no-install-recommends
-    ${SUDO} apt install composer --no-install-recommends
-    echo "PHP installed."
+    echo "PHP v${PHP_VERSION} installed."
 fi
 
-echo "Installation finished. You must restart your terminal session before changes will take effect."
+INSTALL_COMPOSER=false
+if ! command -v composer &> /dev/null
+then
+    INSTALL_COMPOSER=true
+fi
+
+if [ "$INSTALL_COMPOSER" = true ]; then
+    ${SUDO} apt-get update
+    ${SUDO} apt install composer --no-install-recommends
+    echo "Composer installed"
+fi
+
+if [ ! -d "node_modules" ]; then
+    npm install
+    echo "+ node_modules/"
+fi
+
+if [ ! -d "vendor" ]; then
+    composer install
+    echo "+ vendor/"
+fi
+
+echo "Installation finished. You must restart your terminal session before using newly installed command line applications."
