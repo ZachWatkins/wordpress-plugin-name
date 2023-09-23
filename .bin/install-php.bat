@@ -1,25 +1,24 @@
 @REM Install PHP and Composer on Windows
 @REM
 @REM Usage:
-@REM   install-php.bat [version] [arch] [dir]
+@REM   install-php.bat [version] [dir] [arch]
 @REM
 @REM   version: PHP version to install (default: 8.1.21)
-@REM   arch:    Architecture to install (default: x64)
 @REM   dir:     Directory to install to (default: $HOME\bin\php)
+@REM   arch:    Architecture to install (default: x64)
 @REM
 @REM Examples:
 @REM   install-php.bat
-@REM   install-php.bat 8.1.21
-@REM   install-php.bat 8.1.21
-@REM   install-php.bat 8.1.21 x64
-@REM   install-php.bat 8.1.21 x64 $HOME\bin\php
+@REM   install-php.bat 8.1.23
+@REM   install-php.bat 8.1.23 $HOME\bin\php
+@REM   install-php.bat 8.1.23 $HOME\bin\php x64
 
 @ECHO OFF
 
 SET TEMP_DIR=%~dp0\.tmp
 SET PHP_VERSION=%1
-SET PHP_ARCH=%2
-SET PHP_DIR=%3
+SET PHP_DIR=%2
+SET PHP_ARCH=%3
 
 IF "%PHP_VERSION%" == "" SET PHP_VERSION=8.1.23
 IF "%PHP_ARCH%" == "" SET PHP_ARCH=x64
@@ -28,18 +27,55 @@ IF "%PHP_DIR%" == "" SET PHP_DIR=%USERPROFILE%\bin\php
 SET PHP_EXE=%PHP_DIR%\php.exe
 SET PHP_ZIP=php-%PHP_VERSION%-nts-Win32-vs16-%PHP_ARCH%.zip
 SET PHP_URL=https://windows.php.net/downloads/releases/%PHP_ZIP%
+SET COMPOSER_URL=https://getcomposer.org/installer
+SET COMPOSER_SIG_URL=https://composer.github.io/installer.sig
+
+ECHO Installing PHP and Composer for Windows to %PHP_DIR%
+
+IF NOT EXIST %TEMP_DIR% (
+    MKDIR %TEMP_DIR%
+)
 
 IF EXIST %TEMP_DIR%\%PHP_ZIP% (
-    ECHO %PHP_ZIP% already downloaded.
+    ECHO %PHP_ZIP% already downloaded to %TEMP_DIR%\%PHP_ZIP%
 ) ELSE (
     ECHO Downloading %PHP_URL% to %TEMP_DIR%\%PHP_ZIP%
     powershell -Command "Invoke-WebRequest -Uri %PHP_URL% -UserAgent WordPressDeveloper -OutFile %TEMP_DIR%\%PHP_ZIP%"
+
+    IF %errorlevel% NEQ 0 (
+        ECHO ERROR: Failed to download %PHP_URL% to %TEMP_DIR%\%PHP_ZIP%
+        EXIT /b 1
+    )
+)
+
+IF EXIST %TEMP_DIR%\composer-installer.sig (
+    ECHO composer-installer.sig already downloaded to %TEMP_DIR%\composer-installer.sig
+) ELSE (
+    ECHO Downloading composer-installer.sig to %TEMP_DIR%\composer-installer.sig
+    powershell -Command "Invoke-WebRequest -Uri '%COMPOSER_SIG_URL%' -OutFile '%TEMP_DIR%\composer-installer.sig'"
+
+    IF %errorlevel% NEQ 0 (
+        ECHO ERROR: Failed to download %COMPOSER_SIG_URL% to %TEMP_DIR%\composer-installer.sig
+        EXIT /b 1
+    )
+)
+
+IF EXIST %TEMP_DIR%\composer-setup.php (
+    ECHO composer-setup.php already downloaded to %TEMP_DIR%\composer-setup.php
+) ELSE (
+    ECHO Downloading composer-setup.php to %TEMP_DIR%\composer-setup.php
+    powershell -Command "Invoke-WebRequest -Uri '%COMPOSER_URL%' -OutFile '%TEMP_DIR%\composer-setup.php'"
+
+    IF %errorlevel% NEQ 0 (
+        ECHO ERROR: Failed to download %COMPOSER_URL% to %TEMP_DIR%\composer-setup.php
+        EXIT /b 1
+    )
 )
 
 IF NOT EXIST "%PHP_DIR%" (
     MKDIR "%PHP_DIR%"
 ) ELSE (
-    ECHO Deleting existing installation at %PHP_DIR%
+    ECHO Deleting existing PHP installation at %PHP_DIR%
     DEL /q /s /f "%PHP_DIR%\*"
 )
 
@@ -63,22 +99,8 @@ powershell -Command "(gc %PHP_DIR%\php.ini) -replace ';opcache.enable_cli=0', 'o
 
 ECHO PHP %PHP_VERSION% %PHP_ARCH% installed to %PHP_DIR%
 
-IF EXIST %TEMP_DIR%\composer-installer.sig (
-    ECHO composer-installer.sig already downloaded.
-) ELSE (
-    ECHO Downloading composer-installer.sig to %TEMP_DIR%\composer-installer.sig
-    powershell -Command "Invoke-WebRequest -Uri 'https://composer.github.io/installer.sig' -OutFile '%TEMP_DIR%\composer-installer.sig'"
-)
-
 SET "EXPECTED_CHECKSUM="
 FOR /f "usebackq delims=" %%a IN (`type %TEMP_DIR%\composer-installer.sig`) DO SET "EXPECTED_CHECKSUM=%%a"
-
-IF EXIST %TEMP_DIR%\composer-setup.php (
-    ECHO composer-setup.php already downloaded.
-) ELSE (
-    ECHO Downloading composer-setup.php to %TEMP_DIR%\composer-setup.php
-    powershell -Command "Invoke-WebRequest -Uri 'https://getcomposer.org/installer' -OutFile '%TEMP_DIR%\composer-setup.php'"
-)
 
 SET "ACTUAL_CHECKSUM="
 FOR /f "usebackq delims=" %%a IN (`certutil -hashfile %TEMP_DIR%\composer-setup.php SHA384 ^| findstr /i /v "certutil"`) DO SET "ACTUAL_CHECKSUM=%%a"
