@@ -1,5 +1,5 @@
 #!/bin/bash
-# Install PHP and Composer for 
+# Install dependencies inside Windows Subsystem for Linux useful for development.
 if [ "$(whoami)" != "root" ]; then
     SUDO=sudo
 fi
