@@ -13,5 +13,4 @@ artifacts/
 /wordpress/
 /vendor/
 *.code-workspace
-*.phar
-*.zip
+.bin/.tmp
