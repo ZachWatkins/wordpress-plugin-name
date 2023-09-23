@@ -3,7 +3,6 @@
 	"phpVersion": "8.1",
 	"plugins": [ ".", "./vendor/wordpress/sqlite-database-integration" ],
 	"mappings": {
-		"wp-content/uploads/2023/06": "./.wp-env/uploads/2023/06",
 		"database.sql": "./.wp-env/database.sql",
 		"database.php": "./.wp-env/database.php"
 	},
