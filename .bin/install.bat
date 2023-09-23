@@ -28,7 +28,6 @@ IF "%PHP_DIR%" == "" SET PHP_DIR=%USERPROFILE%\bin\php
 SET PHP_EXE=%PHP_DIR%\php.exe
 SET PHP_ZIP=php-%PHP_VERSION%-nts-Win32-vs16-%PHP_ARCH%.zip
 SET PHP_URL=https://windows.php.net/downloads/releases/%PHP_ZIP%
-SET COMPOSER_EXE=%PHP_DIR%\composer.phar
 
 IF EXIST %TEMP_DIR%\%PHP_ZIP% (
     ECHO %PHP_ZIP% already downloaded.
@@ -82,9 +81,8 @@ if not "%EXPECTED_CHECKSUM%" == "%ACTUAL_CHECKSUM%" (
     EXIT /b 1
 )
 
-powershell -Command "%PHP_DIR%\php.exe %TEMP_DIR%\composer-setup.php --quiet"
+powershell -Command "%PHP_DIR%\php.exe %TEMP_DIR%\composer-setup.php --quiet --install-dir=%PHP_DIR% --filename=composer.phar"
 SET "RESULT=%errorlevel%"
 DEL %TEMP_DIR%\composer-setup.php
-MOVE %TEMP_DIR%\composer.phar "%COMPOSER_EXE%"
-ECHO Composer installed to %COMPOSER_EXE%
+ECHO Composer installed to %PHP_DIR%\composer.phar
 EXIT /b %RESULT%
