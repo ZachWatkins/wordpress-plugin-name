@@ -1,39 +1,65 @@
-@REM Install PHP and Composer on Windows
+@REM Install NodeJS, Docker Desktop, PHP, and Composer on Windows
+@REM Running this file as an administrator will add the paths to the
+@REM user's system path, so they can run node, php, and composer from
+@REM the command line. Otherwise, the user will need to add the paths
+@REM manually.
 @REM
 @REM Usage:
-@REM   install-php.bat [version] [dir] [arch]
+@REM   install.bat [phpversion] [nodeversion] [dir] [arch]
 @REM
-@REM   version: PHP version to install (default: 8.1.21)
-@REM   dir:     Directory to install to (default: $HOME\bin\php)
-@REM   arch:    Architecture to install (default: x64)
+@REM   phpversion:  PHP version to install (default: 8.1.21)
+@REM   nodeversion: Node version to install (default: LTS)
+@REM   dir:         Directory to install to (default: %USERPROFILE%\bin)
+@REM   arch:        Architecture to install (default: x64)
 @REM
 @REM Examples:
-@REM   install-php.bat
-@REM   install-php.bat 8.1.23
-@REM   install-php.bat 8.1.23 $HOME\bin\php
-@REM   install-php.bat 8.1.23 $HOME\bin\php x64
+@REM   install.bat
+@REM   install.bat 8.1.23
+@REM   install.bat 8.1.23 LTS
+@REM   install.bat 8.1.23 LTS %USERPROFILE%\bin
+@REM   install.bat 8.1.23 LTS %USERPROFILE%\bin x64
 
 @ECHO OFF
 
 SET TEMP_DIR=%~dp0\.tmp
 SET PHP_VERSION=%1
-SET PHP_DIR=%2
-SET PHP_ARCH=%3
+SET NODE_VERSION=%2
+SET PATH_DIR=%3
+SET PHP_ARCH=%4
 
 IF "%PHP_VERSION%" == "" SET PHP_VERSION=8.1.23
+IF "%NODE_VERSION%" == "" SET NODE_VERSION=LTS
+IF "%PATH_DIR%" == "" SET PHP_DIR=%USERPROFILE%\bin\php
 IF "%PHP_ARCH%" == "" SET PHP_ARCH=x64
-IF "%PHP_DIR%" == "" SET PHP_DIR=%USERPROFILE%\bin\php
 
 SET PHP_EXE=%PHP_DIR%\php.exe
 SET PHP_ZIP=php-%PHP_VERSION%-nts-Win32-vs16-%PHP_ARCH%.zip
 SET PHP_URL=https://windows.php.net/downloads/releases/%PHP_ZIP%
+
 SET COMPOSER_URL=https://getcomposer.org/installer
 SET COMPOSER_SIG_URL=https://composer.github.io/installer.sig
 
-ECHO Installing PHP and Composer for Windows to %PHP_DIR%
+ECHO Installing NodeJS, Docker Desktop, PHP, and Composer on Windows
 
 IF NOT EXIST %TEMP_DIR% (
     MKDIR %TEMP_DIR%
+)
+
+ECHO Installing NodeJS %NODE_VERSION% for Windows
+IF %NODE_VERSION% == LTS (call winget install -e --id OpenJS.NodeJS.LTS)
+ELSE (call winget install -e --id OpenJS.NodeJS --version %NODE_VERSION%)
+
+IF %errorlevel% NEQ 0 (
+    ECHO ERROR: Failed to install NodeJS %NODE_VERSION% for Windows
+    EXIT /b 1
+)
+
+ECHO Installing Docker Desktop
+call winget install -e --id Docker.DockerDesktop
+
+IF %errorlevel% NEQ 0 (
+    ECHO ERROR: Failed to install Docker Desktop
+    EXIT /b 1
 )
 
 IF EXIST %TEMP_DIR%\%PHP_ZIP% (
@@ -118,3 +144,12 @@ powershell -Command "%PHP_DIR%\php.exe %TEMP_DIR%\composer-setup.php --quiet --i
 SET "RESULT=%errorlevel%"
 ECHO Composer installed to %PHP_DIR%\composer.phar
 EXIT /b %RESULT%
+
+@REM Attempt to add the paths for these applications to the user's system path.
+@REM This will only work if the user ran the script with admin privileges.
+@REM If this fails, the user will need to add the paths manually.
+SETX PATH "%PATH%;%PHP_DIR%;%NODE_DIR%" /M
+IF %errorlevel% NEQ 0 (
+    ECHO ERROR: Failed to add paths to system path. If you wish to use node, php, and composer from your command line without using an absolute path to those executables, then you will need administrative rights. If you have administrative rights, then re-run this script as an administrator to add the paths to the system path automatically.
+    EXIT /b 1
+)
