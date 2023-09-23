@@ -1,8 +1,8 @@
-@REM Install NodeJS, Docker Desktop, PHP, and Composer on Windows
-@REM Running this file as an administrator will add the paths to the
-@REM user's system path, so they can run node, php, and composer from
-@REM the command line. Otherwise, the user will need to add the paths
-@REM manually.
+@REM Install Windows Subsystem for Linux, NodeJS, Docker Desktop, PHP, and
+@REM Composer on Windows.
+@REM Running this file as an administrator will add the paths to the user's
+@REM system path, so they can run node, php, and composer from the command
+@REM line. Otherwise, the user will need to add the paths manually.
 @REM
 @REM Usage:
 @REM   install.bat [phpversion] [nodeversion] [dir] [arch]
@@ -39,11 +39,17 @@ SET PHP_URL=https://windows.php.net/downloads/releases/%PHP_ZIP%
 SET COMPOSER_URL=https://getcomposer.org/installer
 SET COMPOSER_SIG_URL=https://composer.github.io/installer.sig
 
-ECHO Installing NodeJS, Docker Desktop, PHP, and Composer on Windows
+ECHO Installing Windows Subsystem for Linux, NodeJS, Docker Desktop, PHP, and Composer on Windows
 
 IF NOT EXIST %TEMP_DIR% (
     MKDIR %TEMP_DIR%
 )
+
+ECHO Installing Windows Subsystem for Linux Version 2 using Ubuntu.
+call wsl --install -d Ubuntu
+call wsl --set-version Ubuntu 2
+call wsl --set-default-version 2
+call wsl --set-default Ubuntu
 
 ECHO Installing NodeJS %NODE_VERSION% for Windows
 IF %NODE_VERSION% == LTS (call winget install -e --id OpenJS.NodeJS.LTS)
