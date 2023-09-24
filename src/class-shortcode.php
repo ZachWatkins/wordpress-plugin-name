@@ -3,8 +3,8 @@
  * Assets for the plugin.
  *
  * @package   WordPress_Plugin_Name
- * @copyright Zachary Watkins 2023
- * @author    Zachary Watkins <zwatkins.it@gmail.com>
+ * @copyright Zachary K. Watkins 2023
+ * @author    Zachary K. Watkins <zwatkins.it@gmail.com>
  * @license   GPL-2.0-or-later
  * @link      https://github.com/zachwatkins/wordpress-plugin-name/blob/main/src/class-shortcode.php
  */
