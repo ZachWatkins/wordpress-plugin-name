@@ -4,7 +4,6 @@
  *
  * @package    WordPress_Plugin_Name
  * @subpackage Common
- * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/main/common/class-posttype-search.php
  *
  * @todo Allow custom ordering of the taxonomy and meta fields by combining the two parameters into one and requiring a prefix to identify a meta or a term.
  */

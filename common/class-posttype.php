@@ -4,7 +4,6 @@
  *
  * @package    WordPress_Plugin_Name
  * @subpackage Common
- * @link       https://github.com/zachwatkins/wordpress-plugin-name/blob/main/common/class-posttype.php
  */
 
 namespace Common;

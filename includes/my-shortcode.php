@@ -6,7 +6,6 @@
  * @copyright Zachary K. Watkins 2023
  * @author    Zachary K. Watkins <zwatkins.it@gmail.com>
  * @license   GPL-2.0-or-later
- * @link      https://github.com/zachwatkins/wordpress-plugin-name/blob/main/includes/my-shortcode.php
  */
 
 // You may register and enqueue assets within your shortcode output render function.

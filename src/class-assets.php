@@ -6,7 +6,6 @@
  * @copyright Zachary K. Watkins 2023
  * @author    Zachary K. Watkins <zwatkins.it@gmail.com>
  * @license   GPL-2.0-or-later
- * @link      https://github.com/zachwatkins/wordpress-plugin-name/blob/main/src/class-assets.php
  */
 
 namespace WordPress_Plugin_Name;
