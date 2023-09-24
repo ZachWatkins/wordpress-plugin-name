@@ -30,7 +30,6 @@ const currentFileDirectory = path.dirname(
 	import.meta.url.replace( 'file://', '' )
 );
 const rootDirectory = path.resolve( currentFileDirectory, '..' );
-const ignoredFiles = getIgnoredFiles();
 const filesToCheck = [
 	'.bin/install-wsl-no-admin.sh',
 	'.config/phpcs.xml.dist',
@@ -50,6 +49,47 @@ const filesToCheck = [
 	'wordpress-plugin-name.php',
 ];
 
+function renameWithinFile( filePath, oldPluginName, newPluginName ) {
+	let fileContents = fs.readFileSync( filePath, 'utf8' );
+	if ( listChanges ) {
+		let loggedFile = false;
+		const changes = [];
+		for ( const key in oldPluginName ) {
+			const oldValue = oldPluginName[ key ];
+			const newValue = newPluginName[ key ];
+			const regex = new RegExp( oldValue, 'g' );
+			if ( ! fileContents.match( regex ) ) {
+				continue;
+			}
+			if ( ! loggedFile ) {
+				console.log( filePath );
+				loggedFile = true;
+			}
+			console.log( `${ oldValue } => ${ newValue }` );
+		}
+	} else {
+		for ( const key in oldPluginName ) {
+			const oldValue = oldPluginName[ key ];
+			const newValue = newPluginName[ key ];
+			const regex = new RegExp( oldValue, 'g' );
+			if ( ! fileContents.match( regex ) ) {
+				continue;
+			}
+			fileContents = fileContents.replace( oldValue, newValue );
+		}
+		fs.writeFileSync( filePath, fileContents, 'utf8' );
+	}
+}
+
+for ( let i = 0; i < filesToCheck.length; i++ ) {
+	const file = filesToCheck[ i ];
+	const filePath = path.resolve( rootDirectory, file );
+	if ( ! fs.existsSync( filePath ) ) {
+		continue;
+	}
+	const isDirectory = fs.lstatSync( filePath ).isDirectory();
+}
+
 /**
  * Construct a set of names used to namespace a plugin.
  * @param {string} [name="WordPress Plugin Name"] - Case sensitive plugin name with spaces.
@@ -66,29 +106,4 @@ function PluginName( name ) {
 			: this.slug + '-textdomain';
 	this.directoryName = this.slug;
 	this.rootPluginFileName = this.slug + '.php';
-}
-
-function getIgnoredFiles() {
-	const ignoredFiles = [ '.git' ];
-	if ( fs.existsSync( `${ rootDirectory }/.gitignore` ) ) {
-		const contents = fs.readFileSync(
-			`${ rootDirectory }/.gitignore`,
-			'utf8'
-		);
-		contents.split( '\n' ).forEach( ( line ) => {
-			let trimmed = line.trim();
-			if (
-				trimmed &&
-				! line.startsWith( '#' ) &&
-				! line.startsWith( '!' ) &&
-				ignoredFiles.indexOf( trimmed ) === -1
-			) {
-				if ( trimmed.startsWith( '/' ) ) {
-					trimmed = trimmed.substring( 1 );
-				}
-				ignoredFiles.push( trimmed );
-			}
-		} );
-	}
-	return ignoredFiles;
 }
