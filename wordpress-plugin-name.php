@@ -10,7 +10,7 @@
  * @wordpress-plugin
  * Plugin Name:       WordPress Plugin Name
  * Plugin URI:        https://github.com/zachwatkins/wordpress-plugin-name
- * Description:       An introduction to WordPress plugin development.
+ * Description:       A template WordPress plugin.
  * Version:           1.0.0
  * Requires at least: 5.2
  * Requires PHP:      8.1

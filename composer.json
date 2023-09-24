@@ -1,6 +1,6 @@
 {
 	"name": "zachwatkins/wordpress-plugin-name",
-	"description": "A WordPress plugin to serve as an introduction to WordPress plugin development.",
+	"description": "A template WordPress plugin.",
 	"type": "project",
 	"scripts": {
 		"prepare": "@php .bin/prepare-local-wp.php",

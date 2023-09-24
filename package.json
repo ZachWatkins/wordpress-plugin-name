@@ -2,7 +2,7 @@
 	"name": "wordpress-plugin-name",
 	"version": "1.0.0",
 	"private": true,
-	"description": "A WordPress plugin to serve as an introduction to WordPress plugin development.",
+	"description": "A template WordPress plugin.",
 	"author": "Zachary K. Watkins",
 	"license": "GPL-2.0-or-later",
 	"keywords": [
