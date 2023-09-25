@@ -15,25 +15,18 @@ Options:
     --help, -h  Display this help message and exit.
 `;
 
-if ( process.argv.length < 3 ) {
-	console.error( HELP );
-	process.exit( 1 );
-	return;
-}
-
 if ( process.argv.includes( '--help' ) || process.argv.includes( '-h' ) ) {
 	console.log( HELP );
 	process.exit( 0 );
-	return;
 }
 
 const ARGS = {
 	VERBOSE: process.argv.includes( '--verbose' ),
-	CURRENT_PLUGIN_NAME: { ...PluginName.prototype },
+	CURRENT_PLUGIN_NAME: new PluginName(),
 	CURRENT_PLUGIN_DESCRIPTION: 'A template WordPress plugin.',
 	CURRENT_PLUGIN_REPOSITORY:
 		'https://github.com/zachwatkins/wordpress-plugin-template',
-	CURRENT_PLUGIN_AUTHOR: { ...PluginAuthor.prototype },
+	CURRENT_PLUGIN_AUTHOR: new PluginAuthor(),
 	CURRENT_PLUGIN_COPYRIGHT: 'Zachary K. Watkins 2023',
 	NEW_PLUGIN_NAME: null,
 	NEW_PLUGIN_DESCRIPTION: null,
@@ -326,15 +319,10 @@ function replace( fileOrDirectory, oldValues, newValues, verbose ) {
  * @property {string} url - Author's website URL.
  */
 function PluginAuthor( name, email, url ) {
-	this.name = name || this.name;
-	this.email = email || this.email;
-	this.url = url || this.url;
+	this.name = name || 'Zachary K. Watkins';
+	this.email = email || 'zwatkins.it@gmail.com';
+	this.url = url || 'https://github.com/zachwatkins';
 }
-PluginAuthor.prototype = {
-	name: 'Zachary K. Watkins',
-	email: 'zwatkins.it@gmail.com',
-	url: 'https://github.com/zachwatkins',
-};
 
 /**
  * Declare the naming conventions for a WordPress plugin.
@@ -350,30 +338,28 @@ PluginAuthor.prototype = {
  * @property {string} rootPluginFileName - Name of the plugin's root PHP file. Must be the file which contains the plugin's registration metadata.
  */
 function PluginName( name ) {
-	this.name = name || this.name;
+	this.name = name || 'WordPress Plugin Name';
 	this.slug = name
 		? name
 				.toLowerCase()
 				.replace( /[^a-z\s]/g, '' )
 				.replace( /\s+/g, '-' )
-		: this.slug;
-	this.prefix = this.slug.replace( /-/g, '_' );
+		: 'wordpress-plugin-name';
+	this.prefix = name
+		? this.slug.replace( /-/g, '_' )
+		: 'wordpress_plugin_name';
 	this.namespace = name
-		.replace( /\s+/g, '_' )
-		.replace( /-/g, '_' )
-		.replace( /[^a-z_]/gi, '' );
-	this.constant = this.prefix.toUpperCase();
-	this.textdomain = name ? this.slug + '-textdomain' : this.textdomain;
-	this.directoryName = this.slug;
-	this.rootPluginFileName = this.slug + '.php';
+		? name
+				.replace( /\s+/g, '_' )
+				.replace( /-/g, '_' )
+				.replace( /[^a-z_]/gi, '' )
+		: 'WordPress_Plugin_Name';
+	this.constant = name ? this.prefix.toUpperCase() : 'WORDPRESS_PLUGIN_NAME';
+	this.textdomain = name
+		? this.slug + '-textdomain'
+		: 'wordpress-plugin-textdomain';
+	this.directoryName = name ? this.slug : 'wordpress-plugin-name';
+	this.rootPluginFileName = name
+		? this.slug + '.php'
+		: 'wordpress-plugin-name.php';
 }
-PluginName.prototype = {
-	name: 'WordPress Plugin Name',
-	slug: 'wordpress-plugin-name',
-	prefix: 'wordpress_plugin_name',
-	namespace: 'WordPress_Plugin_Name',
-	constant: 'WORDPRESS_PLUGIN_NAME',
-	textdomain: 'wordpress-plugin-textdomain',
-	directoryName: 'wordpress-plugin-name',
-	rootPluginFileName: 'wordpress-plugin-name.php',
-};
