@@ -56,23 +56,24 @@ if [ "$INSTALL_PHP" = true ]; then
     ${SUDO} sh -c 'echo "deb [signed-by=/usr/share/keyrings/deb.sury.org-php.gpg] https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
     ${SUDO} apt-get update
     ${SUDO} apt install "php${PHP_VERSION}" -y --no-install-recommends
-    ${SUDO} apt install "php${PHP_VERSION}-common" --no-install-recommends
-    ${SUDO} apt install "php${PHP_VERSION}-gd" --no-install-recommends
-    ${SUDO} apt install "php${PHP_VERSION}-ctype" --no-install-recommends
-    ${SUDO} apt install "php${PHP_VERSION}-curl" --no-install-recommends
-    ${SUDO} apt install "php${PHP_VERSION}-dom" --no-install-recommends
-    ${SUDO} apt install "php${PHP_VERSION}-fileinfo" --no-install-recommends
-    ${SUDO} apt install "php${PHP_VERSION}-mbstring" --no-install-recommends
-    ${SUDO} apt install "php${PHP_VERSION}-opcache" --no-install-recommends
-    ${SUDO} apt install "php${PHP_VERSION}-pdo" --no-install-recommends
-    ${SUDO} apt install "php${PHP_VERSION}-tokenizer" --no-install-recommends
-    ${SUDO} apt install "php${PHP_VERSION}-xml" --no-install-recommends
-    ${SUDO} apt install "php${PHP_VERSION}-zip" --no-install-recommends
-    ${SUDO} apt install "php${PHP_VERSION}-sqlite3" --no-install-recommends
-    ${SUDO} apt install "php${PHP_VERSION}-mysql" --no-install-recommends
-    ${SUDO} apt install "php${PHP_VERSION}-bcmath" --no-install-recommends
     echo "PHP v${PHP_VERSION} installed."
 fi
+
+${SUDO} apt install "php${PHP_VERSION}-common" --no-install-recommends
+${SUDO} apt install "php${PHP_VERSION}-gd" --no-install-recommends
+${SUDO} apt install "php${PHP_VERSION}-ctype" --no-install-recommends
+${SUDO} apt install "php${PHP_VERSION}-curl" --no-install-recommends
+${SUDO} apt install "php${PHP_VERSION}-dom" --no-install-recommends
+${SUDO} apt install "php${PHP_VERSION}-fileinfo" --no-install-recommends
+${SUDO} apt install "php${PHP_VERSION}-mbstring" --no-install-recommends
+${SUDO} apt install "php${PHP_VERSION}-opcache" --no-install-recommends
+${SUDO} apt install "php${PHP_VERSION}-pdo" --no-install-recommends
+${SUDO} apt install "php${PHP_VERSION}-tokenizer" --no-install-recommends
+${SUDO} apt install "php${PHP_VERSION}-xml" --no-install-recommends
+${SUDO} apt install "php${PHP_VERSION}-zip" --no-install-recommends
+${SUDO} apt install "php${PHP_VERSION}-sqlite3" --no-install-recommends
+${SUDO} apt install "php${PHP_VERSION}-mysql" --no-install-recommends
+${SUDO} apt install "php${PHP_VERSION}-bcmath" --no-install-recommends
 
 INSTALL_COMPOSER=false
 if ! command -v composer &> /dev/null
