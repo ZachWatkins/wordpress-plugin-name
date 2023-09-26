@@ -75,7 +75,7 @@
 		"db:query": "wp-env run cli wp db query",
 		"db:seed-php": "wp-env run cli wp eval-file database.php",
 		"db:seed-sql": "wp-env run cli wp db import database.sql",
-		"composer": "wp-env run --env-cwd='wp-content/plugins/wordpress-plugin-name' wordpress composer",
+		"composer": "wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress composer",
 		"wp-env": "wp-env",
 		"wp-scripts": "wp-scripts"
 	},
