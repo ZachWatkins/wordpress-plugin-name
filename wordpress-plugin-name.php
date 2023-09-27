@@ -37,17 +37,13 @@ define( 'WORDPRESS_PLUGIN_NAME_DIR_URL', plugin_dir_url( __FILE__ ) );
 define( 'WORDPRESS_PLUGIN_NAME_DIR_FILE', __FILE__ );
 define( 'WORDPRESS_PLUGIN_NAME_DIR_PATH', __DIR__ );
 
-if ( 'local' === wp_get_environment_type() && file_exists( __DIR__ . '/src/local-only.php' ) ) {
-	// Local development helpers.
-	// require __DIR__ . '/src/local-only.php';
-}
-
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require __DIR__ . '/vendor/autoload.php';
 }
 
-// Apply plugin activation requirements.
-new \ThoughtfulWeb\ActivationRequirementsWP\Plugin();
-
 // Load the main class file.
 new \WordPress_Plugin_Name\Init( __FILE__, __DIR__ );
+
+if ( 'local' === wp_get_environment_type() && file_exists( __DIR__ . '/local.php' ) && strpos( get_site_url(), 'local' ) !== false ) {
+	require __DIR__ . '/local.php';
+}
