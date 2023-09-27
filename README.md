@@ -16,48 +16,35 @@ The goal is to provide a reliable, portable codebase with well-defined dependenc
 
 ## Getting Started
 
-**First**, either clone this repository to your computer or use this template repository to create a new repository on your GitHub account.
+Follow the steps below to create a new WordPress plugin from this template (assuming the new plugin is named "New Plugin Name").
 
-`git clone https://github.com/zachwatkins/wordpress-plugin-name.git your-plugin-slug`
-
-**Then**, replace all instances of the default plugin name with your plugin name. All WordPress plugins are loaded in a global scope, so we avoid global scope conflicts by using a namespace for our plugin's global constants, classes, functions, and database content.
-
-Use the following search and replace terms to find and replace all instances of the default plugin name:
-
-1. `wordpress-plugin-name` - The plugin slug. This is the name of your plugin folder and root plugin file. Rename the root plugin file and replace the text in every file that uses it. Use this format: `<your-plugin-slug>`.
-2. `wordpress_plugin_name` - The global prefix for your plugin. Defined in `.config/.phpcs.xml.dist`. Use this format: `your_plugin_slug`.
-3. `WordPress_Plugin_Name` - This is the namespace of your plugin's PHP files. Use this format: `Your_Plugin_Name`.
-4. `WORDPRESS_PLUGIN_NAME_[...]` - This is the prefix for your plugin's global constants in PHP. Use this format: `YOUR_PLUGIN_SLUG_[...]`.
-5. `@package WordPress Plugin Name` - Used in PHP comments as a WordPress documentation requirement. Use this format: `@package Your Plugin Name`.
-6. `wordpress-plugin-textdomain` - The plugin textdomain. Defined in `.config/.phpcs.xml.dist`. This is used for translations when your plugin supports them. Use this format: `<your-plugin-slug>`.
-
-**Finally**, set up your local development environment using these command line commands from the root of your plugin:
-
-```
-npm install
-npm start
-npm run composer install
-```
-
-### Required Reading
-
-The links below describe key WordPress code concepts you will need to know in order to develop your WordPress plugin.
-
--   [Action Hooks](https://developer.wordpress.org/plugins/hooks/actions/)
--   [Filter Hooks](https://developer.wordpress.org/plugins/hooks/filters/)
+1. `git clone https://github.com/zachwatkins/wordpress-plugin-template new-plugin-name`
+2. `cd new-plugin-name`
+3. `rm -rf .git`
+4. `git init`
+5. `git add .`
+6. `git commit -m "Initial commit"`
+7. `git branch -M main`
+8. `git remote add origin https://github.com/zachwatkins/new-plugin-name.git`
+9. `git push -u origin main`
+10. `npm run template`
+11. `npm install`
+12. `npm start`
 
 ## Directory Structure
 
 1. **.bin** - Custom scripts for local development.
-2. **.github** - GitHub integration files such as Actions workflows.
-3. **.vscode** - Visual Studio Code integration files.
-4. **.wp-env** - WordPress development environment default content.
-5. **assets** - JavaScript, CSS, images, fonts, and other static files.
-6. **common** - Common WordPress feature implementations that you can copy and modify for your plugin.
-7. **docs** - Documentation files going in depth on different aspects of this project or WordPress development.
-8. **includes** - File content output to the browser by the plugin. This is where you should put most or all of the HTML output from your plugin, to make that content easier to find and change.
-9. **src** - PHP classes that hook into WordPress and implement plugin features.
-10. **test** - Plugin code tests.  
+2. **.config** - Configuration files for development tools used in this project.
+3. **.github** - GitHub integration files such as Actions workflows.
+4. **.vscode** - Visual Studio Code integration files.
+5. **.wp-env** - WordPress development environment default content.
+6. **advanced-custom-fields** - Advanced Custom Fields field registration and import files.
+7. **assets** - JavaScript, CSS, images, fonts, and other static files.
+8. **common** - Common WordPress feature implementations that you can copy and modify for your plugin.
+9. **docs** - Documentation files going in depth on different aspects of this project or WordPress development.
+10. **includes** - File content output to the browser by the plugin. This is where you should put most or all of the HTML output from your plugin, to make that content easier to find and change.
+11. **src** - PHP classes that hook into WordPress and implement plugin features.
+12. **test** - Plugin code tests.  
     a. **e2e** - Browser tests using Playwright.  
     b. **jest** - JavaScript tests using Jest.  
     c. **phpunit** - WordPress PHP code tests using PHPUnit.
@@ -73,8 +60,8 @@ For a complete list of commands, refer to [package.json](package.json) and [comp
 | -------------------------- | -------------------------------------------------------|
 | `npm install` | Install your project dependencies for the first time. |
 | `npm start` | Start the development environment |
-| `npm run composer install` | Install Composer dependencies for the first time. |
-| `npm run lint` | Check code style using WordPress coding standards |
+| `npm run lint` | Check JS and CSS code style using WordPress coding standards |
+| `npm run lint:php` | Check PHP code style using WordPress coding standards |
 | `npm run test` | Test JavaScript and PHP |
 | `npm run stop` | Stop the development environment |
 |-------------------------------------------------------------------------------------|
@@ -110,43 +97,28 @@ For documentation on .wp-env.json options see here: https://github.com/WordPress
 You will need the following tools installed on your computer:
 
 -   [Docker](https://www.docker.com/products/docker-desktop)
--   [Node.js](https://nodejs.org/en/download/)
+-   [Node.js](https://nodejs.org/en/download/) or [NVM](https://github.com/nvm-sh/nvm)
 -   [git](https://git-scm.com/downloads)
 
-**Docker**
+To make this easier, you can use an installer included in this repository by saving it to your computer and making it executable.
+You must have administrator rights to run these installers.
 
-Windows: `winget install -e --id Docker.DockerDesktop`
-Linux: `sudo apt install docker.io`
-Mac with Homebrew: `brew install --cask docker`
+### Mac Installation
 
-**Node.js**
+1. Copy this file to your computer: [.bin/install/mac.sh](.bin/install/mac.sh)
+2. Open your terminal and navigate to the directory where you saved the file.
+3. Make the file executable: `chmod +x mac.sh`
+4. Run the file: `./mac.sh`
 
-Windows: `winget install -e --id OpenJS.Nodejs`
-Linux: `sudo apt install nodejs`
-Mac with Homebrew: `brew install node`
+### Windows Installation
 
-**git**
+1. Copy this file to your computer: [.bin/install/windows.bat](.bin/install/windows.bat)
+2. Open your terminal and navigate to the directory where you saved the file.
+3. Run the file: `windows.bat`
 
-Windows: `winget install -e --id Git.Git`
-Linux: `sudo apt install git`
-Mac with Homebrew: `brew install git`
+## Further Reading
 
-**PHP and Composer**
+The links below describe key WordPress code concepts you will need to know in order to develop your WordPress plugin.
 
-PHP is not required for development, but it is useful for running Composer and other PHP scripts more quickly in your command line than in the Docker container.
-
-I include a script for installing PHP 8.1 on Windows and Linux. You can run the script from the root of this project:
-
-`.bin/install-php`
-
-**WSL2 with Ubuntu**
-
-This is optional and not needed, but I wanted to include it here because it is a great way to run Linux on Windows.
-
-```powershell
-wsl --update
-wsl --install -d Ubuntu
-wsl --set-version Ubuntu 2
-wsl --set-default-version 2
-wsl --set-default Ubuntu
-```
+-   [Action Hooks](https://developer.wordpress.org/plugins/hooks/actions/)
+-   [Filter Hooks](https://developer.wordpress.org/plugins/hooks/filters/)
