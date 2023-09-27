@@ -26,13 +26,11 @@ const ARGS = {
 	CURRENT_PLUGIN_DESCRIPTION: 'A template WordPress plugin.',
 	CURRENT_PLUGIN_REPOSITORY:
 		'https://github.com/zachwatkins/wordpress-plugin-template',
-	CURRENT_PLUGIN_AUTHOR: new PluginAuthor(),
 	CURRENT_PLUGIN_COPYRIGHT: 'Zachary K. Watkins 2023',
 	NEW_PLUGIN_NAME: null,
 	NEW_PLUGIN_DESCRIPTION: null,
 	NEW_PLUGIN_REPOSITORY: null,
-	NEW_PLUGIN_AUTHOR: new PluginAuthor(),
-	NEW_PLUGIN_COPYRIGHT: new Date().getFullYear(),
+	NEW_PLUGIN_COPYRIGHT: 'Zachary K. Watkins ' + new Date().getFullYear(),
 	FILES: [
 		'.bin/install-wsl-no-admin.sh',
 		'.config/phpcs.xml.dist',
@@ -67,71 +65,23 @@ rl.question( "What is your plugin's name? ", ( answer ) => {
 	ARGS.NEW_PLUGIN_NAME = new PluginName( answer );
 	rl.question( "What is your plugin's description? ", ( answer ) => {
 		ARGS.NEW_PLUGIN_DESCRIPTION = answer;
-		rl.question( "What is your plugin's repository URL? ", ( answer ) => {
-			ARGS.NEW_PLUGIN_REPOSITORY = answer;
-			rl.question(
-				'Do you wish to change the plugin author? [Y/n] ',
-				( answer ) => {
+		rl.question(
+			"What is your plugin's repository URL? https://github.com/zachwatkins/",
+			( answer ) => {
+				ARGS.NEW_PLUGIN_REPOSITORY = `https://github.com/zachwatkins/${ answer }`;
+				rl.write( 'The following changes will be made:\n' );
+				rl.write( getChangeExplanation( ARGS ) );
+				rl.question( 'Proceed? [Y/n] ', ( answer ) => {
 					if ( answer.toLowerCase() !== 'y' ) {
-						ARGS.NEW_PLUGIN_AUTHOR = new PluginAuthor();
-						rl.write( 'The following changes will be made:\n' );
-						rl.write( getChangeExplanation( ARGS ) );
-						rl.question( 'Proceed? [Y/n] ', ( answer ) => {
-							if ( answer.toLowerCase() !== 'y' ) {
-								rl.close();
-								process.exit( 0 );
-								return;
-							}
-							handle( ARGS );
-							rl.close();
-						} );
-					} else {
-						rl.question(
-							"What is the author's name? ",
-							( authorName ) => {
-								rl.question(
-									"What is the author's email address? ",
-									( authorEmail ) => {
-										rl.question(
-											"What is the author's website URL? ",
-											( authorUrl ) => {
-												ARGS.NEW_PLUGIN_AUTHOR =
-													new PluginAuthor(
-														authorName,
-														authorEmail,
-														authorUrl
-													);
-												rl.write(
-													'The following changes will be made:\n'
-												);
-												rl.write(
-													getChangeExplanation( ARGS )
-												);
-												rl.question(
-													'Proceed? [Y/n] ',
-													( answer ) => {
-														if (
-															answer.toLowerCase() !==
-															'y'
-														) {
-															rl.close();
-															process.exit( 0 );
-															return;
-														}
-														handle( ARGS );
-														rl.close();
-													}
-												);
-											}
-										);
-									}
-								);
-							}
-						);
+						rl.close();
+						process.exit( 0 );
+						return;
 					}
-				}
-			);
-		} );
+					handle( ARGS );
+					rl.close();
+				} );
+			}
+		);
 	} );
 } );
 
@@ -142,31 +92,35 @@ rl.question( "What is your plugin's name? ", ( answer ) => {
  */
 function getChangeExplanation( args ) {
 	let message = '';
-	for ( const key in args.CURRENT_PLUGIN_NAME ) {
-		const oldValue = args.CURRENT_PLUGIN_NAME[ key ];
-		const newValue = args.NEW_PLUGIN_NAME[ key ];
-		if ( oldValue === newValue ) {
+	const comparedArgs = {};
+	for ( const key in args ) {
+		if ( 0 > key.indexOf( 'CURRENT_' ) && 0 > key.indexOf( 'NEW_' ) ) {
 			continue;
 		}
-		message += `  ${ oldValue } => ${ newValue }\n`;
+		if (
+			typeof args[ key ] === 'object' &&
+			args[ key ] !== null &&
+			! Array.isArray( args[ key ] )
+		) {
+			for ( const subKey in args[ key ] ) {
+				comparedArgs[ `${ key }:${ subKey }` ] = args[ key ][ subKey ];
+			}
+		} else {
+			comparedArgs[ key ] = args[ key ];
+		}
 	}
-	if ( args.CURRENT_PLUGIN_DESCRIPTION !== args.NEW_PLUGIN_DESCRIPTION ) {
-		message += `  ${ args.CURRENT_PLUGIN_DESCRIPTION } => ${ args.NEW_PLUGIN_DESCRIPTION }\n`;
-	}
-	if ( args.CURRENT_PLUGIN_REPOSITORY !== args.NEW_PLUGIN_REPOSITORY ) {
-		message += `  ${ args.CURRENT_PLUGIN_REPOSITORY } => ${ args.NEW_PLUGIN_REPOSITORY }\n`;
-	}
-	if ( args.CURRENT_PLUGIN_AUTHOR.name !== args.NEW_PLUGIN_AUTHOR.name ) {
-		message += `  ${ args.CURRENT_PLUGIN_AUTHOR.name } => ${ args.NEW_PLUGIN_AUTHOR.name }\n`;
-	}
-	if ( args.CURRENT_PLUGIN_AUTHOR.email !== args.NEW_PLUGIN_AUTHOR.email ) {
-		message += `  ${ args.CURRENT_PLUGIN_AUTHOR.email } => ${ args.NEW_PLUGIN_AUTHOR.email }\n`;
-	}
-	if ( args.CURRENT_PLUGIN_AUTHOR.url !== args.NEW_PLUGIN_AUTHOR.url ) {
-		message += `  ${ args.CURRENT_PLUGIN_AUTHOR.url } => ${ args.NEW_PLUGIN_AUTHOR.url }\n`;
-	}
-	if ( args.CURRENT_PLUGIN_COPYRIGHT !== args.NEW_PLUGIN_COPYRIGHT ) {
-		message += `  ${ args.CURRENT_PLUGIN_COPYRIGHT } => ${ args.NEW_PLUGIN_COPYRIGHT }\n`;
+	for ( const key in comparedArgs ) {
+		if ( key.indexOf( 'CURRENT_' ) !== 0 ) {
+			continue;
+		}
+		const newKey = key.replace( 'CURRENT_', 'NEW_' );
+		if ( typeof comparedArgs[ newKey ] === 'undefined' ) {
+			continue;
+		}
+		if ( comparedArgs[ key ] === comparedArgs[ newKey ] ) {
+			continue;
+		}
+		message += `  ${ comparedArgs[ key ] } => ${ comparedArgs[ newKey ] }\n`;
 	}
 	return message;
 }
@@ -188,9 +142,6 @@ function handle( args ) {
 		rootPluginFileName: args.CURRENT_PLUGIN_NAME.rootPluginFileName,
 		description: args.CURRENT_PLUGIN_DESCRIPTION,
 		repository: args.CURRENT_PLUGIN_REPOSITORY,
-		authorName: args.CURRENT_PLUGIN_AUTHOR.name,
-		authorEmail: args.CURRENT_PLUGIN_AUTHOR.email,
-		authorUrl: args.CURRENT_PLUGIN_AUTHOR.url,
 		copyright: args.CURRENT_PLUGIN_COPYRIGHT,
 	};
 	const newValues = {
@@ -204,9 +155,6 @@ function handle( args ) {
 		rootPluginFileName: args.NEW_PLUGIN_NAME.rootPluginFileName,
 		description: args.NEW_PLUGIN_DESCRIPTION,
 		repository: args.NEW_PLUGIN_REPOSITORY,
-		authorName: args.NEW_PLUGIN_AUTHOR.name,
-		authorEmail: args.NEW_PLUGIN_AUTHOR.email,
-		authorUrl: args.NEW_PLUGIN_AUTHOR.url,
 		copyright: args.NEW_PLUGIN_COPYRIGHT,
 	};
 	// Replace text within files.
@@ -306,22 +254,6 @@ function replace( fileOrDirectory, oldValues, newValues, verbose ) {
 	}
 
 	replaceInFile( fileOrDirectory, oldValues, newValues, verbose );
-}
-
-/**
- * Declare the naming conventions for a WordPress plugin author.
- * @class
- * @param {string} [name="Zachary K. Watkins"] - Author's name.
- * @param {string} [email="zwatkins.it@gmail.com"] - Author's email address.
- * @param {string} [url="https://github.com/zachwatkins"] - Author's website URL.
- * @property {string} name - Author's name.
- * @property {string} email - Author's email address.
- * @property {string} url - Author's website URL.
- */
-function PluginAuthor( name, email, url ) {
-	this.name = name || 'Zachary K. Watkins';
-	this.email = email || 'zwatkins.it@gmail.com';
-	this.url = url || 'https://github.com/zachwatkins';
 }
 
 /**
