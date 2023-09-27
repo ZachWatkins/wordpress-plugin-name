@@ -29,9 +29,7 @@ jobs:
 
         steps:
             - uses: actions/checkout@v4
-
-            - name: Setup Node.js and install dependencies
-              uses: ./.github/actions/setup-node
+            - uses: zachwatkins/.github/.github/actions/node-npm-setup@main
 
             - name: Install Playwright Browsers
               run: npx playwright install chromium firefox webkit --with-deps

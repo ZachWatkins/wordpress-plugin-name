@@ -43,7 +43,7 @@ jobs:
                   # Update the specific version of PHP to match the version used on your server.
                   php-version: '8.1'
 
-            - uses: ./.github/actions/setup-composer
+            - uses: zachwatkins/.github/.github/actions/php-composer-setup@main
 
             - run: composer test
               env:

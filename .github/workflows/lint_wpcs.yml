@@ -32,8 +32,7 @@ jobs:
                   php-version: '8.1'
                   extensions: mbstring, zip
 
-            - name: Set up Composer
-              uses: ./.github/actions/setup-composer
+            - uses: zachwatkins/.github/.github/actions/php-composer-setup@main
 
             - name: Create PHP CodeSniffer Summary
               id: phpcs
