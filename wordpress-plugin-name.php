@@ -18,7 +18,7 @@
  * Author URI:        https://github.com/zachwatkins
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       wordpress-plugin-textdomain
+ * Text Domain:       wordpress-plugin-name-textdomain
  * Update URI:        https://github.com/zachwatkins/wordpress-plugin-name
  */
 

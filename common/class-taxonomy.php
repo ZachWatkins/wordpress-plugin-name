@@ -101,15 +101,15 @@ class Taxonomy {
 			$labels                       = array(
 				'name'              => $plural,
 				'singular_name'     => $singular,
-				'search_items'      => __( 'Search', 'wordpress-plugin-textdomain' ) . " $plural",
-				'all_items'         => __( 'All', 'wordpress-plugin-textdomain' ) . " $plural",
-				'parent_item'       => __( 'Parent', 'wordpress-plugin-textdomain' ) . " $singular",
-				'parent_item_colon' => __( 'Parent', 'wordpress-plugin-textdomain' ) . " {$singular}:",
-				'edit_item'         => __( 'Edit', 'wordpress-plugin-textdomain' ) . " $singular",
-				'update_item'       => __( 'Update', 'wordpress-plugin-textdomain' ) . " $singular",
-				'add_new_item'      => __( 'Add New', 'wordpress-plugin-textdomain' ) . " $singular",
+				'search_items'      => __( 'Search', 'wordpress-plugin-name-textdomain' ) . " $plural",
+				'all_items'         => __( 'All', 'wordpress-plugin-name-textdomain' ) . " $plural",
+				'parent_item'       => __( 'Parent', 'wordpress-plugin-name-textdomain' ) . " $singular",
+				'parent_item_colon' => __( 'Parent', 'wordpress-plugin-name-textdomain' ) . " {$singular}:",
+				'edit_item'         => __( 'Edit', 'wordpress-plugin-name-textdomain' ) . " $singular",
+				'update_item'       => __( 'Update', 'wordpress-plugin-name-textdomain' ) . " $singular",
+				'add_new_item'      => __( 'Add New', 'wordpress-plugin-name-textdomain' ) . " $singular",
 				/* translators: placeholder is the singular taxonomy name */
-				'new_item_name'     => sprintf( esc_html__( 'New %d Name', 'wordpress-plugin-textdomain' ), $singular ),
+				'new_item_name'     => sprintf( esc_html__( 'New %d Name', 'wordpress-plugin-name-textdomain' ), $singular ),
 				'menu_name'         => $plural,
 			);
 			$this->default_args['labels'] = $labels;
@@ -245,7 +245,7 @@ class Taxonomy {
 
 						case 'link':
 							$value  = $term_meta ? sanitize_text_field( $term_meta ) : '';
-							$output = "<input type=\"url\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\" placeholder=\"https://example.com\" pattern=\"http[s]?://.*\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-textdomain' ) . '</p>';
+							$output = "<input type=\"url\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\" placeholder=\"https://example.com\" pattern=\"http[s]?://.*\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-name-textdomain' ) . '</p>';
 							echo wp_kses(
 								$output,
 								array(
@@ -282,7 +282,7 @@ class Taxonomy {
 
 						default:
 							$value  = $term_meta ? sanitize_text_field( $term_meta ) : '';
-							$output = "<input type=\"text\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-textdomain' ) . '</p>';
+							$output = "<input type=\"text\" name=\"term_meta_{$taxonomy}\" id=\"term_meta_{$taxonomy}\" value=\"{$value}\"><p class=\"description\"" . esc_html_e( 'Enter a value for this field', 'wordpress-plugin-name-textdomain' ) . '</p>';
 							echo wp_kses(
 								$output,
 								array(

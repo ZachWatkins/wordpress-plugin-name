@@ -3,13 +3,12 @@
 	<description>Generally-applicable sniffs for WordPress code.</description>
 
 	<!-- What to scan -->
-	<file>../</file>
+	<file>../wordpress-plugin-name.php</file>
+	<file>../local.php</file>
+	<file>../src.php</file>
+	<file>../test.php</file>
 	<exclude-pattern>../test/phpunit/wp-config.php</exclude-pattern>
 	<exclude-pattern>../test/phpunit/bootstrap.php</exclude-pattern>
-	<exclude-pattern>../vendor/</exclude-pattern>
-	<exclude-pattern>../node_modules/</exclude-pattern>
-	<exclude-pattern>../wordpress/</exclude-pattern>
-	<exclude-pattern>../.wp-env/</exclude-pattern>
 
 	<!-- How to scan -->
 	<!-- Usage instructions: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Usage -->
@@ -26,8 +25,6 @@
 	<config name="minimum_supported_wp_version" value="4.6"/>
 	<rule ref="WordPress"/>
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
-		<exclude-pattern>../common/</exclude-pattern>
-		<exclude-pattern>../.bin/</exclude-pattern>
 		<properties>
 			<!-- Value: replace the function, class, and variable prefixes used. Separate multiple prefixes with a comma. -->
 			<property name="prefixes" type="array">
@@ -38,22 +35,13 @@
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<!-- Value: replace the text domain used. -->
-			<property name="text_domain" type="array" value="wordpress-plugin-textdomain"/>
+			<property name="text_domain" type="array" value="wordpress-plugin-name-textdomain"/>
 		</properties>
 	</rule>
 	<rule ref="WordPress.WhiteSpace.ControlStructureSpacing">
 		<properties>
 			<property name="blank_line_check" value="true"/>
 		</properties>
-	</rule>
-	<rule ref="WordPress.WP.AlternativeFunctions">
-		<exclude-pattern>../.bin/</exclude-pattern>
-	</rule>
-	<rule ref="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound">
-		<exclude-pattern>../.bin/</exclude-pattern>
-	</rule>
-	<rule ref="WordPress.PHP.DiscouragedPHPFunctions">
-		<exclude-pattern>../.bin/</exclude-pattern>
 	</rule>
 
 	<!-- Do not require docblocks for unit tests -->

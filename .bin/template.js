@@ -289,7 +289,7 @@ function PluginName( name ) {
 	this.constant = name ? this.prefix.toUpperCase() : 'WORDPRESS_PLUGIN_NAME';
 	this.textdomain = name
 		? this.slug + '-textdomain'
-		: 'wordpress-plugin-textdomain';
+		: 'wordpress-plugin-name-textdomain';
 	this.directoryName = name ? this.slug : 'wordpress-plugin-name';
 	this.rootPluginFileName = name
 		? this.slug + '.php'

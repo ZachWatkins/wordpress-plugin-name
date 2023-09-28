@@ -110,16 +110,16 @@ class PostType {
 			$labels                       = array(
 				'name'               => $plural,
 				'singular_name'      => $singular,
-				'add_new'            => __( 'Add New', 'wordpress-plugin-textdomain' ),
-				'add_new_item'       => __( 'Add New', 'wordpress-plugin-textdomain' ) . " $singular",
-				'edit_item'          => __( 'Edit', 'wordpress-plugin-textdomain' ) . " $singular",
-				'new_item'           => __( 'New', 'wordpress-plugin-textdomain' ) . " $singular",
-				'view_item'          => __( 'View', 'wordpress-plugin-textdomain' ) . " $singular",
-				'search_items'       => __( 'Search', 'wordpress-plugin-textdomain' ) . " $plural",
+				'add_new'            => __( 'Add New', 'wordpress-plugin-name-textdomain' ),
+				'add_new_item'       => __( 'Add New', 'wordpress-plugin-name-textdomain' ) . " $singular",
+				'edit_item'          => __( 'Edit', 'wordpress-plugin-name-textdomain' ) . " $singular",
+				'new_item'           => __( 'New', 'wordpress-plugin-name-textdomain' ) . " $singular",
+				'view_item'          => __( 'View', 'wordpress-plugin-name-textdomain' ) . " $singular",
+				'search_items'       => __( 'Search', 'wordpress-plugin-name-textdomain' ) . " $plural",
 				/* translators: placeholder is the plural taxonomy name */
-				'not_found'          => sprintf( esc_html__( 'No %s Found', 'wordpress-plugin-textdomain' ), $plural ),
+				'not_found'          => sprintf( esc_html__( 'No %s Found', 'wordpress-plugin-name-textdomain' ), $plural ),
 				/* translators: placeholder is the plural taxonomy name */
-				'not_found_in_trash' => sprintf( esc_html__( 'No %s found in trash', 'wordpress-plugin-textdomain' ), $plural ),
+				'not_found_in_trash' => sprintf( esc_html__( 'No %s found in trash', 'wordpress-plugin-name-textdomain' ), $plural ),
 				'parent_item_colon'  => '',
 				'menu_name'          => $plural,
 			);
