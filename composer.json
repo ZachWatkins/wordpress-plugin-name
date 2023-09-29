@@ -13,12 +13,6 @@
 		"lint:errors": "./vendor/bin/phpcs -n"
 	},
 	"license": "GPL-2.0+",
-	"autoload": {
-		"classmap": [
-			"common/",
-			"src/"
-		]
-	},
 	"authors": [
 		{
 			"name": "Zachary K. Watkins",
