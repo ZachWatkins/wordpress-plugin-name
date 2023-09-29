@@ -22,28 +22,22 @@
  * Update URI:        https://github.com/zachwatkins/wordpress-plugin-name
  */
 
+namespace WordPress_Plugin_Name;
+
 if ( ! defined( 'ABSPATH' ) ) {
-	die( 'We\'re sorry, but you can not directly access this file.' );
+	die( 'Do not directly request this file in your browser.' );
 }
 
-/**
- * Unique global constants available to any file in this plugin, and the entire
- * WordPress installation once it has loaded. They must be prefixed with letters
- * or words specific to your plugin to associate them with your plugin in the global
- * constant space. Other plugins and themes can use them after the 'after_setup_theme'
- * action hook has resolved.
- */
-define( 'WORDPRESS_PLUGIN_NAME_DIR_URL', plugin_dir_url( __FILE__ ) );
-define( 'WORDPRESS_PLUGIN_NAME_DIR_FILE', __FILE__ );
-define( 'WORDPRESS_PLUGIN_NAME_DIR_PATH', __DIR__ );
+require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/src/assets.php';
+require __DIR__ . '/src/shortcode.php';
 
-if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
-	require __DIR__ . '/vendor/autoload.php';
-}
+const VERSION   = '1.0.0';
+const ROOT_FILE = __FILE__;
 
-// Load the main class file.
-new \WordPress_Plugin_Name\Init( __FILE__, __DIR__ );
+enqueue_js( 'src/assets/js/public.js' );
+enqueue_css( 'src/assets/css/public.css' );
 
-if ( 'local' === wp_get_environment_type() && file_exists( __DIR__ . '/local.php' ) && strpos( get_site_url(), 'local' ) !== false ) {
-	require __DIR__ . '/local.php';
-}
+register_shortcode( 'my-shortcode', 'src/views/my-shortcode.php' );
+new NewPostType();
+new \ThoughtfulWeb\SettingsPageWP\Page();

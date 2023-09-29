@@ -12,6 +12,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
 
+if ( 'local' === wp_get_environment_type() && strpos( get_site_url(), 'localhost' ) !== false && file_exists( __DIR__ . '/local.php' ) ) {
+	return;
+}
+
 // Replace the default page's contents with demo content.
 add_action(
 	'init',

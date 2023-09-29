@@ -10,7 +10,6 @@
 
 namespace WordPress_Plugin_Name;
 
-use WordPress_Plugin_Name\Assets;
 use Common\PostType;
 
 /**
@@ -28,25 +27,15 @@ class NewPostType {
 	/**
 	 * Initialize the class.
 	 *
-	 * @param string $plugin_file The root plugin file.
 	 * @return void
 	 */
-	public function __construct( string $plugin_file ) {
+	public function __construct() {
 		new PostType( $this->post_type, 'New Post Type', 'New Post Types' );
 
-		new Assets(
-			$plugin_file,
-			array( "single-{$this->post_type}" => 'assets/js/single-new-post-type.js' ),
-			array( "single-{$this->post_type}" => 'assets/css/single-new-post-type.css' ),
-			fn () => is_singular( $this->post_type ),
-		);
+		enqueue_js( 'src/assets/js/single-new-post-type.js', fn () => is_singular( $this->post_type ) );
+		enqueue_css( 'src/assets/css/single-new-post-type.css', fn () => is_singular( $this->post_type ) );
 
-		new Assets(
-			$plugin_file,
-			array(),
-			array( "archive-{$this->post_type}" => 'assets/css/archive-new-post-type.css' ),
-			fn () => is_archive( $this->post_type ),
-		);
+		enqueue_css( 'src/assets/css/archive-new-post-type.css', fn () => is_archive( $this->post_type ) );
 
 		// Single page template file.
 		add_filter( 'the_content', array( $this, 'content_template' ) );
