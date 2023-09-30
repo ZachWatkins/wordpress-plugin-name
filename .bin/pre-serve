@@ -1,0 +1,28 @@
+#!/bin/bash
+# Prepare the local WordPress directory for serving with PHP's default web server.
+if [ ! -f wordpress/wp-config.php ]; then
+    cp wordpress/wp-config-sample.php wordpress/wp-config.php
+fi
+
+if [ ! -d wordpress/wp-content ]; then
+    mkdir wordpress/wp-content
+fi
+
+if [ ! -f wordpress/wp-content/db.php ]; then
+    DB_FILE_CONTENTS=$(cat vendor/wordpress/sqlite-database-integration/db.copy)
+    DB_FILE_CONTENTS=${DB_FILE_CONTENTS//'{SQLITE_IMPLEMENTATION_FOLDER_PATH}'/$(pwd)/vendor/wordpress/sqlite-database-integration}
+    DB_FILE_CONTENTS=${DB_FILE_CONTENTS//'{SQLITE_PLUGIN}'/sqlite-database-integration/load.php}
+    echo "$DB_FILE_CONTENTS" > wordpress/wp-content/db.php
+fi
+
+if [ ! -d wordpress/wp-content/plugins ]; then
+    mkdir wordpress/wp-content/plugins
+fi
+
+if [ ! -d wordpress/wp-content/mu-plugins ]; then
+    mkdir wordpress/wp-content/mu-plugins
+fi
+
+if [ ! -d wordpress/wp-content/plugins/sqlite-database-integration ]; then
+    ln -s $(pwd)/vendor/wordpress/sqlite-database-integration wordpress/wp-content/mu-plugins/sqlite-database-integration
+fi
