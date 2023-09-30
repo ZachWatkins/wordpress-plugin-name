@@ -29,42 +29,31 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Do not directly request this file in your browser.' );
 }
 
-require 'src/demo.php';
-require 'vendor/autoload.php';
-
-
 const VERSION       = '1.0.0';
 const PLUGIN_KEY    = 'wordpress-plugin-name';
 const POST_TYPE_KEY = 'custom_post_type';
 
-add_action(
-	'wp_enqueue_scripts',
-	function () {
-		wp_enqueue_script(
-			handle: PLUGIN_KEY,
-			src: plugin_dir_url( __FILE__ ) . 'src/assets/css/public.css',
-			deps: array(),
-			ver: filemtime( __DIR__ . '/src/assets/css/public.css' ),
-			in_footer: true
-		);
-	}
-);
-
-add_action(
-	'wp_enqueue_scripts',
-	function () {
-		wp_enqueue_style(
-			handle: PLUGIN_KEY,
-			src: plugin_dir_url( __FILE__ ) . 'src/assets/css/public.css',
-			deps: array(),
-			ver: filemtime( __DIR__ . '/src/assets/css/public.css' )
-		);
-	}
-);
+require 'vendor/autoload.php';
+require 'src/demo.php';
 
 add_shortcode(
 	'my-shortcode',
 	function ( $atts ) {
+		wp_enqueue_script(
+			PLUGIN_KEY . '-my-shortcode-script',
+			plugin_dir_url( __FILE__ ) . 'src/assets/js/my-shortcode.js',
+			array(),
+			filemtime( __DIR__ . '/src/assets/js/my-shortcode.js' ),
+			true
+		);
+
+		wp_enqueue_style(
+			PLUGIN_KEY . '-my-shortcode-style',
+			plugin_dir_url( __FILE__ ) . 'src/assets/css/my-shortcode.css',
+			array(),
+			filemtime( __DIR__ . '/src/assets/css/my-shortcode.css' )
+		);
+
 		return render(
 			'src/views/my-shortcode.php',
 			shortcode_atts( array( 'id' => 'my-shortcode' ), $atts )
@@ -106,11 +95,11 @@ add_action(
 			function () {
 				if ( is_singular( POST_TYPE_KEY ) ) {
 					wp_enqueue_script(
-						handle: PLUGIN_KEY . '-single-' . POST_TYPE_KEY,
-						src: plugin_dir_url( __FILE__ ) . 'src/assets/js/single-new-post-type.js',
-						deps: array(),
-						ver: filemtime( __DIR__ . '/src/assets/js/single-new-post-type.js' ),
-						in_footer: true
+						PLUGIN_KEY . '-single-' . POST_TYPE_KEY,
+						plugin_dir_url( __FILE__ ) . 'src/assets/js/single-new-post-type.js',
+						array(),
+						filemtime( __DIR__ . '/src/assets/js/single-new-post-type.js' ),
+						true
 					);
 				}
 			}
@@ -121,10 +110,10 @@ add_action(
 			function () {
 				if ( is_singular( POST_TYPE_KEY ) ) {
 					wp_enqueue_style(
-						handle: PLUGIN_KEY . '-single-' . POST_TYPE_KEY,
-						src: plugin_dir_url( __FILE__ ) . 'src/assets/css/single-new-post-type.css',
-						deps: array(),
-						ver: filemtime( __DIR__ . '/src/assets/css/single-new-post-type.css' )
+						PLUGIN_KEY . '-single-' . POST_TYPE_KEY,
+						plugin_dir_url( __FILE__ ) . 'src/assets/css/single-new-post-type.css',
+						array(),
+						filemtime( __DIR__ . '/src/assets/css/single-new-post-type.css' )
 					);
 				}
 			}
@@ -135,10 +124,10 @@ add_action(
 			function () {
 				if ( is_post_type_archive( POST_TYPE_KEY ) ) {
 					wp_enqueue_style(
-						handle: PLUGIN_KEY . '-single-' . POST_TYPE_KEY,
-						src: plugin_dir_url( __FILE__ ) . 'src/assets/css/archive-new-post-type.css',
-						deps: array(),
-						ver: filemtime( __DIR__ . '/src/assets/css/archive-new-post-type.css' )
+						PLUGIN_KEY . '-single-' . POST_TYPE_KEY,
+						plugin_dir_url( __FILE__ ) . 'src/assets/css/archive-new-post-type.css',
+						array(),
+						filemtime( __DIR__ . '/src/assets/css/archive-new-post-type.css' )
 					);
 				}
 			}
@@ -181,7 +170,8 @@ register_deactivation_hook(
 	}
 );
 
-new \ThoughtfulWeb\SettingsPageWP\Page();
+// External library loaded from Composer to provide a settings page for the plugin.
+new \ThoughtfulWeb\SettingsPageWP\Page( 'config/thoughtful-web/settings.json' );
 
 /**
  * Get the rendered output.
@@ -192,15 +182,15 @@ new \ThoughtfulWeb\SettingsPageWP\Page();
  * @see https://www.php.net/manual/en/function.ob-get-clean.php
  *
  * @param string $file The path to the PHP file.
- * @param array  $vars Optional. Associative array of variables available to the file.
- * @return string The rendered content.
+ * @param array  $props Associative array of variable names and values available to the file.
+ * @return string The rendered HTML.
  */
-function render( string $file, $vars ) {
-	$vars = array_combine(
-		array_map( fn ( $key ) => str_replace( '-', '_', $key ), array_keys( $vars ) ),
-		array_values( $vars )
+function render( string $file, $props ) {
+	$props = array_combine(
+		array_map( fn ( $key ) => str_replace( '-', '_', $key ), array_keys( $props ) ),
+		array_values( $props )
 	);
-	extract( $vars ); // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
+	extract( $props ); // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
 	ob_start();
 	include $file;
 	$rendered = ob_get_clean();

@@ -24,11 +24,11 @@ function enqueue_js( string $path, $condition = null ): void {
 				return;
 			}
 			wp_enqueue_script(
-				handle: basename( dirname( __DIR__ ) ) . '-' . basename( $path, '.js' ),
-				src: plugin_dir_url( __FILE__ ) . $path,
-				deps: array(),
-				ver: filemtime( __DIR__ . '/' . $path ),
-				in_footer: true
+				basename( dirname( __DIR__ ) ) . '-' . basename( $path, '.js' ),
+				plugin_dir_url( __FILE__ ) . $path,
+				array(),
+				filemtime( __DIR__ . '/' . $path ),
+				true
 			);
 		}
 	);
@@ -51,10 +51,10 @@ function enqueue_css( string $path, $condition = null ): void {
 				return;
 			}
 			wp_enqueue_style(
-				handle: basename( dirname( __DIR__ ) ) . '-' . basename( $path, '.css' ),
-				src: plugin_dir_url( __FILE__ ) . $path,
-				deps: array(),
-				ver: filemtime( __DIR__ . '/' . $path )
+				basename( dirname( __DIR__ ) ) . '-' . basename( $path, '.css' ),
+				plugin_dir_url( __FILE__ ) . $path,
+				array(),
+				filemtime( __DIR__ . '/' . $path )
 			);
 		}
 	);
@@ -69,15 +69,15 @@ function enqueue_css( string $path, $condition = null ): void {
  * @see https://www.php.net/manual/en/function.ob-get-clean.php
  *
  * @param string $file The path to the PHP file.
- * @param array  $vars Optional. Associative array of variables available to the file.
- * @return string The rendered content.
+ * @param array  $props Associative array of variable names and values available to the file.
+ * @return string The rendered HTML.
  */
-function render( string $file, $vars ) {
-	$vars = array_combine(
-		array_map( fn ( $key ) => str_replace( '-', '_', $key ), array_keys( $vars ) ),
-		array_values( $vars )
+function render( string $file, $props ) {
+	$props = array_combine(
+		array_map( fn ( $key ) => str_replace( '-', '_', $key ), array_keys( $props ) ),
+		array_values( $props )
 	);
-	extract( $vars ); // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
+	extract( $props ); // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
 	ob_start();
 	include $file;
 	$rendered = ob_get_clean();
