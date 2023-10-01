@@ -53,7 +53,6 @@
 		"start": "wp-env start --scripts",
 		"start:debug": "wp-env start --scripts --xdebug=profile,trace,debug",
 		"start:update": "wp-env start --scripts --update",
-		"serve": "cd wordpress && php -S localhost:8000",
 		"stop": "wp-env stop",
 		"clean": "wp-env clean all && wp-env start --scripts",
 		"destroy": "wp-env destroy",

@@ -100,5 +100,8 @@
 		"zlib",
 		"wordpress"
 	],
-	"prettier.enableDebugLogs": true
+	"prettier.enableDebugLogs": true,
+	"[sql]": {
+		"editor.defaultFormatter": "mtxr.sqltools"
+	}
 }

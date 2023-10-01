@@ -8,6 +8,8 @@
  * @license   GPL-2.0-or-later
  */
 
+namespace WordPress_Plugin_Name;
+
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'We\'re sorry, but you can not directly access this file.' );
 }
@@ -31,19 +33,19 @@ add_action(
 		$demo_post_values = array(
 			'post_title'   => 'Plugin Demo Page',
 			'post_content' => '<!-- wp:paragraph -->
-<p>This plugin provides a shortcode called "my-shortcode".</p>
+<p>This is a post for the custom post type provided by the plugin. You can see output below for the shortcode it provides called "[my-shortcode]".</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:shortcode -->
 [my-shortcode]
 <!-- /wp:shortcode -->',
 			'post_status'  => 'publish',
-			'post_type'    => 'page',
+			'post_type'    => POST_TYPE_KEY,
 			'post_author'  => 1,
 		);
 		$demo_post        = new \WP_Query(
 			array(
-				'post_type'      => 'page',
+				'post_type'      => POST_TYPE_KEY,
 				'post_status'    => 'any',
 				'posts_per_page' => 1,
 				'fields'         => 'ids',

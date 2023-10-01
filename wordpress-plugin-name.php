@@ -33,7 +33,6 @@ const VERSION       = '1.0.0';
 const PLUGIN_KEY    = 'wordpress-plugin-name';
 const POST_TYPE_KEY = 'custom_post_type';
 
-require 'vendor/autoload.php';
 require 'src/demo.php';
 
 add_shortcode(
@@ -169,9 +168,6 @@ register_deactivation_hook(
 		flush_rewrite_rules();
 	}
 );
-
-// External library loaded from Composer to provide a settings page for the plugin.
-new \ThoughtfulWeb\SettingsPageWP\Page( 'config/thoughtful-web/settings.json' );
 
 /**
  * Get the rendered output.
