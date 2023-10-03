@@ -3,10 +3,8 @@
 	"description": "A template WordPress plugin.",
 	"type": "project",
 	"scripts": {
-		"serve": [
-			"./.bin/pre-serve.sh",
-			"php -S localhost:8080 -t wordpress"
-		],
+		"preserve": "./.bin/pre-serve.sh",
+		"serve": "@php -S localhost:8080 -t wordpress -d xdebug.mode=develop,debug,trace",
 		"test": [
 			"@putenv WP_SQLITE_MODE=enabled",
 			"./vendor/bin/phpunit -c .config/phpunit.xml.dist"
