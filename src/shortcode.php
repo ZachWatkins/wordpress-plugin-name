@@ -9,7 +9,7 @@ namespace WordPress_Plugin_Name;
 
 add_shortcode(
 	'my-shortcode',
-	function ( $atts ) {
+	function ( $atts, $content = '' ) {
 		wp_enqueue_script(
 			PLUGIN_KEY . '-my-shortcode-script',
 			PLUGIN_URL . '/assets/js/my-shortcode.js',
@@ -25,9 +25,9 @@ add_shortcode(
 			filemtime( __DIR__ . '/assets/css/my-shortcode.css' )
 		);
 
-		return render(
-			'views/my-shortcode.php',
-			shortcode_atts( array( 'id' => 'my-shortcode' ), $atts )
-		);
+		$props            = shortcode_atts( array( 'id' => 'my-shortcode' ), $atts );
+		$props['content'] = $content;
+
+		return render( 'views/my-shortcode.php', $props );
 	}
 );

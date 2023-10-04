@@ -1,7 +1,6 @@
 <?php
 /**
  * The file that defines the generated shortcode content.
- * phpcs:ignorefile WordPress.NamingConventions.PrefixAllGlobals
  *
  * @package   WordPress_Plugin_Name
  * @copyright Zachary K. Watkins 2023
@@ -9,7 +8,7 @@
  * @license   GPL-2.0-or-later
  */
 
-?><div id="my-shortcode">Hello! Would you like some API data?</div>
+?><div id="<?php echo esc_attr( $props->id ); ?>">Hello! <?php echo esc_html( $props->content ); ?></div>
 <?php
 
 $response = wp_remote_get( rest_url() . 'wp/v2/posts/1' );
@@ -18,9 +17,10 @@ if ( is_wp_error( $response ) ) {
 	$error_message = $response->get_error_message();
 	echo esc_html( "Something went wrong: $error_message" );
 } else {
-	$body = wp_remote_retrieve_body( $response );
+	$body    = wp_remote_retrieve_body( $response );
 	$results = json_decode( $body );
-	?><table>
+	?>
+	<table>
 		<thead>
 			<tr>
 				<?php

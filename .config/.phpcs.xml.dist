@@ -25,6 +25,7 @@
 	<config name="minimum_supported_wp_version" value="4.6"/>
 	<rule ref="WordPress"/>
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<exclude-pattern>../src/views/*</exclude-pattern>
 		<properties>
 			<!-- Value: replace the function, class, and variable prefixes used. Separate multiple prefixes with a comma. -->
 			<property name="prefixes" type="array">
