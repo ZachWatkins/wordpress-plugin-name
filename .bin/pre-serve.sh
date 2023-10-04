@@ -47,4 +47,5 @@ echo 'DENY FROM ALL' > wordpress/wp-content/database/.htaccess
 touch wordpress/wp-content/database/.ht.sqlite
 chmod -R 644 wordpress/wp-content/database
 chmod 766 wordpress/wp-content/database
-sqlite3 wordpress/wp-content/database/.ht.sqlite < .wp-env/seeds.sql
+sqlite3 wordpress/wp-content/database/.ht.sqlite < .wp-env/sqlite/schema.sql
+sqlite3 wordpress/wp-content/database/.ht.sqlite < .wp-env/sqlite/content.sql
