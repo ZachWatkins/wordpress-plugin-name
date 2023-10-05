@@ -19,13 +19,15 @@ $wp_term = $props->term;
 wp_nonce_field( $props->nonce, "term_meta_{$wp_term->taxonomy}_nonce" );
 
 foreach ( $props->meta_fields as $meta ) {
-	$value = get_term_meta( $wp_term->term_id, "term_meta_{$wp_term->taxonomy}", true );
+	$value = (string) get_term_meta( $wp_term->term_id, "term_meta_{$wp_term->taxonomy}", true );
 
-	?><tr class="form-field term-<?= esc_attr( $wp_term->taxonomy ) ?>-wrap"><th scope="row" valign="top"><label for="term_meta_<?= esc_attr( $wp_term->taxonomy ) ?>"><?= esc_html( $meta['name'] ) ?></label></th><td>
+	?><tr class="form-field term-<?= esc_attr( $wp_term->taxonomy ) ?>-wrap">
+		<th scope="row" valign="top"><label for="term_meta_<?= esc_attr( $wp_term->taxonomy ) ?>"><?= esc_html( $meta['name'] ) ?></label></th>
+		<td>
 	<?php
 
 	if ( 'editor' === $meta['type'] ) {
-		$value = $value ? wp_kses_post( $value ) : '';
+		$value = wp_kses_post( $value );
 		wp_editor(
 			$value,
 			"term_meta_{$wp_term->taxonomy}",
@@ -33,21 +35,23 @@ foreach ( $props->meta_fields as $meta ) {
 		);
 	} elseif ( 'link' === $meta['type'] ) {
 		?>
-		<input type="url" name="term_meta_<?= esc_attr( $wp_term->taxonomy ) ?>" id="term_meta_<?= esc_attr( $wp_term->taxonomy ) ?>" value="<?= ( $value ? esc_attr( $value ) : '' ) ?>" placeholder="https://example.com" pattern="http[s]?://.*"><p class="description"<?= esc_html__( 'Enter a value for this field', 'wordpress-plugin-name-textdomain' ) ?></p>
+		<input type="url" name="term_meta_<?= esc_attr( $wp_term->taxonomy ) ?>" id="term_meta_<?= esc_attr( $wp_term->taxonomy ) ?>" value="<?= esc_attr( $value ) ?>" placeholder="https://example.com" pattern="http[s]?://.*">
+		<p class="description"<?= esc_html__( 'Enter a value for this field', 'wordpress-plugin-name-textdomain' ) ?></p>
 		<?php
 	} elseif ( 'checkbox' === $meta['type'] ) {
-		$value = ! empty( $value ) && 'on' === $value[0] ? 'checked' : '';
+		$value = 'on' === $value ? 'checked' : '';
 		?>
-		<input type="checkbox" name="term_meta_<?= esc_attr( $wp_term->taxonomy ) ?>" id="term_meta_<?= esc_attr( $wp_term->taxonomy ) ?>" <?= ( $value && 'on' === $value ? 'checked' : '' ) ?>
-													<?php
+		<input type="checkbox" name="term_meta_<?= esc_attr( $wp_term->taxonomy ) ?>" id="term_meta_<?= esc_attr( $wp_term->taxonomy ) ?>" <?= esc_attr( $value ) ?>
+		<?php
 	} else {
-		$value = $value ? sanitize_text_field( $value ) : '';
 		?>
-		<input type="text" name="term_meta_<?= esc_attr( $wp_term->taxonomy ) ?>" id="term_meta_<?= esc_attr( $wp_term->taxonomy ) ?>" value="<?= ( $value ? sanitize_text_field( $value ) : '' ) ?>"><p class="description"><?= esc_html__( 'Enter a value for this field', 'wordpress-plugin-name-textdomain' ) ?></p>
+		<input type="text" name="term_meta_<?= esc_attr( $wp_term->taxonomy ) ?>" id="term_meta_<?= esc_attr( $wp_term->taxonomy ) ?>" value="<?= esc_attr( $value ) ?>">
+		<p class="description"><?= esc_html__( 'Enter a value for this field', 'wordpress-plugin-name-textdomain' ) ?></p>
 		<?php
 	}
 
 	?>
-	</td></tr>
+	</td>
+	</tr>
 	<?php
 }
