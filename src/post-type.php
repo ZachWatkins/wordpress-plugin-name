@@ -7,6 +7,8 @@
 
 namespace WordPress_Plugin_Name;
 
+use function ZW\WP\render;
+
 register_activation_hook(
 	PLUGIN_FILE,
 	function () {
