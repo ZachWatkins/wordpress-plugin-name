@@ -28,8 +28,7 @@
 	</rule>
 	<rule ref="WordPress"/>
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
-		<exclude-pattern>../library/views/*</exclude-pattern>
-		<exclude-pattern>../library/**/views/*</exclude-pattern>
+		<exclude-pattern>../library/</exclude-pattern>
 		<exclude-pattern>../src/views/*</exclude-pattern>
 		<exclude-pattern>../src/**/views/*</exclude-pattern>
 		<properties>
@@ -40,6 +39,7 @@
 		</properties>
 	</rule>
 	<rule ref="WordPress.WP.I18n">
+		<exclude-pattern>../library/</exclude-pattern>
 		<properties>
 			<!-- Value: replace the text domain used. -->
 			<property name="text_domain" type="array" value="wordpress-plugin-name-textdomain"/>
