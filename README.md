@@ -4,32 +4,81 @@ This plugin is a template for creating a WordPress plugin. It is a fully working
 
 The goal is to provide a reliable, portable codebase with well-defined dependencies and minimal time for someone to make their first contribution even if they have never seen this code before.
 
+_Note: if using `git` with SSH credentials, you may need to use an SSH style URL (git@github.com:zachwatkins/wordpress-plugin-name.git) instead of HTTPS (https://github.com/zachwatkins/wordpress-plugin-name.git)._
+
 **Table of Contents**
 
--   [Getting Started](#getting-started)
+-   [Developer Installation](#developer-installation)
+-   [Creating a New Plugin](#creating-a-new-plugin)
 -   [Directory Structure](#directory-structure)
 -   [Commands](#commands)
--   [wp-env](#wp-env)
 -   [Tests](#tests)
 -   [Installing System Requirements for Development](#system-requirements-for-development)
 -   [Further Reading](#further-reading)
 
-## Getting Started
+## Developer Installation
 
-Follow the steps below to create a new WordPress plugin from this template (assuming the new plugin is named "New Plugin Name").
+### Docker
 
-1. `git clone https://github.com/zachwatkins/wordpress-plugin-template new-plugin-name`
-2. `cd new-plugin-name`
-3. `rm -rf .git`
-4. `git init`
-5. `git add .`
-6. `git commit -m "Initial commit"`
-7. `git branch -M main`
-8. `git remote add origin https://github.com/zachwatkins/new-plugin-name.git`
-9. `git push -u origin main`
-10. `npm run template`
-11. `npm install`
-12. `npm start`
+Run the commands below and then open your browser to [http://localhost:8888](http://localhost:8888). Your username and password are `admin -> password`.
+
+```shell
+git clone https://github.com/zachwatkins/wordpress-plugin-name
+cd your-plugin-name
+npm install
+npm start
+```
+
+### Local
+
+```shell
+cd ~/Local Sites/your-site/app/public/wp-content/plugins
+git clone https://github.com/zachwatkins/wordpress-plugin-name
+cd wordpress-plugin-name
+npm install
+composer install
+```
+
+## Creating a New Plugin
+
+_Note: You can remove this section from your new plugin's documentation._
+
+To create your own plugin using this template, choose one of the approaches below. If you have not done so already, rename git's default branch name: `git config --global init.defaultBranch main`
+
+### Docker
+
+```shell
+git clone https://github.com/zachwatkins/wordpress-plugin-name your-plugin-name
+cd your-plugin-name
+rm -rf .git
+npm run template
+git init
+git add .
+git commit -m "initial commit"
+git branch -M main
+git remote add origin https://github.com/ttitamu/your-plugin-name.git
+git push -u origin main
+npm install
+npm start
+```
+
+### Local
+
+```shell
+cd ~/Local Sites/your-site/app/public/wp-content/plugins
+git clone https://github.com/zachwatkins/wordpress-plugin-name your-plugin-name
+cd your-plugin-name
+rm -rf .git
+npm run template
+git init
+git add .
+git commit -m "initial commit"
+git branch -M main
+git remote add origin https://github.com/ttitamu/your-plugin-name.git
+git push -u origin main
+npm install
+composer install
+```
 
 ## Directory Structure
 
@@ -38,16 +87,21 @@ Follow the steps below to create a new WordPress plugin from this template (assu
 3. **.github** - GitHub integration files such as Actions workflows.
 4. **.vscode** - Visual Studio Code integration files.
 5. **.wp-env** - WordPress development environment default content.
-6. **advanced-custom-fields** - Advanced Custom Fields field registration and import files.
-7. **assets** - JavaScript, CSS, images, fonts, and other static files.
-8. **common** - Common WordPress feature implementations that you can copy and modify for your plugin.
-9. **docs** - Documentation files going in depth on different aspects of this project or WordPress development.
-10. **includes** - File content output to the browser by the plugin. This is where you should put most or all of the HTML output from your plugin, to make that content easier to find and change.
-11. **src** - PHP classes that hook into WordPress and implement plugin features.
-12. **test** - Plugin code tests.  
+6. **config** - Configuration file for a settings page feature.
+7. **docs** - Documentation files going in depth on different aspects of this project or WordPress development.
+8. **library** - A library of common WordPress feature implementations that I'm developing alongside this template plugin. Do not modify them - treat this directory as an external library.
+9. **src** - Source code for the plugin's features, aside from the settings page feature and the library.
+10. **src/admin** - Source code for features specific to the admin user interface.
+11. **src/admin/views** - Files which render HTML for the admin user interface.
+12. **src/assets** - Non-PHP files used by the plugin, such as JavaScript, CSS, and images.
+13. **src/views** - Files which render HTML for site visitors.
+14. **src/demo.php** - Inserts demo content into your website to demonstrate your plugin's features during development.
+15. **src/functions.php** - Reusable functions unique to this plugin.
+16. **test** - Plugin code tests.  
     a. **e2e** - Browser tests using Playwright.  
     b. **jest** - JavaScript tests using Jest.  
     c. **phpunit** - WordPress PHP code tests using PHPUnit.
+17. **index.php** - The entrypoint for your plugin. This file is loaded by WordPress when the plugin is active for a site.
 
 ## Commands
 
@@ -118,7 +172,12 @@ You must have administrator rights to run these installers.
 
 ## Further Reading
 
-The links below describe key WordPress code concepts you will need to know in order to develop your WordPress plugin.
+The links below describe important WordPress code concepts you may need to know when developing your WordPress plugin.
 
 -   [Action Hooks](https://developer.wordpress.org/plugins/hooks/actions/)
 -   [Filter Hooks](https://developer.wordpress.org/plugins/hooks/filters/)
+-   [Shortcodes](https://developer.wordpress.org/plugins/shortcodes/)
+-   [Options API](https://developer.wordpress.org/plugins/settings/options-api/)
+-   [Custom Post Types](https://developer.wordpress.org/plugins/post-types/)
+-   [Custom Taxonomies](https://developer.wordpress.org/plugins/taxonomies/)
+-   [`@wordpress/env`](https://github.com/WordPress/gutenberg/tree/trunk/packages/env)
