@@ -2,13 +2,14 @@
 /**
  * Useful functions for WordPress plugins.
  *
- * @package   WordPress_Plugin_Name
- * @copyright Zachary K. Watkins 2023
- * @author    Zachary K. Watkins <zwatkins.it@gmail.com
- * @license   GPL-2.0-or-later
+ * @package    ZW
+ * @subpackage WP
+ * @copyright  Zachary K. Watkins 2023
+ * @author     Zachary K. Watkins <zwatkins.it@gmail.com
+ * @license    GPL-2.0-or-later
  */
 
-namespace WordPress_Plugin_Name;
+namespace ZW\WP;
 
 /**
  * Register and enqueue a JS file.
@@ -64,22 +65,22 @@ function enqueue_css( string $path, $condition = null ): void {
  * Get the rendered output.
  *
  * @see https://developer.wordpress.org/reference/functions/wp_kses/
- * @see https://www.php.net/manual/en/function.extract.php
- * @see https://www.php.net/manual/en/function.ob-start.php
- * @see https://www.php.net/manual/en/function.ob-get-clean.php
  *
- * @param string $file The path to the PHP file.
- * @param array  $props Associative array of variable names and values available to the file.
+ * @param string       $file The path to the PHP file.
+ * @param object|array $props Associative array of variable names and values available to the file.
  * @return string The rendered HTML.
  */
 function render( string $file, $props ) {
-	$props = array_combine(
-		array_map( fn ( $key ) => str_replace( '-', '_', $key ), array_keys( $props ) ),
-		array_values( $props )
-	);
-	extract( $props ); // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
+	if ( is_array( $props ) ) {
+		$props = (object) array_combine(
+			array_map( fn ( $key ) => str_replace( '-', '_', strtolower( $key ) ), array_keys( $props ) ),
+			array_values( $props )
+		);
+	}
 	ob_start();
 	include $file;
-	$rendered = ob_get_clean();
-	return wp_kses( $rendered, 'post' );
+	$rendered               = ob_get_clean();
+	$allowed_html           = \wp_kses_allowed_html( 'post' );
+	$allowed_html['script'] = array( 'type' => true );
+	return \wp_kses( $rendered, $allowed_html );
 }
