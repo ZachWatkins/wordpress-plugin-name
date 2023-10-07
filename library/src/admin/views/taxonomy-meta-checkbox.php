@@ -2,11 +2,11 @@
 /**
  * Taxonomy term metadata editor field.
  *
- * @package WordPress_Plugin_Name
+ * @package ZW\WP
  * @subpackage Admin
  */
 
-namespace ZW\WP\Admin\Views;
+namespace ZW\WP\Admin;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Do not directly access this file in your browser.' );
@@ -29,8 +29,6 @@ $value = (string) get_term_meta( $wp_term->term_id, $props->key, true );
 		<label for="<?= esc_attr( $props->uid ) ?>"><?= esc_html( $props->label ) ?></label>
 	</th>
 	<td>
-		<input type="text" name="<?= esc_attr( $props->uid ) ?>" id="<?= esc_attr( $props->uid ) ?>" value="<?= esc_attr( $value ) ?>">
-		<p class="description"><?= esc_html__( 'Enter a value for this field', 'wordpress-plugin-name-textdomain' ) ?></p>
+		<input type="checkbox" name="<?= esc_attr( $props->uid ) ?>" id="<?= esc_attr( $props->uid ) ?>" <?= ( 'on' === $value ? 'checked' : '' ) ?>
 	</td>
 </tr>
-<?php

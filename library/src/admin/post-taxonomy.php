@@ -2,11 +2,11 @@
 /**
  * Post taxonomy helper functions.
  *
- * @package    ZW
- * @subpackage WP\Post
+ * @package ZW\WP
+ * @subpackage Admin
  */
 
-namespace ZW\WP\Post;
+namespace ZW\WP\Admin;
 
 use function ZW\WP\render;
 
@@ -24,7 +24,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param  array           $args         The arguments for taxonomy registration. Accepts $args for
  *                                       the WordPress core register_taxonomy function.
  */
-function register_taxonomy(
+function register_post_taxonomy(
 	string $taxonomy,
 	string $singular,
 	string $plural,
@@ -39,22 +39,22 @@ function register_taxonomy(
 		'labels'             => array(
 			'name'              => $plural,
 			'singular_name'     => $singular,
-			'search_items'      => __( 'Search', 'wordpress-plugin-name-textdomain' ) . " $plural",
-			'all_items'         => __( 'All', 'wordpress-plugin-name-textdomain' ) . " $plural",
-			'parent_item'       => __( 'Parent', 'wordpress-plugin-name-textdomain' ) . " $singular",
-			'parent_item_colon' => __( 'Parent', 'wordpress-plugin-name-textdomain' ) . " {$singular}:",
-			'edit_item'         => __( 'Edit', 'wordpress-plugin-name-textdomain' ) . " $singular",
-			'update_item'       => __( 'Update', 'wordpress-plugin-name-textdomain' ) . " $singular",
-			'add_new_item'      => __( 'Add New', 'wordpress-plugin-name-textdomain' ) . " $singular",
+			'search_items'      => __( 'Search', 'zw-wp-textdomain' ) . " $plural",
+			'all_items'         => __( 'All', 'zw-wp-textdomain' ) . " $plural",
+			'parent_item'       => __( 'Parent', 'zw-wp-textdomain' ) . " $singular",
+			'parent_item_colon' => __( 'Parent', 'zw-wp-textdomain' ) . " {$singular}:",
+			'edit_item'         => __( 'Edit', 'zw-wp-textdomain' ) . " $singular",
+			'update_item'       => __( 'Update', 'zw-wp-textdomain' ) . " $singular",
+			'add_new_item'      => __( 'Add New', 'zw-wp-textdomain' ) . " $singular",
 			/* translators: placeholder is the singular taxonomy name */
-			'new_item_name'     => sprintf( esc_html__( 'New %d Name', 'wordpress-plugin-name-textdomain' ), $singular ),
+			'new_item_name'     => sprintf( esc_html__( 'New %d Name', 'zw-wp-textdomain' ), $singular ),
 			'menu_name'         => $plural,
 		),
 	);
 
 	$args = array_merge( $default_args, $args );
-	\register_taxonomy( $taxonomy, $post_slug, $args );
-	\register_taxonomy_for_object_type( $taxonomy, $post_slug );
+	register_taxonomy( $taxonomy, $post_slug, $args );
+	register_taxonomy_for_object_type( $taxonomy, $post_slug );
 }
 
 /**
@@ -86,34 +86,25 @@ function validate_taxonomy_slug( $taxonomy ): bool {
 }
 
 /**
- * Register metadata for a taxonomy's terms and provide a form field for editing its value.
+ * Register a boolean meta field for a taxonomy's terms and provide a checkbox for editing its value.
  *
  * @param string $taxonomy   The taxonomy slug.
  * @param string $meta_label The label for the meta value.
  * @param string $meta_key   The key for the meta value.
- * @param string $meta_input The input type for the meta value.
  * @return void
  */
-function register_taxonomy_meta( string $taxonomy, string $meta_label, string $meta_key, string $meta_input ) {
+function register_taxonomy_meta_boolean( string $taxonomy, string $meta_label, string $meta_key ) {
 	$uid   = "term_meta_{$taxonomy}_{$meta_key}";
 	$nonce = "_wpnonce_{$uid}";
 	add_action(
 		"{$taxonomy}_edit_form_fields",
-		/**
-		 * Render edit fields for the taxonomy term's meta fields.
-		 *
-		 * @param  \WP_Term $tag      Current taxonomy term object.
-		 * @param  string   $taxonomy Current taxonomy slug.
-		 * @return void
-		 */
 		fn ( \WP_Term $tag, string $taxonomy ) => render(
-			'admin/views/taxonomy-meta-input.php',
+			'admin/views/taxonomy-meta-checkbox.php',
 			array(
 				'tag'      => $tag,
 				'taxonomy' => $taxonomy,
 				'label'    => $meta_label,
 				'key'      => $meta_key,
-				'input'    => $meta_input,
 				'uid'      => $uid,
 				'nonce'    => $nonce,
 			)
@@ -121,45 +112,99 @@ function register_taxonomy_meta( string $taxonomy, string $meta_label, string $m
 		10,
 		2
 	);
-	if ( 'checkbox' === $meta_input ) {
-		add_action(
-			"edited_{$taxonomy}",
-			fn ( int $term_id, int $tt_id, array $args ) => wp_verify_nonce( $nonce, $uid )
-				&& update_term_meta(
-					$term_id,
-					$meta_key,
-					isset( $args[ $uid ] ) && $args[ $uid ]
-						? 1
-						: 0
-				),
-		);
-	} elseif ( 'editor' === $meta_input ) {
-		add_action(
-			"edited_{$taxonomy}",
-			fn ( int $term_id, int $tt_id, array $args ) => wp_verify_nonce( $nonce, $uid )
-				&& update_term_meta(
-					$term_id,
-					$meta_key,
-					wp_kses_post(
-						isset( $args[ $uid ] )
-							? $args[ $uid ]
-							: ''
-					)
-				),
-		);
-	} else {
-		add_action(
-			"edited_{$taxonomy}",
-			fn ( int $term_id, int $tt_id, array $args ) => wp_verify_nonce( $nonce, $uid )
-				&& update_term_meta(
-					$term_id,
-					$meta_key,
-					sanitize_text_field(
-						isset( $args[ $uid ] )
-							? $args[ $uid ]
-							: ''
-					)
-				),
-		);
-	}
+	add_action(
+		"edited_{$taxonomy}",
+		fn ( int $term_id, int $tt_id, array $args ) => wp_verify_nonce( $nonce, $uid )
+			&& update_term_meta(
+				$term_id,
+				$meta_key,
+				isset( $args[ $uid ] ) && $args[ $uid ]
+					? 1
+					: 0
+			),
+	);
+}
+
+/**
+ * Register text metadata for a taxonomy's terms and provide a form field for editing the text value.
+ *
+ * @param string $taxonomy   The taxonomy slug.
+ * @param string $meta_label The label for the meta value.
+ * @param string $meta_key   The key for the meta value.
+ * @return void
+ */
+function register_taxonomy_meta_text( string $taxonomy, string $meta_label, string $meta_key ) {
+	$uid   = "term_meta_{$taxonomy}_{$meta_key}";
+	$nonce = "_wpnonce_{$uid}";
+	add_action(
+		"{$taxonomy}_edit_form_fields",
+		fn ( \WP_Term $tag, string $taxonomy ) => render(
+			'admin/views/taxonomy-meta-input.php',
+			array(
+				'tag'      => $tag,
+				'taxonomy' => $taxonomy,
+				'label'    => $meta_label,
+				'key'      => $meta_key,
+				'uid'      => $uid,
+				'nonce'    => $nonce,
+			)
+		),
+		10,
+		2
+	);
+	add_action(
+		"edited_{$taxonomy}",
+		fn ( int $term_id, int $tt_id, array $args ) => wp_verify_nonce( $nonce, $uid )
+			&& update_term_meta(
+				$term_id,
+				$meta_key,
+				sanitize_text_field(
+					isset( $args[ $uid ] )
+						? $args[ $uid ]
+						: ''
+				)
+			),
+	);
+}
+
+/**
+ * Register HTML metadata for a taxonomy's terms and provide a form field for editing its value.
+ *
+ * @param string $taxonomy   The taxonomy slug.
+ * @param string $meta_label The label for the meta value.
+ * @param string $meta_key   The key for the meta value.
+ * @return void
+ */
+function register_taxonomy_meta_html( string $taxonomy, string $meta_label, string $meta_key ) {
+	$uid   = "term_meta_{$taxonomy}_{$meta_key}";
+	$nonce = "_wpnonce_{$uid}";
+	add_action(
+		"{$taxonomy}_edit_form_fields",
+		fn ( \WP_Term $tag, string $taxonomy ) => render(
+			'admin/views/taxonomy-meta-input.php',
+			array(
+				'tag'      => $tag,
+				'taxonomy' => $taxonomy,
+				'label'    => $meta_label,
+				'key'      => $meta_key,
+				'uid'      => $uid,
+				'nonce'    => $nonce,
+			)
+		),
+		10,
+		2
+	);
+	add_action(
+		"edited_{$taxonomy}",
+		fn ( int $term_id, int $tt_id, array $args ) => wp_verify_nonce( $nonce, $uid )
+			&& update_term_meta(
+				$term_id,
+				$meta_key,
+				wp_kses_post(
+					isset( $args[ $uid ] )
+						? $args[ $uid ]
+						: ''
+				)
+			),
+	);
 }
