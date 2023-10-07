@@ -7,6 +7,8 @@
 
 namespace WordPress_Plugin_Name;
 
+use function ZW\WP\render;
+
 add_shortcode(
 	'my-shortcode',
 	function ( $atts, $content = '' ) {
