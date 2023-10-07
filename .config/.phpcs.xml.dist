@@ -28,6 +28,8 @@
 	</rule>
 	<rule ref="WordPress"/>
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<exclude-pattern>../library/views/*</exclude-pattern>
+		<exclude-pattern>../library/**/views/*</exclude-pattern>
 		<exclude-pattern>../src/views/*</exclude-pattern>
 		<exclude-pattern>../src/**/views/*</exclude-pattern>
 		<properties>
