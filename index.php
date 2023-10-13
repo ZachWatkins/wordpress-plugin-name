@@ -29,12 +29,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 	die( 'Do not directly request this file in your browser.' );
 }
 
-require 'library/index.php';
-
 const PLUGIN_FILE   = __FILE__;
+const PLUGIN_DIR    = __FILE__ . '/';
 const PLUGIN_KEY    = 'wordpress-plugin-name';
 const POST_TYPE_KEY = 'custom_post_type';
-define( 'WordPress_Plugin_Name\PLUGIN_URL', plugin_dir_url( __FILE__ ) . 'src' );
+define( 'WordPress_Plugin_Name\PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 require 'src/shortcode.php';
 require 'src/post-type.php';
