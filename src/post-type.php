@@ -7,8 +7,6 @@
 
 namespace WordPress_Plugin_Name;
 
-use function ZW\WP\render;
-
 register_activation_hook(
 	PLUGIN_FILE,
 	function () {
@@ -59,9 +57,9 @@ add_action(
 				if ( is_singular( POST_TYPE_KEY ) ) {
 					wp_enqueue_script(
 						PLUGIN_KEY . '-single-' . POST_TYPE_KEY,
-						PLUGIN_URL . '/assets/js/single-new-post-type.js',
+						PLUGIN_URL . 'src/assets/js/single-new-post-type.js',
 						array(),
-						filemtime( __DIR__ . '/assets/js/single-new-post-type.js' ),
+						filemtime( PLUGIN_DIR . 'src/assets/js/single-new-post-type.js' ),
 						true
 					);
 				}
@@ -74,9 +72,9 @@ add_action(
 				if ( is_singular( POST_TYPE_KEY ) ) {
 					wp_enqueue_style(
 						PLUGIN_KEY . '-single-' . POST_TYPE_KEY,
-						PLUGIN_URL . '/assets/css/single-new-post-type.css',
+						PLUGIN_URL . 'src/assets/css/single-new-post-type.css',
 						array(),
-						filemtime( __DIR__ . '/assets/css/single-new-post-type.css' )
+						filemtime( PLUGIN_DIR . 'src/assets/css/single-new-post-type.css' )
 					);
 				}
 			}
@@ -88,9 +86,9 @@ add_action(
 				if ( is_post_type_archive( POST_TYPE_KEY ) ) {
 					wp_enqueue_style(
 						PLUGIN_KEY . '-single-' . POST_TYPE_KEY,
-						PLUGIN_URL . '/assets/css/archive-new-post-type.css',
+						PLUGIN_URL . 'src/assets/css/archive-new-post-type.css',
 						array(),
-						filemtime( __DIR__ . '/assets/css/archive-new-post-type.css' )
+						filemtime( PLUGIN_DIR . 'src/assets/css/archive-new-post-type.css' )
 					);
 				}
 			}
@@ -99,20 +97,26 @@ add_action(
 		add_filter(
 			'the_content',
 			function ( $content ) {
-				if ( is_singular( POST_TYPE_KEY ) ) {
-					return render( 'views/content-new-post-type.php', array( 'content' => $content ) );
+				if ( ! is_singular( POST_TYPE_KEY ) ) {
+					return $content;
 				}
-				return $content;
+				$props = (object) array( 'content' => $content );
+				ob_start();
+				include 'views/content-new-post-type.php'; // Uses $props.
+				return ob_get_clean();
 			}
 		);
 
 		add_filter(
 			'the_excerpt',
 			function ( $excerpt ) {
-				if ( get_post_type() === POST_TYPE_KEY && ! is_singular( POST_TYPE_KEY ) ) {
-					return render( 'views/excerpt-new-post-type.php', array( 'excerpt' => $excerpt ) );
+				if ( get_post_type() !== POST_TYPE_KEY || is_singular( POST_TYPE_KEY ) ) {
+					return $excerpt;
 				}
-				return $excerpt;
+				$props = (object) array( 'excerpt' => $excerpt );
+				ob_start();
+				include 'views/excerpt-new-post-type.php'; // Uses $props.
+				return ob_get_clean();
 			}
 		);
 	}
