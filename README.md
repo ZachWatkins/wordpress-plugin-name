@@ -95,12 +95,13 @@ composer install
 11. **src/admin/views** - Files which render HTML for the admin user interface.
 12. **src/assets** - Non-PHP files used by the plugin, such as JavaScript, CSS, and images.
 13. **src/views** - Files which render HTML for site visitors.
-14. **src/demo.php** - Inserts demo content into your website to demonstrate your plugin's features during development.
-15. **test** - Plugin code tests.  
+14. **src/services** - Interfaces between this plugin and external services.
+15. **src/demo.php** - Inserts demo content into your website to demonstrate your plugin's features during development.
+16. **test** - Plugin code tests.  
     a. **e2e** - Browser tests using Playwright.  
     b. **jest** - JavaScript tests using Jest.  
     c. **phpunit** - WordPress PHP code tests using PHPUnit.
-16. **index.php** - The entrypoint for your plugin. This file is loaded by WordPress when the plugin is active for a site.
+17. **index.php** - The entrypoint for your plugin. This file is loaded by WordPress when the plugin is active for a site.
 
 ## Commands
 
