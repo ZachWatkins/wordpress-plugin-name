@@ -37,4 +37,5 @@ define( 'WordPress_Plugin_Name\PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 require 'src/shortcode.php';
 require 'src/post-type.php';
+require 'src/admin/settings.php';
 require 'src/demo.php';
