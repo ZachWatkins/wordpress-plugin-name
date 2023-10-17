@@ -35,7 +35,7 @@ const PLUGIN_KEY    = 'wordpress-plugin-name';
 const POST_TYPE_KEY = 'custom_post_type';
 define( 'WordPress_Plugin_Name\PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-require 'src/shortcode.php';
+require 'src/shortcodes.php';
 require 'src/post-type.php';
 require 'src/admin/settings.php';
 require 'src/demo.php';
