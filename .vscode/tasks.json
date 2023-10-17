@@ -1,0 +1,18 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Serve application and open in web browser",
+			"type": "shell",
+			"command": "test -d node_modules || npm install && npm start && open http://localhost:8888",
+			"windows": {
+				"command": "npm install; npm start; start http://localhost:8888"
+			},
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			},
+			"runOptions": { "runOn": "folderOpen" }
+		}
+	]
+}
