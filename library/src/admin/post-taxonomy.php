@@ -54,7 +54,6 @@ function register_post_taxonomy(
 
 	$args = array_merge( $default_args, $args );
 	register_taxonomy( $taxonomy, $post_slug, $args );
-	register_taxonomy_for_object_type( $taxonomy, $post_slug );
 }
 
 /**
