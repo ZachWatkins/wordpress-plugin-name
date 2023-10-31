@@ -7,7 +7,6 @@
 
 namespace WordPress_Plugin_Name;
 
-// Register a WordPress admin settings page for an option named 'wordpress_plugin_name_api_key'.
 add_action(
 	'admin_menu',
 	function () {
@@ -34,7 +33,6 @@ add_action(
 	}
 );
 
-// Register a WordPress admin settings section for the option named 'wordpress_plugin_name_api_key'.
 add_action(
 	'admin_init',
 	function () {
@@ -46,7 +44,9 @@ add_action(
 			},
 			PLUGIN_KEY
 		);
+
 		$api_key_id = PLUGIN_KEY . '_api_key';
+
 		add_settings_field(
 			$api_key_id,
 			__( 'API Key', 'wordpress-plugin-name-textdomain' ),
