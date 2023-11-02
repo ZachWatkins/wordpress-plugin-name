@@ -2,10 +2,10 @@
 /**
  * Assets helper functions.
  *
- * @package ThoughtfulWeb\WP
- * @copyright  Zachary K. Watkins 2023
- * @author     Zachary K. Watkins <zwatkins.it@gmail.com
- * @license    GPL-2.0-or-later
+ * @package   ThoughtfulWeb\WP
+ * @copyright Zachary K. Watkins 2023
+ * @author    Zachary K. Watkins <zwatkins.it@gmail.com
+ * @license   GPL-2.0-or-later
  */
 
 /**
