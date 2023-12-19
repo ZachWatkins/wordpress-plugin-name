@@ -32,7 +32,7 @@
 		"@wordpress/env": "^8.2.0",
 		"@wordpress/eslint-plugin": "14.10.0",
 		"@wordpress/jest-preset-default": "11.8.0",
-		"@wordpress/prettier-config": "^2.19.0",
+		"@wordpress/prettier-config": "^3.5.0",
 		"@wordpress/scripts": "26.8.0",
 		"eslint-import-resolver-node": "0.3.7",
 		"eslint-plugin-eslint-comments": "3.2.0",
