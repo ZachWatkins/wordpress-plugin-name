@@ -41,7 +41,7 @@ jobs:
               run: npx playwright test --config test/e2e/playwright.config.js
 
             - name: Archive debug artifacts (screenshots, traces)
-              uses: actions/upload-artifact@v3
+              uses: actions/upload-artifact@v4
               if: always()
               with:
                   name: failures-artifacts
