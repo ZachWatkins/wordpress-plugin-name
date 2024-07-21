@@ -3,10 +3,10 @@
 	<description>Generally-applicable sniffs for WordPress code.</description>
 
 	<!-- What to scan -->
-	<file>../wordpress-plugin-name.php</file>
-	<file>../local.php</file>
-	<file>../src.php</file>
-	<file>../test.php</file>
+	<file>../index.php</file>
+	<file>../src</file>
+	<file>../test</file>
+	<file>../library</file>
 	<exclude-pattern>../test/phpunit/wp-config.php</exclude-pattern>
 	<exclude-pattern>../test/phpunit/bootstrap.php</exclude-pattern>
 
