@@ -49,7 +49,7 @@ composer global require dealerdirect/phpcodesniffer-composer-installer --dev
 composer global require wp-coding-standards/wpcs --dev
 ```
 
-Next, run 'phpcs' from the root directory of this project.
+Next, run 'phpcs' from the root directory of this project to evaluate your plugin's source code and report any errors or warnings detected. This tool uses the WordPress coding standards and any rules defined in your phpcs.xml.dist file.
 
 If the 'phpcs' command is not found, then make sure you have the composer bin dir in your PATH. The default value is ~/.config/composer/vendor/bin/, but you can check the value that you need to use by running `composer global config bin-dir --absolute`.
 
