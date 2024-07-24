@@ -32,7 +32,7 @@ const ARGS = {
 	NEW_PLUGIN_REPOSITORY: null,
 	NEW_PLUGIN_COPYRIGHT: 'Zachary K. Watkins ' + new Date().getFullYear(),
 	FILES: [
-		'.config/.phpcs.xml.dist',
+		'phpcs.xml.dist',
 		'.wp-env/database.php',
 		'.wp-env/database.sql',
 		'.wp-env/schema.sql',
