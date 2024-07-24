@@ -18,7 +18,7 @@
 		"url": "https://github.com/zachwatkins/wordpress-plugin-name/issues"
 	},
 	"engines": {
-		"node": ">=18.16.1 <20.0.0",
+		"node": "^18.20.2",
 		"npm": ">=9.5.1"
 	},
 	"type": "module",
@@ -40,6 +40,7 @@
 		"eslint-plugin-jest": "27.2.3",
 		"eslint-plugin-jest-dom": "5.0.1",
 		"eslint-plugin-playwright": "0.15.3",
+		"eslint-plugin-prettier": "^5.2.1",
 		"eslint-plugin-ssr-friendly": "1.2.0",
 		"eslint-plugin-testing-library": "5.11.0",
 		"husky": "^8.0.3",
@@ -57,12 +58,13 @@
 		"clean": "wp-env clean all && wp-env start --scripts",
 		"destroy": "wp-env destroy",
 		"lint": "npm run lint:js && npm run lint:css",
-		"lint:css": "wp-scripts lint-style assets/css --ignore-path=.config/.prettierignore",
-		"lint:js": "wp-scripts lint-js assets/js --ignore-path=.config/.prettierignore",
+		"lint:css": "wp-scripts lint-style src/assets/css --ignore-path=.config/.prettierignore",
+		"lint:js": "wp-scripts lint-js src/assets/js --ignore-path=.config/.prettierignore",
 		"lint:php": "wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress composer run lint",
-		"format:css": "wp-scripts lint-style assets/css --fix --ignore-path=.config/.prettierignore",
-		"format:js": "wp-scripts lint-js assets/js --fix --ignore-path=.config/.prettierignore",
-		"format:php": "wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress ./vendor/bin/phpcbf --standard=.config/.phpcs.xml.dist --report-summary",
+		"format": "prettier --write --config .config/.prettierrc.json --ignore-path .config/.prettierignore .",
+		"format:css": "wp-scripts lint-style src/assets/css --fix --ignore-path=.config/.prettierignore",
+		"format:js": "wp-scripts lint-js src/assets/js --fix --ignore-path=.config/.prettierignore",
+		"format:php": "wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress phpcbf --standard=phpcs.xml.dist --report-summary",
 		"prettier": "prettier --check --config .config/.prettierrc.json --ignore-path .config/.prettierignore .",
 		"logs": "wp-env logs",
 		"test": "npm run test:js && npm run test:php",
@@ -79,17 +81,17 @@
 		"wp-scripts": "wp-scripts"
 	},
 	"lint-staged": {
-		"assets/**/*.{js,json,ts,tsx,yml,yaml}": [
+		"src/assets/**/*.{js,json,ts,tsx,yml,yaml}": [
 			"wp-scripts format"
 		],
-		"assets/**/*.{js,ts,tsx}": [
+		"src/assets/**/*.{js,ts,tsx}": [
 			"npm run format:js"
 		],
-		"assets/**/*.{css,scss}": [
+		"src/assets/**/*.{css,scss}": [
 			"npm run format:css"
 		],
 		"*.php": [
-			"echo '' && wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress ./vendor/bin/phpcbf --standard=.config/.phpcs.xml.dist --report-summary --filter=gitstaged"
+			"echo '' && wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress phpcbf --report-summary --filter=gitstaged"
 		]
 	},
 	"browserslist": [

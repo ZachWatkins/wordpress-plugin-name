@@ -21,7 +21,7 @@
 	},
 	"phpCodeSniffer.exclude": [ "**/vendor/**", "**/node_modules/**" ],
 	"phpCodeSniffer.standard": "Custom",
-	"phpCodeSniffer.standardCustom": ".config/.phpcs.xml.dist",
+	"phpCodeSniffer.standardCustom": "phpcs.xml.dist",
 	"intelephense.diagnostics.run": "onSave",
 	"intelephense.environment.phpVersion": "8.1.0",
 	"intelephense.format.enable": false,
