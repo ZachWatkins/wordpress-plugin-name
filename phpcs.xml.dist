@@ -53,6 +53,12 @@
 			<property name="blank_line_check" value="true" />
 		</properties>
 	</rule>
+	<rule ref="Squiz.PHP.EmbeddedPhp.ShortOpenEchoNoSemicolon">
+		<exclude-pattern>./src/*</exclude-pattern>
+	</rule>
+	<rule ref="Squiz.Commenting.FileComment.Missing">
+		<exclude-pattern>./library/*</exclude-pattern>
+	</rule>
 
 	<!-- Do not require docblocks for unit tests -->
 	<rule ref="Squiz.Commenting.FunctionComment.Missing">
