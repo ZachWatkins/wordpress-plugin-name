@@ -10,9 +10,9 @@
 			"@putenv WP_SQLITE_MODE=enabled",
 			"./vendor/bin/phpunit -c .config/phpunit.xml.dist"
 		],
-		"lint": "./vendor/bin/phpcs --standard=phpcs.xml.dist --report-full --report-summary",
-		"format": "./vendor/bin/phpcbf --standard=phpcs.xml.dist --report-summary",
-		"lint:errors": "./vendor/bin/phpcs -n"
+		"lint": "phpcs --report-full --report-summary",
+		"format": "phpcbf --report-summary",
+		"lint:errors": "phpcs -n"
 	},
 	"license": "GPL-2.0+",
 	"authors": [
