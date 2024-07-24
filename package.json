@@ -62,7 +62,7 @@
 		"lint:php": "wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress composer run lint",
 		"format:css": "wp-scripts lint-style assets/css --fix --ignore-path=.config/.prettierignore",
 		"format:js": "wp-scripts lint-js assets/js --fix --ignore-path=.config/.prettierignore",
-		"format:php": "wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress ./vendor/bin/phpcbf --standard=.config/.phpcs.xml.dist --report-summary",
+		"format:php": "wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress ./vendor/bin/phpcbf --standard=phpcs.xml.dist --report-summary",
 		"prettier": "prettier --check --config .config/.prettierrc.json --ignore-path .config/.prettierignore .",
 		"logs": "wp-env logs",
 		"test": "npm run test:js && npm run test:php",
@@ -89,7 +89,7 @@
 			"npm run format:css"
 		],
 		"*.php": [
-			"echo '' && wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress ./vendor/bin/phpcbf --standard=.config/.phpcs.xml.dist --report-summary --filter=gitstaged"
+			"echo '' && wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress ./vendor/bin/phpcbf --standard=phpcs.xml.dist --report-summary --filter=gitstaged"
 		]
 	},
 	"browserslist": [
