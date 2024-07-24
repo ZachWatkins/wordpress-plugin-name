@@ -57,12 +57,12 @@
 		"clean": "wp-env clean all && wp-env start --scripts",
 		"destroy": "wp-env destroy",
 		"lint": "npm run lint:js && npm run lint:css",
-		"lint:css": "wp-scripts lint-style assets/css --ignore-path=.config/.prettierignore",
-		"lint:js": "wp-scripts lint-js assets/js --ignore-path=.config/.prettierignore",
+		"lint:css": "wp-scripts lint-style src/assets/css --ignore-path=.config/.prettierignore",
+		"lint:js": "wp-scripts lint-js src/assets/js --ignore-path=.config/.prettierignore",
 		"lint:php": "wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress composer run lint",
 		"format": "prettier --write --config .config/.prettierrc.json --ignore-path .config/.prettierignore .",
-		"format:css": "wp-scripts lint-style assets/css --fix --ignore-path=.config/.prettierignore",
-		"format:js": "wp-scripts lint-js assets/js --fix --ignore-path=.config/.prettierignore",
+		"format:css": "wp-scripts lint-style src/assets/css --fix --ignore-path=.config/.prettierignore",
+		"format:js": "wp-scripts lint-js src/assets/js --fix --ignore-path=.config/.prettierignore",
 		"format:php": "wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress phpcbf --standard=phpcs.xml.dist --report-summary",
 		"prettier": "prettier --check --config .config/.prettierrc.json --ignore-path .config/.prettierignore .",
 		"logs": "wp-env logs",
@@ -80,13 +80,13 @@
 		"wp-scripts": "wp-scripts"
 	},
 	"lint-staged": {
-		"assets/**/*.{js,json,ts,tsx,yml,yaml}": [
+		"src/assets/**/*.{js,json,ts,tsx,yml,yaml}": [
 			"wp-scripts format"
 		],
-		"assets/**/*.{js,ts,tsx}": [
+		"src/assets/**/*.{js,ts,tsx}": [
 			"npm run format:js"
 		],
-		"assets/**/*.{css,scss}": [
+		"src/assets/**/*.{css,scss}": [
 			"npm run format:css"
 		],
 		"*.php": [
