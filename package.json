@@ -60,6 +60,7 @@
 		"lint:css": "wp-scripts lint-style assets/css --ignore-path=.config/.prettierignore",
 		"lint:js": "wp-scripts lint-js assets/js --ignore-path=.config/.prettierignore",
 		"lint:php": "wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress composer run lint",
+		"format": "prettier --write --config .config/.prettierrc.json --ignore-path .config/.prettierignore .",
 		"format:css": "wp-scripts lint-style assets/css --fix --ignore-path=.config/.prettierignore",
 		"format:js": "wp-scripts lint-js assets/js --fix --ignore-path=.config/.prettierignore",
 		"format:php": "wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress phpcbf --standard=phpcs.xml.dist --report-summary",
