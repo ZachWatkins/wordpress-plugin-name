@@ -44,7 +44,7 @@ jobs:
         if: needs.phpcs.outputs.phpcs_report_exists == 'true' && github.event_name == 'pull_request'
         steps:
             - name: Comment on PR
-              uses: actions/github-script@v6
+              uses: actions/github-script@v7
               with:
                   github-token: ${{secrets.GITHUB_TOKEN}}
                   script: |
