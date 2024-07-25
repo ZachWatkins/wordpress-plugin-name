@@ -89,9 +89,6 @@
 		],
 		"src/assets/**/*.{css,scss}": [
 			"npm run format:css"
-		],
-		"*.php": [
-			"echo '' && wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress phpcbf --report-summary --filter=gitstaged"
 		]
 	},
 	"browserslist": [
