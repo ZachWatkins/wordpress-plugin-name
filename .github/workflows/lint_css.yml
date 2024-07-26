@@ -14,7 +14,7 @@ concurrency:
     cancel-in-progress: true
 
 jobs:
-    lint-prettier:
+    lint-styles:
         permissions:
             contents: read
         runs-on: 'ubuntu-latest'
@@ -23,6 +23,4 @@ jobs:
             - uses: ./.github/actions/node-npm-setup
 
             - name: Run linter
-              run: |
-                  npm run prettier
-                  npm run lint:js
+              run: npm run lint:css

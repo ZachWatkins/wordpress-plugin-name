@@ -27,6 +27,4 @@ jobs:
             - uses: ./.github/actions/node-npm-setup
 
             - name: Run linter
-              run: |
-                  npm run prettier
-                  npm run lint:js
+              run: npm run lint:js
