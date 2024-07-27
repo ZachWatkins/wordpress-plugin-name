@@ -18,11 +18,12 @@
 		"url": "https://github.com/zachwatkins/wordpress-plugin-name/issues"
 	},
 	"engines": {
-		"node": "^18.20.2",
-		"npm": ">=9.5.1"
+		"node": "^20.16.0",
+		"npm": ">=10.8.1"
 	},
 	"devDependencies": {
 		"@axe-core/playwright": "4.7.3",
+		"@playwright/test": "^1.45.3",
 		"@wordpress/env": "^9.0.0",
 		"@wordpress/scripts": "26.8.0"
 	},
@@ -47,7 +48,9 @@
 		"plugin-zip": "wp-scripts plugin-zip",
 		"format:php": "wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress phpcbf --standard=phpcs.xml.dist --report-summary",
 		"logs": "wp-env logs",
-		"test:e2e": "wp-scripts test-e2e",
+		"test:e2e": "wp-scripts test-playwright",
+		"test:e2e:debug": "wp-scripts test-playwright --ui",
+		"test:e2e:watch": "npm run test:e2e -- --watch",
 		"test:unit": "wp-scripts test-unit-js",
 		"test:php": "wp-env run tests-cli 'bash -c \"cd wp-content/plugins/wordpress-plugin-name && ./vendor/bin/phpunit\"'",
 		"wp": "wp-env run cli wp",
