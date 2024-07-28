@@ -48,7 +48,7 @@
 		"plugin-zip": "wp-scripts plugin-zip",
 		"format:php": "wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress phpcbf --standard=phpcs.xml.dist --report-summary",
 		"logs": "wp-env logs",
-		"test:e2e": "wp-scripts test-playwright --config=playwright.config.js",
+		"test:e2e": "wp-scripts test-playwright --config=./test/e2e/playwright.config.js",
 		"test:e2e:debug": "wp-scripts test-playwright --ui",
 		"test:e2e:watch": "npm run test:e2e -- --watch",
 		"test:unit": "wp-scripts test-unit-js",
