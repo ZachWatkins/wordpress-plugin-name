@@ -22,10 +22,10 @@
 		"npm": ">=10.8.1"
 	},
 	"devDependencies": {
-		"@axe-core/playwright": "4.7.3",
+		"@axe-core/playwright": "^4.9.1",
 		"@playwright/test": "^1.45.3",
-		"@wordpress/env": "^9.0.0",
-		"@wordpress/scripts": "26.8.0"
+		"@wordpress/env": "^10.4.0",
+		"@wordpress/scripts": "^28.4.0"
 	},
 	"scripts": {
 		"start": "wp-env start --scripts",
@@ -48,7 +48,7 @@
 		"plugin-zip": "wp-scripts plugin-zip",
 		"format:php": "wp-env run --env-cwd=wp-content/plugins/wordpress-plugin-name wordpress phpcbf --standard=phpcs.xml.dist --report-summary",
 		"logs": "wp-env logs",
-		"test:e2e": "wp-scripts test-playwright",
+		"test:e2e": "wp-scripts test-playwright --config=playwright.config.js",
 		"test:e2e:debug": "wp-scripts test-playwright --ui",
 		"test:e2e:watch": "npm run test:e2e -- --watch",
 		"test:unit": "wp-scripts test-unit-js",
