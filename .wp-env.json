@@ -1,7 +1,10 @@
 {
 	"core": null,
 	"phpVersion": "8.1",
-	"plugins": [ "." ],
+	"plugins": [
+		".",
+		"https://downloads.wordpress.org/plugin/wordpress-importer.0.8.2.zip"
+	],
 	"mappings": {
 		"database.sql": "./.wp-env/database.sql",
 		"database.php": "./.wp-env/database.php"
