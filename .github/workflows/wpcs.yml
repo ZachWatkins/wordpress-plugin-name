@@ -34,7 +34,7 @@ jobs:
                   phpcs-json-to-md --path ./phpcs.json --output ./phpcs.md
                   cat phpcs.md >> $GITHUB_STEP_SUMMARY
             - name: Upload PHPCS report
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v5
               if: always() && steps.check_file.outputs.phpcs_json_exists == 'true'
               with:
                   name: warnings-and-errors-report
